@@ -8,7 +8,7 @@ let minCount = undefined;
 let maxCount = undefined;
 let ya_lo_hice = false;
 
-let arrayOfProducts = []
+let newProductArray = []
 
 function changeColor(a, b, c) {
     document.getElementById(a).classList.remove("bg-sort");
@@ -65,11 +65,6 @@ function sortCategories(criteria, array){
     return result;
 }
 
-function setCatID(id) {
-    localStorage.setItem("catID", id);
-    window.location = "products.html"
-}
-
 function showCategoriesList(currentCategoriesArray){
 
     if (currentCategoriesArray.length === 0) {
@@ -80,27 +75,28 @@ function showCategoriesList(currentCategoriesArray){
         document.getElementById("subtitle-category").innerText = "Verás aquí todas las categorías del sitio."
         
         let htmlContentToAppend = "";
-        for(let i = 0; i < currentCategoriesArray.length; i++){
-            let category = currentCategoriesArray[i];
-            if (((minCount == undefined) || (minCount != undefined && parseInt(category.productCount) >= minCount)) &&
-                ((maxCount == undefined) || (maxCount != undefined && parseInt(category.productCount) <= maxCount))){
+        currentCategoriesArray.forEach(({productCount, id, imgSrc, description, name}) => {
+            if (((minCount == undefined) || (minCount != undefined && parseInt(productCount) >= minCount)) &&
+                ((maxCount == undefined) || (maxCount != undefined && parseInt(productCount) <= maxCount))){
 
                 htmlContentToAppend += `
-                <div class="col-12 col-sm-6 col-md-6 col-lg-4" onclick="setCatID(${category.id})">
-                    <div class="card cursor-active">
-                        <img src="${category.imgSrc}" alt="${category.description}" class="imgCategories">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4" onclick="setCatID(${id})">
+                    <div class="card cursor-active h-100 cardHover">
+                        <div class="card-header p-0 m-auto">
+                            <img src="${imgSrc}" alt="${description}" class="img-fluid">
+                        </div>
                         <div class="card-body">
-                            <h4>${category.name}</h4>
-                            <p>${category.description}</p>
+                            <h4>${name}</h4>
+                            <p>${description}</p>
                         </div>
                         <div class="card-footer">
-                            <small class="text-muted">${category.productCount} artículos</small> 
+                            <small class="text-muted">${productCount} artículos</small> 
                         </div>
                     </div>
                 </div>
                 `
             }
-        }
+        });
         document.getElementById("catList").innerHTML = htmlContentToAppend;
     }
 }
@@ -123,43 +119,35 @@ function sortAndShowCategories(sortCriteria, categoriesArray){
 const GOLD = 0.13;
 document.addEventListener("DOMContentLoaded", async (e) =>{
 
-    await getJSONData(CATEGORIES_URL).then(function(resultObj){
-        if (resultObj.status === "ok"){
-            currentCategoriesArray = resultObj.data
-
-            const start = JSON.parse(localStorage.getItem("productStart"));
-            const end = JSON.parse(localStorage.getItem("productEnd"));
-            if (start || end) {
-                const concatCat = start.concat(end).filter((item) => item !== null);
-                if (concatCat) {
-                    currentCategoriesArray.forEach((cat) => {
-                        const existe = concatCat.filter(({category, percentage}) =>
-                            category === cat.name &&
-                            percentage === GOLD);
-                        if (existe && existe.length > 0) 
-                            cat.imgSrc = existe[0].image[0].dataURL
-                        const pCount = concatCat.filter(element => element.category === cat.name);
-                        if (pCount.length > 0) 
-                            cat.productCount = pCount.length + parseInt(cat.productCount);
-                    });
+    if (localStorage.getItem("categoriesArray")) {
+        currentCategoriesArray = JSON.parse(localStorage.getItem("categoriesArray"))
+        if (localStorage.getItem("newProductArray")) 
+            newProductArray = JSON.parse(localStorage.getItem("newProductArray"))
+    }
+    else {
+        const categories = await getJSONData(CATEGORIES_URL)
+        if (categories.status === "ok") {
+            currentCategoriesArray = categories.data;
+            for (let i = 0; i < currentCategoriesArray.length; i++) {
+                const element = currentCategoriesArray[i]
+                const product = await getJSONData(PRODUCTS_URL + element.id + EXT_TYPE)
+                if (product.status === "ok") {
+                    const productArray = product.data
+                    productArray.products.forEach(element => {
+                        element.stock = element.currency === "USD" ? Math.round(40000/element.cost) + 1 : Math.round(40000/element.cost * 23) + 1
+                        element.discount = Math.round(element.cost/1000) > 100 ? 25 : Math.round(element.cost/1000)
+                        element.saleCost = Math.round(element.cost*100/(100-element.discount))
+                    })
+                    newProductArray.push(productArray)
                 }
             }
             
-            showCategoriesList(currentCategoriesArray)
-            //sortAndShowCategories(ORDER_ASC_BY_NAME, resultObj.data);
-        }
-    });
-
-    for (let i = 0; i < currentCategoriesArray.length; i++) {
-        const element = currentCategoriesArray[i]
-        const product = await getJSONData(PRODUCTS_URL + element.id + EXT_TYPE)
-        if (product.status === "ok") {
-            const productArray = product.data
-            if (productArray.products.length > 0) arrayOfProducts = arrayOfProducts.concat(productArray.products)
+            localStorage.setItem("categoriesArray", JSON.stringify(currentCategoriesArray))
+            localStorage.setItem("newProductArray", JSON.stringify(newProductArray))
         }
     }
 
-
+    showCategoriesList(currentCategoriesArray)
     showTopSaleProducts()
     
     function sortAsc() {
@@ -244,11 +232,10 @@ const searchBar = document.getElementById("searchBar")
 
 searchBar.addEventListener("keyup", (e) => {
     const searchString = e.target.value;
-    const filteredCategoriesArray = currentCategoriesArray.filter(category => {
-        return category.name.toLowerCase().includes(searchString.toLowerCase()) || 
+    const filteredCategoriesArray = currentCategoriesArray.filter(category => category.name.toLowerCase().includes(searchString.toLowerCase()) || 
         category.description.toLowerCase().includes(searchString.toLowerCase()) ||
-        category.productCount.toString().includes(searchString);
-    })
+        category.productCount.toString().includes(searchString)
+    )
     showCategoriesList(filteredCategoriesArray);
     if (filteredCategoriesArray.length === 0) {
         document.getElementById("subtitle-category").innerHTML = `
@@ -267,14 +254,14 @@ function X() {
 }
 
 function showTopSaleProducts() {
-    const topSaleProducts = arrayOfProducts
-                            .filter(product => product.soldCount > 5)
-                            .sort((a, b) => b.soldCount - a.soldCount)
-                            .slice(0, 10);
-    for (let i = 0; i < topSaleProducts.length; i++) {
-        let product = topSaleProducts[i];
+    let topSaleProducts = []
+    newProductArray.forEach(({products}) => topSaleProducts.push(products.filter(product => product.soldCount > 5)))
+    topSaleProducts = topSaleProducts.flat()
+    topSaleProducts = topSaleProducts.sort((a, b) => b.soldCount - a.soldCount).slice(0, 10)
+
+    topSaleProducts.forEach(({id, name}) => {
         document.getElementById("lstTopSale").innerHTML += `
-        <a class="col-6 col-sm-4 col-md-12" onclick="productInfo(${product.id})">${product.name}</a>
-        `
-    }
+        <a class="col-6 col-sm-4 col-md-12" onclick="productInfo(${id})">${name}</a>
+        ` 
+    });
 }
