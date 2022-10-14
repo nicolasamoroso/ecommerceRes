@@ -16,7 +16,7 @@
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container mt-1">
+    <div class="container-fluid container-lg mt-1">
       <a class="navbar-brand" href="index.html"><img src="img/logo.png" class="imgLogo"></a>
       <button class="navToggler d-lg-none" id="btnBurger" type="button" data-bs-toggle="collapse" data-bs-target="#navBarContent" aria-controls="navBarContent" aria-expanded="false" aria-label="Toggle navigation">
         <div></div>
@@ -186,23 +186,29 @@
           </div>
         </div>
         <div class="col-lg-9 col-md-8">
-          <div id="prodList" class="row row-gap-2 mt-3 mt-lg-0 h-100">
+          <div id="prodList" class="row row-gap-2 mt-3 mt-lg-0 h-100 align-content-start">
+            
             <div class="col-12 col-sm-6 col-md-6 col-lg-4">
-              <div class="card cursor-active">
-                  <img src="img/car1.jpg" alt="Generación 2019, variedad de colores. Motor 1.0, ideal para ciudad." class="imgProducts">
-                  <div class="card-body">
-                      <h4>Chevrolet Onix Joy</h4>
-                      <p>Generación 2019, variedad de colores. Motor 1.0, ideal para ciudad.</p>
-                      <div class="row">
-                        <h5 class="col-7 col-xs-9 fw-bold medium">USD 13500</h5>
-                        <button class="col-4 col-xs-3 btn btn-success position-absolute buyBtn">Comprar</button>
-                      </div>
+              <div class="card cursor-active h-100">
+                <div class="card-header p-0 m-auto">
+                  <img src="img/car1.jpg" alt="Generación 2019, variedad de colores. Motor 1.0, ideal para ciudad." class="img-fluid">
+                </div>
+                <div class="card-body d-flex flex-column justify-content-between cardHover">
+                  <div>
+                    <h4>Chevrolet Onix Joy</h4>
+                    <p>Generación 2019, variedad de colores. Motor 1.0, ideal para ciudad.</p>
                   </div>
-                  <div class="card-footer">
-                      <small class="text-muted">999 vendidos</small> 
+                  <div class="row">
+                    <h5 class="col-7 col-xs-9 fw-bold medium">USD 13500</h5>
+                    <button class="col-4 col-xs-3 btn btn-success position-absolute buyBtn">Comprar</button>
                   </div>
+                </div>
+                <div class="card-footer">
+                  <small class="text-muted">999 vendidos</small> 
+                </div>
               </div>
-          </div>
+            </div>
+
           </div>
         </div>
       </div>
