@@ -46,7 +46,7 @@ function showSaleProducts() {
                 <div class="card-body">
                     <h6 class="fw-bold nameProductSale text-break">${name}</h6>
                     <div class="discount">
-                        <small class="text-muted text-decoration-line-through">${currency} ${Math.round(cost*100/(100-discount))}</small>
+                        <span class="text-muted text-decoration-line-through">${currency} ${Math.round(cost*100/(100-discount))}</span>
                         <span class="badge bg-danger saleDiscount">-${discount}%</span>
                     </div>
                     <p class="mb-0 priceSales">${currency} ${cost}</p>
