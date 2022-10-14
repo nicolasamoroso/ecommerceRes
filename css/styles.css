@@ -623,7 +623,11 @@ input[type=number] {
   padding: .25rem !important;
 }
 
-@media (min-width: 992px) and (max-width: 1023px) {
+.medium {
+  margin-left: 0;
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
   .medium {
     font-size: 1.2rem;
     padding-right: 0;
