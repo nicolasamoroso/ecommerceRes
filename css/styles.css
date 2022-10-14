@@ -252,7 +252,7 @@ a.navbar-brand {
   justify-content: center;
 }
 
-.navToggler > span {
+.navToggler > div {
   background-color: white;
   height: 2px;
   width: 100%;
@@ -265,17 +265,17 @@ a.navbar-brand {
   transform-origin: left;
 }
 
-.navToggler.active span:first-child {
+.navToggler.active div:first-child {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
 
-.navToggler.active span:nth-child(2) {
+.navToggler.active div:nth-child(2) {
   opacity: 0;
 }
 
-.navToggler.active span:last-child {
+.navToggler.active div:last-child {
   -webkit-transform: rotate(-45deg);
   -ms-transform: rotate(-45deg);
   transform: rotate(-45deg);
