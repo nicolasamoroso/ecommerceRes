@@ -207,6 +207,10 @@ a.navbar-brand {
   width: 50px;
 }
 
+button#btnBurger {
+  margin-right: 10px;
+}
+
 .navToggler {
   display: flex;
   flex-direction: column;
@@ -358,12 +362,6 @@ footer h6 {
 
 footer {
   background-color: #f4f4f4;
-}
-
-.containerRes {
-  margin: auto;
-  padding: 0 20px;
-  max-width: 1200px;
 }
 
 @media (min-width: 768px) {
