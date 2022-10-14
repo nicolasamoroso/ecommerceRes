@@ -207,10 +207,6 @@ a.navbar-brand {
   width: 50px;
 }
 
-button#btnBurger {
-  margin-right: 10px;
-}
-
 .navToggler {
   display: flex;
   flex-direction: column;
@@ -219,7 +215,7 @@ button#btnBurger {
   border: 0;
   background: transparent;
   gap: .50rem;
-  justify-content: center;
+  /* justify-content: center; */
 }
 
 .navToggler > span {
