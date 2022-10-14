@@ -216,6 +216,7 @@ a.navbar-brand {
   background: transparent;
   gap: .50rem;
   /* justify-content: center; */
+  
 }
 
 .navToggler > span {
