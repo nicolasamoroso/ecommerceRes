@@ -45,6 +45,11 @@ burger.addEventListener("click", function() {
     burger.classList.contains("active") ? burger.classList.remove("active") : burger.classList.add("active");
 })
 
+function setCatID(id) {
+  localStorage.setItem("catID", id);
+  window.location = "products.html"
+}
+
 function productInfo(id) {
   localStorage.setItem("product-info", id);
   window.location.href = "product-info.html"    
