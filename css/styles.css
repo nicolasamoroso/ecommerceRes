@@ -613,12 +613,12 @@ input[type=number] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
-/* 
+
 .imgCategories, .imgProducts {
   width: 100%;
-  height: 180px;
+  height: 100%;
   object-fit: cover;
-} */
+}
 
 /* FIN CATEGORIES */
 
