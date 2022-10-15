@@ -82,7 +82,7 @@
       </div>
       <div class="text-center mb-5">
         <h1>Productos</h1>
-        <p class="lead" id="subtitulo-products"></p>
+        <p class="lead" id="product-subtitle"></p>
       </div>
       <div class="row">
         <div class="col-lg-3 col-md-4">
@@ -105,11 +105,11 @@
                         <h5 class="text-center mb-3">Filtrar por cantidad</h5>
                         <div class="row">
                           <div class="input-group input-group w-60">
-                            <input type="number" class="form-control" id="rangeFilterCountMinRes" placeholder="Min" min="0"  >
-                            <input type="number" class="form-control" id="rangeFilterCountMaxRes" placeholder="Max" min="0">
+                            <input type="number" class="form-control" id="rangeFilterPriceMinRes" placeholder="Min" min="0"  >
+                            <input type="number" class="form-control" id="rangeFilterPriceMaxRes" placeholder="Max" min="0">
                           </div>
                           <a class="col-2 m-auto px-0">
-                            <i class="fa-solid fa-arrow-right-from-bracket" id="rangeFilterCountRes"></i>
+                            <i class="fa-solid fa-arrow-right-from-bracket" id="rangeFilterPriceRes"></i>
                           </a>
                           <a class="col-2 m-auto px-0">
                             <i class="fa-solid fa-eraser" id="clearRangeFilterRes"></i>
@@ -119,12 +119,12 @@
                         <h5 class="text-center">Ordenar</h5>
                         <div class="row row-gap-2">
                           <div class="btn-group btn-group-toggle mb-4" data-bs-toggle="buttons">
-                            <input type="radio" class="btn-check" name="options" id="sortAscRes">
-                            <label class="btn shadow-none bg-sort" id="asc" for="sortAscRes">A-Z</label>
-                            <input type="radio" class="btn-check" name="options" id="sortDescRes">
-                            <label class="btn shadow-none bg-sort" id="desc" for="sortDescRes">Z-A</label>
-                            <input type="radio" class="btn-check" name="options" id="sortByCountRes" checked>
-                            <label class="btn shadow-none bg-sort" id="count" for="sortByCountRes"><i id="up-downRes" class="fas fa-sort-amount-down mr-1"></i></label>
+                            <input type="radio" class="btn-check" name="options" id="sortByPriceDownRes">
+                            <label class="btn shadow-none bg-sort" id="price-down" for="sortByPriceDownRes"><i id="price-downRes" class="fas fa-sort-amount-down mr-1"></i>$</label>
+                            <input type="radio" class="btn-check" name="options" id="sortByPriceUpRes">
+                            <label class="btn shadow-none bg-sort" id="price-up" for="sortByPriceUpRes"><i id="price-upRes" class="fas fa-sort-amount-up mr-1"></i>$</label>
+                            <input type="radio" class="btn-check" name="options" id="sortRelDescRes">
+                            <label class="btn shadow-none bg-sort" id="desc" for="sortRelDescRes"><i id="rel-downRes" class="fas fa-sort-amount-down mr-1"></i>Rel.</label>
                           </div>
                         </div>
                       </div>
@@ -135,14 +135,14 @@
 
             <div class="d-none d-sm-block col-12 col-sm-6 col-md-12 col-lg-12">
               <div class="card card-body h-100">
-                <h5 class="text-center mb-3">Filtrar por cantidad</h5>
+                <h5 class="text-center mb-3">Filtrar por vendidos</h5>
                 <div class="row">
                   <div class="input-group input-group w-60">
-                    <input type="number" class="form-control" id="rangeFilterCountMin" placeholder="Min" min="0"  >
-                    <input type="number" class="form-control" id="rangeFilterCountMax" placeholder="Max" min="0">
+                    <input type="number" class="form-control" id="rangeFilterPriceMin" placeholder="Min" min="0"  >
+                    <input type="number" class="form-control" id="rangeFilterPriceMax" placeholder="Max" min="0">
                   </div>
                   <a class="col-2 m-auto px-0">
-                    <i class="fa-solid fa-arrow-right-from-bracket" id="rangeFilterCount"></i>
+                    <i class="fa-solid fa-arrow-right-from-bracket" id="rangeFilterPrice"></i>
                   </a>
                   <a class="col-2 m-auto px-0">
                     <i class="fa-solid fa-eraser" id="clearRangeFilter"></i>
@@ -155,12 +155,12 @@
                 <h5 class="text-center mb-3">Ordenar</h5>
                 <div class="row row-gap-2">
                   <div class="btn-group btn-group-toggle mb-4" data-bs-toggle="buttons">
-                    <input type="radio" class="btn-check" name="options" id="sortAsc">
-                    <label class="btn shadow-none bg-sort" id="asc" for="sortAsc">A-Z</label>
-                    <input type="radio" class="btn-check" name="options" id="sortDesc">
-                    <label class="btn shadow-none bg-sort" id="desc" for="sortDesc">Z-A</label>
-                    <input type="radio" class="btn-check" name="options" id="sortByCount" checked>
-                    <label class="btn shadow-none bg-sort" id="count" for="sortByCount"><i id="up-down" class="fas fa-sort-amount-down mr-1"></i></label>
+                    <input type="radio" class="btn-check" name="options" id="sortByPriceDown">
+                    <label class="btn shadow-none bg-sort" id="price-down" for="sortByPriceDown"><i id="price-down" class="fas fa-sort-amount-down mr-1"></i>$</label>
+                    <input type="radio" class="btn-check" name="options" id="sortByPriceUp">
+                    <label class="btn shadow-none bg-sort" id="price-up" for="sortByPriceUp"><i id="price-up" class="fas fa-sort-amount-up mr-1"></i>$</label>
+                    <input type="radio" class="btn-check" name="options" id="sortRelDesc">
+                    <label class="btn shadow-none bg-sort" id="desc" for="sortRelDesc"><i id="rel-down" class="fas fa-sort-amount-down mr-1"></i>Rel.</label>
                   </div>
                 </div>
               </div>
@@ -187,28 +187,6 @@
         </div>
         <div class="col-lg-9 col-md-8">
           <div id="prodList" class="row row-gap-2 mt-3 mt-lg-0 h-100 align-content-start">
-            
-            <div class="col-12 col-sm-6 col-md-6 col-lg-4">
-              <div class="card cursor-active h-100">
-                <div class="card-header p-0 m-auto">
-                  <img src="img/car1.jpg" alt="Generación 2019, variedad de colores. Motor 1.0, ideal para ciudad." class="img-fluid">
-                </div>
-                <div class="card-body d-flex flex-column justify-content-between cardHover">
-                  <div>
-                    <h4>Chevrolet Onix Joy</h4>
-                    <p>Generación 2019, variedad de colores. Motor 1.0, ideal para ciudad.</p>
-                  </div>
-                  <div class="row">
-                    <h5 class="col-7 col-xs-9 fw-bold medium">USD 13500</h5>
-                    <button class="col-4 col-xs-3 btn btn-success position-absolute buyBtn">Comprar</button>
-                  </div>
-                </div>
-                <div class="card-footer">
-                  <small class="text-muted">999 vendidos</small> 
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
       </div>

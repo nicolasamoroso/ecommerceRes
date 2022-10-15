@@ -66,15 +66,11 @@ function sortCategories(criteria, array){
 }
 
 function showCategoriesList(currentCategoriesArray){
-
-    if (currentCategoriesArray.length === 0) {
-        document.getElementById("subtitle-category").innerHTML = "No hay categorías para este sitio.</p>"
-        document.getElementById("catList").innerHTML = "";
-    }
+    let htmlContentToAppend = "";
+    if (currentCategoriesArray.length === 0)
+        document.getElementById("category-subtitle").innerHTML = "No hay categorías para este sitio.</p>"
     else {
-        document.getElementById("subtitle-category").innerText = "Verás aquí todas las categorías del sitio."
-        
-        let htmlContentToAppend = "";
+        document.getElementById("category-subtitle").innerText = "Verás aquí todas las categorías del sitio."
         currentCategoriesArray.forEach(({productCount, id, imgSrc, description, name}) => {
             if (((minCount == undefined) || (minCount != undefined && parseInt(productCount) >= minCount)) &&
                 ((maxCount == undefined) || (maxCount != undefined && parseInt(productCount) <= maxCount))){
@@ -97,8 +93,8 @@ function showCategoriesList(currentCategoriesArray){
                 `
             }
         });
-        document.getElementById("catList").innerHTML = htmlContentToAppend;
     }
+    document.getElementById("catList").innerHTML = htmlContentToAppend;
 }
 
 function sortAndShowCategories(sortCriteria, categoriesArray){
@@ -223,6 +219,77 @@ document.addEventListener("DOMContentLoaded", async (e) =>{
     document.getElementById("clearRangeFilterRes").addEventListener("click", clearRangeFilter);
     document.getElementById("rangeFilterCountRes").addEventListener("click", rangeFilterCount);
 
+    function sortAsc() {
+        sortAndShowCategories(ORDER_ASC_BY_NAME);
+        changeColor("asc", "desc", "count");
+    }
+
+    function sortDesc() {
+        sortAndShowCategories(ORDER_DESC_BY_NAME);
+        changeColor("desc", "asc", "count");
+    }
+
+    function sortCount() {
+        if (!ya_lo_hice) {
+            document.getElementById("up-downRes").classList.remove("fa-sort-amount-down")
+            document.getElementById("up-downRes").classList.add("fa-sort-amount-up")
+            document.getElementById("up-down").classList.remove("fa-sort-amount-down")
+            document.getElementById("up-down").classList.add("fa-sort-amount-up")
+            sortAndShowCategories(ORDER_BY_PROD_COUNT_MAX);
+        }
+        else {
+            document.getElementById("up-downRes").classList.remove("fa-sort-amount-up")
+            document.getElementById("up-downRes").classList.add("fa-sort-amount-down")
+            document.getElementById("up-down").classList.remove("fa-sort-amount-up")
+            document.getElementById("up-down").classList.add("fa-sort-amount-down")
+            sortAndShowCategories(ORDER_BY_PROD_COUNT_MIN);
+        }
+        changeColor("count", "asc", "desc");
+    }
+
+    function clearRangeFilter() {
+        document.getElementById("rangeFilterCountMin").value = "";
+        document.getElementById("rangeFilterCountMax").value = "";
+    
+        minCount = undefined;
+        maxCount = undefined;
+    
+        showCategoriesList(currentCategoriesArray);
+    }
+
+    function rangeFilterCount() {
+        const min = document.getElementById("rangeFilterCountMin") ? document.getElementById("rangeFilterCountMin").value : document.getElementById("rangeFilterCountMinRes").value
+        const max = document.getElementById("rangeFilterCountMax") ? document.getElementById("rangeFilterCountMax").value : document.getElementById("rangeFilterCountMaxRes").value
+
+        minCount = min;
+        maxCount = max;
+    
+        if ((min != undefined) && (min != "") && (parseInt(min)) >= 0) 
+            minCount = parseInt(min);
+        else 
+            minCount = undefined;
+    
+        if ((max != undefined) && (max != "") && (parseInt(max)) >= 0)
+            maxCount = parseInt(max);
+        else
+            maxCount = undefined;
+    
+        showCategoriesList(currentCategoriesArray);
+    }
+    
+    document.getElementById("sortAsc").addEventListener("click", sortAsc);
+    document.getElementById("sortDesc").addEventListener("click", sortDesc);
+    document.getElementById("sortByCount").addEventListener("click", sortCount);
+    document.getElementById("clearRangeFilter").addEventListener("click", clearRangeFilter);
+    document.getElementById("rangeFilterCount").addEventListener("click", rangeFilterCount);
+
+    /* responsive buttons */
+    document.getElementById("sortAscRes").addEventListener("click", sortAsc);
+    document.getElementById("sortDescRes").addEventListener("click", sortDesc);
+    document.getElementById("sortByCountRes").addEventListener("click", sortCount);
+    document.getElementById("clearRangeFilterRes").addEventListener("click", clearRangeFilter);
+    document.getElementById("rangeFilterCountRes").addEventListener("click", rangeFilterCount);
+
     const location = window.location.href;
     localStorage.setItem("prev_location", JSON.stringify(location));
 });
@@ -238,7 +305,7 @@ searchBar.addEventListener("keyup", (e) => {
     )
     showCategoriesList(filteredCategoriesArray);
     if (filteredCategoriesArray.length === 0) {
-        document.getElementById("subtitle-category").innerHTML = `
+        document.getElementById("category-subtitle").innerHTML = `
         <p class="lead">No hay categorías que coincidan con tu búsqueda.</p>
         `
         document.getElementById("cat-list-container").innerHTML = "";

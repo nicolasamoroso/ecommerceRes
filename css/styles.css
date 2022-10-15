@@ -691,24 +691,46 @@ input[type=number] {
 /* INICIO PRODUCT */
 
 .buyBtn {
+  /* right: 10px;
+  padding: .25rem !important; */
+  bottom: 50px;
   right: 10px;
-  padding: .25rem !important;
 }
 
 .medium {
   margin-left: 0;
+  margin-right: 0;
+  padding-right: 0;
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
   .medium {
     font-size: 1.2rem;
-    padding-right: 0;
+  }
+
+  .col-lg-4 {
+    -webkit-box-flex: 0;
+            -ms-flex: 0 0 auto;
+                flex: 0 0 auto;
+    width: 50%;
+  }
+}
+
+.prodDiscount {
+  right: 0;
+  font-size: 30px;
+}
+
+@media (min-width:576px) {
+  .prodDiscount {
+    font-size: 20px;
   }
 
   .buyBtn {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 }
+
 /* FIN PRODUCT */
 
 .cardHover:hover {
