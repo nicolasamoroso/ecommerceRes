@@ -6,6 +6,8 @@ let currentCategoriesArray = [];
 let currentSortCriteria = undefined;
 let minCount = undefined;
 let maxCount = undefined;
+let minCountRes = undefined
+let maxCountRes = undefined
 let ya_lo_hice = false;
 
 let newProductArray = []
@@ -73,7 +75,9 @@ function showCategoriesList(currentCategoriesArray){
         document.getElementById("category-subtitle").innerText = "Verás aquí todas las categorías del sitio."
         currentCategoriesArray.forEach(({productCount, id, imgSrc, description, name}) => {
             if (((minCount == undefined) || (minCount != undefined && parseInt(productCount) >= minCount)) &&
-                ((maxCount == undefined) || (maxCount != undefined && parseInt(productCount) <= maxCount))){
+                ((maxCount == undefined) || (maxCount != undefined && parseInt(productCount) <= maxCount)) ||
+                ((minCountRes == undefined) || (minCountRes != undefined && parseInt(productCount) >= minCountRes)) &&
+                ((maxCountRes == undefined) || (maxCountRes != undefined && parseInt(productCount) <= maxCountRes))) {
 
                 htmlContentToAppend += `
                 <div class="col-12 col-sm-6 col-md-6 col-lg-4" onclick="setCatID(${id})">
@@ -178,30 +182,47 @@ document.addEventListener("DOMContentLoaded", async (e) =>{
         document.getElementById("rangeFilterCountMin").value = "";
         document.getElementById("rangeFilterCountMax").value = "";
     
-        minCount = undefined;
-        maxCount = undefined;
+        minCount = undefined
+        maxCount = undefined
+        minCountRes = undefined
+        maxCountRes = undefined
     
         showCategoriesList(currentCategoriesArray);
     }
 
     function rangeFilterCount() {
-        const min = document.getElementById("rangeFilterCountMin") ? document.getElementById("rangeFilterCountMin").value : document.getElementById("rangeFilterCountMinRes").value
-        const max = document.getElementById("rangeFilterCountMax") ? document.getElementById("rangeFilterCountMax").value : document.getElementById("rangeFilterCountMaxRes").value
+        const min = document.getElementById("rangeFilterCountMin").value
+        const max = document.getElementById("rangeFilterCountMax").value
+        const minRes = document.getElementById("rangeFilterCountMinRes").value
+        const maxRes = document.getElementById("rangeFilterCountMaxRes").value
         
-        if (min > max) return alert("El valor mínimo no puede ser mayor al valor máximo.")
-
         minCount = min;
         maxCount = max;
+        minCountRes = minRes;
+        maxCountRes = maxRes;
     
-        if ((min != undefined) && (min != "") && (parseInt(min)) >= 0) 
-            minCount = parseInt(min);
-        else 
+        
+        if (((minCount != undefined) && (minCount != "") && (parseInt(minCount)) >= 0) || 
+            ((minCountRes != undefined) && (minCountRes != "") && (parseInt(minCountRes)) >= 0)) {
+
+            minCount = parseInt(minCount);
+            minCountRes = parseInt(minCountRes);
+        }
+        else {
             minCount = undefined;
+            minCountRes = undefined;
+        }
     
-        if ((max != undefined) && (max != "") && (parseInt(max)) >= 0)
-            maxCount = parseInt(max);
-        else
+        if (((maxCount != undefined) && (maxCount != "") && (parseInt(maxCount)) >= 0) ||
+            ((maxCountRes != undefined) && (maxCountRes != "") && (parseInt(maxCountRes)) >= 0)) {
+
+            maxCount = parseInt(maxCount);
+            maxCountRes = parseInt(maxCountRes);
+        }
+        else {
             maxCount = undefined;
+            maxCountRes = undefined;
+        }
     
         showCategoriesList(currentCategoriesArray);
     }
@@ -253,26 +274,6 @@ document.addEventListener("DOMContentLoaded", async (e) =>{
     
         minCount = undefined;
         maxCount = undefined;
-    
-        showCategoriesList(currentCategoriesArray);
-    }
-
-    function rangeFilterCount() {
-        const min = document.getElementById("rangeFilterCountMin") ? document.getElementById("rangeFilterCountMin").value : document.getElementById("rangeFilterCountMinRes").value
-        const max = document.getElementById("rangeFilterCountMax") ? document.getElementById("rangeFilterCountMax").value : document.getElementById("rangeFilterCountMaxRes").value
-
-        minCount = min;
-        maxCount = max;
-    
-        if ((min != undefined) && (min != "") && (parseInt(min)) >= 0) 
-            minCount = parseInt(min);
-        else 
-            minCount = undefined;
-    
-        if ((max != undefined) && (max != "") && (parseInt(max)) >= 0)
-            maxCount = parseInt(max);
-        else
-            maxCount = undefined;
     
         showCategoriesList(currentCategoriesArray);
     }

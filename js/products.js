@@ -6,6 +6,8 @@ const ORDER_DESC_BY_REL = "Rel.";
 let currentSort = undefined;
 let minPrice = undefined;
 let maxPrice = undefined;
+let minPriceRes = undefined;
+let maxPriceRes = undefined;
     
 document.addEventListener("DOMContentLoaded", async (e) => {
 
@@ -13,9 +15,9 @@ document.addEventListener("DOMContentLoaded", async (e) => {
 
     showTopSaleProducts(productsArray)
 
-    cat_name = parseInt(localStorage.catID)
-
-    productsArray = productsArray.filter(product => product.catID === parseInt(localStorage.catID))[0].products
+    productsArray = productsArray.filter(product => product.catID === parseInt(localStorage.catID))[0]
+    cat_name = productsArray.catName
+    productsArray = productsArray.products
 
     showProductsList(productsArray)
 
@@ -37,29 +39,50 @@ document.addEventListener("DOMContentLoaded", async (e) => {
     function clearRangeFilter() {
         document.getElementById("rangeFilterPriceMin").value = "";
         document.getElementById("rangeFilterPriceMax").value = "";
+        document.getElementById("rangeFilterPriceMinRes").value = "";
+        document.getElementById("rangeFilterPriceMaxRes").value = "";
+
     
         minPrice = undefined;
         maxPrice = undefined;
+        minPriceRes = undefined;
+        maxPriceRes = undefined;
 
         showProductsList(productsArray);
     }
     
-    function rangeFilterCount() {
-        const min = document.getElementById("rangeFilterPriceMin") ? document.getElementById("rangeFilterPriceMin").value : document.getElementById("rangeFilterPriceMinRes").value
-        const max = document.getElementById("rangeFilterPriceMax") ? document.getElementById("rangeFilterPriceMax").value : document.getElementById("rangeFilterPriceMaxRes").value
+    function rangeFilterPrice() {
+        const min = document.getElementById("rangeFilterPriceMin").value 
+        const max = document.getElementById("rangeFilterPriceMax").value
+        const minRes = document.getElementById("rangeFilterPriceMinRes").value
+        const maxRes = document.getElementById("rangeFilterPriceMaxRes").value
 
         minPrice = min
         maxPrice = max
-    
-        if ((minPrice != undefined) && (minPrice != "") && (parseInt(minPrice)) >= 0)
-            minPrice = parseInt(minPrice) 
-        else
-            minPrice = undefined
+        minPriceRes = minRes
+        maxPriceRes = maxRes
 
-        if ((maxPrice != undefined) && (maxPrice != "") && (parseInt(maxPrice)) >= 0)
+        if (((minPrice != undefined) && (minPrice != "") && (parseInt(minPrice)) >= 0) || 
+            ((minPriceRes != undefined) && (minPriceRes != "") && (parseInt(minPriceRes)) >= 0)) {
+
+            minPrice = parseInt(minPrice) 
+            minPriceRes = parseInt(minPriceRes)
+        }
+        else {
+            minPrice = undefined
+            minPriceRes = undefined
+        }
+
+        if (((maxPrice != undefined) && (maxPrice != "") && (parseInt(maxPrice)) >= 0) ||
+            ((maxPriceRes != undefined) && (maxPriceRes != "") && (parseInt(maxPriceRes)) >= 0)) {
+                
             maxPrice = parseInt(maxPrice)
-        else
+            maxPriceRes = parseInt(maxPriceRes)
+        }
+        else {
             maxPrice = undefined
+            maxPriceRes = undefined
+        }
 
         showProductsList(productsArray)
     }
@@ -68,13 +91,13 @@ document.addEventListener("DOMContentLoaded", async (e) => {
     document.getElementById("sortByPriceUp").addEventListener("click", sortByPriceUp)
     document.getElementById("sortByPriceDown").addEventListener("click", sortByPriceDown)
     document.getElementById("clearRangeFilter").addEventListener("click", clearRangeFilter)
-    document.getElementById("rangeFilterPrice").addEventListener("click", rangeFilterCount)
+    document.getElementById("rangeFilterPrice").addEventListener("click", rangeFilterPrice)
 
     document.getElementById("sortRelDescRes").addEventListener("click", sortRelDesc)
     document.getElementById("sortByPriceUpRes").addEventListener("click", sortByPriceUp)
     document.getElementById("sortByPriceDownRes").addEventListener("click", sortByPriceDown)
     document.getElementById("clearRangeFilterRes").addEventListener("click", clearRangeFilter)
-    document.getElementById("rangeFilterPriceRes").addEventListener("click", rangeFilterCount)
+    document.getElementById("rangeFilterPriceRes").addEventListener("click", rangeFilterPrice)
 
 
     //guarda la ubicación actual por si llega a ir a un lugar no permitido.
@@ -99,12 +122,14 @@ function changeColor(a, b, c) {
 function showProductsList(productsArray) {
     let htmlContentToAppend = "";
     if (!productsArray || productsArray.length === 0)
-        document.getElementById("product-subtitle").innerHTML = `<h4 class="mb-4 text-muted">No hay productos para la categoría <span class="text-dark">${productsArray.catName}</span></h4>`;
+        document.getElementById("product-subtitle").innerHTML = `<h4 class="mb-4 text-muted">No hay productos para la categoría <span class="text-dark">${cat_name}</span></h4>`;
     else {
-        document.getElementById("product-subtitle").innerHTML = `<h4 class="mb-4 text-muted">Verás aquí todos los productos de la categoría <span class="text-dark">${productsArray.catName}</span></h4>`;
+        document.getElementById("product-subtitle").innerHTML = `<h4 class="mb-4 text-muted">Verás aquí todos los productos de la categoría <span class="text-dark">${cat_name}</span></h4>`;
         productsArray.forEach(({id, image, description, name, currency, cost, soldCount, saleCost, discount}) => {
             if (((minPrice == undefined) || (minPrice != undefined && parseInt(soldCount) >= minPrice)) &&
-                ((maxPrice == undefined) || (maxPrice != undefined && parseInt(soldCount) <= maxPrice))) {
+                ((maxPrice == undefined) || (maxPrice != undefined && parseInt(soldCount) <= maxPrice)) ||
+                ((minPriceRes == undefined) || (minPriceRes != undefined && parseInt(soldCount) >= minPriceRes)) &&
+                ((maxPriceRes == undefined) || (maxPriceRes != undefined && parseInt(soldCount) <= maxPriceRes))) {
                 htmlContentToAppend += `
                 <div class="col-12 col-sm-6 col-md-6 col-lg-4">
                     <div class="card cursor-active h-100">
