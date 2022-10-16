@@ -60,3 +60,35 @@ function productInfo(id) {
 function buy(id) {
   console.log("compre " + id)
 }
+
+function showTopSaleProducts(array){
+  for(let i = 0; i < array.length; i++){
+    let product = array[i]
+    if (product.products.length > 0) {
+      document.getElementById("lstTopSale").innerHTML += `
+      <div class="mt-3">
+          <h2 class="accordion-header" id="btnCat-${i}">
+              <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCat-${i}" aria-expanded="false" aria-controls="collapseCat-${i}">
+                  <i class="fa-solid fa-arrow-down-from-line"></i> <span class="text-muted">${product.catName}</span>
+              </button>
+          </h2>
+          <div class="accordion" id="productCat-${i}">
+              <div id="collapseCat-${i}" class="accordion-collapse collapse" aria-labelledby="btnCat-${i}" data-bs-parent="#productCat-${i}">
+                  <div class="accordion-body d-lg-flex flex-lg-column text-muted pb-0">
+                      <div class="row" id="lstCat-${i}">
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      `
+      product.products.forEach(({id, name, soldCount}) => {
+        if (soldCount > 10) {
+          document.getElementById(`lstCat-${i}`).innerHTML += `
+          <a class="col-6 col-sm-4 col-md-12" onclick="productInfo(${id})">${name}</a>
+          `
+        }
+      })
+    }
+  }
+}

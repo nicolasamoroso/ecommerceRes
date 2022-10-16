@@ -312,23 +312,9 @@ searchBar.addEventListener("keyup", (e) => {
     }
 })
 
-
 function X() {
     var searchString = searchBar.value;
     if (searchString.length === 0) {
         showCategoriesList(currentCategoriesArray);
     }
-}
-
-function showTopSaleProducts() {
-    let topSaleProducts = []
-    newProductArray.forEach(({products}) => topSaleProducts.push(products.filter(product => product.soldCount > 5)))
-    topSaleProducts = topSaleProducts.flat()
-    topSaleProducts = topSaleProducts.sort((a, b) => b.soldCount - a.soldCount).slice(0, 10)
-
-    topSaleProducts.forEach(({id, name}) => {
-        document.getElementById("lstTopSale").innerHTML += `
-        <a class="col-6 col-sm-4 col-md-12" onclick="productInfo(${id})">${name}</a>
-        ` 
-    });
 }
