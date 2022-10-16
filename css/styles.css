@@ -740,3 +740,75 @@ input[type=number] {
 .cardHover:focus {
   background-color: rgb(233, 236, 239);
 }
+
+/* INICIO PRODUCT-INFO */
+
+.carousel-control-next-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+}
+
+.carousel-control-prev-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+}
+
+.indicators {
+  width: 100%;
+  max-width: 100px;
+  opacity: 0.5;
+}
+
+.indicators:hover {
+  opacity: 1;
+}
+
+.active .indicators {
+  /* smooth transition */
+  -webkit-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  opacity: 1;
+  /* border: 1px solid black; */
+}
+
+.btn:focus {
+  box-shadow: none;
+}
+
+.c-indicators button {
+  padding: 0 5px;
+}
+
+textarea {
+  resize: none;
+}
+
+.form-control:focus {
+  border-color: rgb(83, 83, 83);
+  box-shadow: none;
+}
+
+.stars {
+  user-select: none;
+}
+
+button.btn.btn-primary.ms-3 {
+  height: 40px;
+  margin: auto;
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .col-lg-8 {
+    -webkit-box-flex: 0;
+            -ms-flex: 0 0 auto;
+                flex: 0 0 auto;
+    width: 65%;
+  }
+
+  .col-lg-4 {
+    -webkit-box-flex: 0;
+            -ms-flex: 0 0 auto;
+                flex: 0 0 auto;
+    width: 35%;
+  }
+}
+/* FIN PRODUCT-INFO */
