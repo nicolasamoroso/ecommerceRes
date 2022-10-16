@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", async (e) =>{
     }
 
     showCategoriesList(currentCategoriesArray)
-    showTopSaleProducts()
+    showTopSaleProducts(newProductArray)
     
     function sortAsc() {
         sortAndShowCategories(ORDER_ASC_BY_NAME);

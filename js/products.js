@@ -10,6 +10,9 @@ let maxPrice = undefined;
 document.addEventListener("DOMContentLoaded", async (e) => {
 
     productsArray = JSON.parse(localStorage.getItem("newProductArray"));
+
+    showTopSaleProducts(productsArray)
+
     cat_name = parseInt(localStorage.catID)
 
     productsArray = productsArray.filter(product => product.catID === parseInt(localStorage.catID))[0].products

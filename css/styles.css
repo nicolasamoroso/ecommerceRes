@@ -691,8 +691,6 @@ input[type=number] {
 /* INICIO PRODUCT */
 
 .buyBtn {
-  /* right: 10px;
-  padding: .25rem !important; */
   bottom: 50px;
   right: 10px;
 }
@@ -701,13 +699,10 @@ input[type=number] {
   margin-left: 0;
   margin-right: 0;
   padding-right: 0;
+  font-size: 1.1rem;
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
-  .medium {
-    font-size: 1.2rem;
-  }
-
   .col-lg-4 {
     -webkit-box-flex: 0;
             -ms-flex: 0 0 auto;
@@ -727,7 +722,7 @@ input[type=number] {
   }
 
   .buyBtn {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 }
 
@@ -797,14 +792,14 @@ button.btn.btn-primary.ms-3 {
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
-  .col-lg-8 {
+  .col-lg-8.p-info {
     -webkit-box-flex: 0;
             -ms-flex: 0 0 auto;
                 flex: 0 0 auto;
     width: 65%;
   }
 
-  .col-lg-4 {
+  .col-lg-4.p-info {
     -webkit-box-flex: 0;
             -ms-flex: 0 0 auto;
                 flex: 0 0 auto;
