@@ -630,7 +630,7 @@ input.form-control:focus {
 }
 
 .row-gap-2 {
-  row-gap: 10px;
+  row-gap: 20px;
 }
 
 .bg-sort{
@@ -693,6 +693,7 @@ input[type=number] {
 .buyBtn {
   bottom: 50px;
   right: 10px;
+  width: 100px;
 }
 
 .medium {
