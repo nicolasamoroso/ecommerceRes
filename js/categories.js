@@ -135,7 +135,8 @@ document.addEventListener("DOMContentLoaded", async (e) =>{
                     const productArray = product.data
                     productArray.products.forEach(element => {
                         element.stock = element.currency === "USD" ? Math.round(40000/element.cost) + 1 : Math.round(40000/element.cost * 23) + 1
-                        element.discount = Math.round(element.cost/1000) > 100 ? 25 : Math.round(element.cost/1000)
+                        let discount = Math.round(element.cost/1000) > 100 ? 25 : Math.round(element.cost/1000)
+                        element.discount = element.soldCount < 15 ? discount : 0
                         element.saleCost = Math.round(element.cost*100/(100-element.discount))
                     })
                     newProductArray.push(productArray)

@@ -754,7 +754,7 @@ input[type=number] {
 }
 
 .indicators:hover {
-  opacity: 1;
+  opacity: .8;
 }
 
 .active .indicators {
@@ -806,5 +806,15 @@ button.btn.btn-primary.ms-3 {
                 flex: 0 0 auto;
     width: 35%;
   }
+}
+
+.redirectOnTop {
+  text-decoration: none;
+  color: #000000;
+}
+
+.redirectOnTop:hover {
+  text-decoration: underline;
+  color: #181818;
 }
 /* FIN PRODUCT-INFO */

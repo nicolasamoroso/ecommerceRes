@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded", async (e) => {
 
     showProductsList(productsArray)
 
+    document.getElementById("categoryName").innerText = cat_name;
+
     function sortRelDesc() {
         sortAndShowProducts(ORDER_DESC_BY_REL);
         changeColor("desc", "price-up", "price-down");
