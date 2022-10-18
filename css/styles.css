@@ -529,6 +529,8 @@ footer {
   }
 
   .row.flex-nowrap.overflow-auto.catImgName {
+    display: -webkit-box;
+    display: -ms-flexbox;
     gap: 20px;
   }
 
@@ -630,6 +632,8 @@ input.form-control:focus {
 }
 
 .row-gap-2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
   row-gap: 20px;
 }
 
@@ -818,11 +822,3 @@ button.btn.btn-primary.ms-3 {
   color: #181818;
 }
 /* FIN PRODUCT-INFO */
-
-_::-webkit-full-page-media, _:future, :root .safari_only {
-
-  color:#0000FF; 
-  background-color:#0000FF; 
-  width: 100px;
-  height: 100px;
-}
