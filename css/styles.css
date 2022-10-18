@@ -819,4 +819,4 @@ button.btn.btn-primary.ms-3 {
 }
 /* FIN PRODUCT-INFO */
 
-.row:before, .row:after{ display: block; } 
+.row:before, .row:after{ display: flex !important; } 
