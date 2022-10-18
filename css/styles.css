@@ -818,3 +818,10 @@ button.btn.btn-primary.ms-3 {
   color: #181818;
 }
 /* FIN PRODUCT-INFO */
+
+_::-webkit-full-page-media, _:future, :root .safari_only {
+
+  color:#0000FF; 
+  background-color:#0000FF; 
+
+}
