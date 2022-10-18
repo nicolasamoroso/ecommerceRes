@@ -83,7 +83,7 @@ function showCategoriesList(currentCategoriesArray){
                 <div class="col-12 col-sm-6 col-md-6 col-lg-4 mt-1" onclick="setCatID(${id})">
                     <div class="card cursor-active h-100 cardHover">
                         <div class="card-header p-0 m-auto">
-                            <img src="${imgSrc}" alt="${description}" class="img-fluid">
+                            <img src="${imgSrc}" alt="${description}" class="img-fluid imgCat">
                         </div>
                         <div class="card-body">
                             <h4>${name}</h4>

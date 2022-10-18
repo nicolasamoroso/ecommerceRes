@@ -138,7 +138,7 @@ function showProductsList(productsArray) {
                         <button class="col-4 col-xs-3 btn btn-success position-absolute buyBtn" onclick="buy(${id})">Comprar</button>
                         <div class="card-header p-0 m-auto" onclick="productInfo(${id})">
                             <span class="badge bg-danger position-absolute prodDiscount">${discount === 0 ? "" : '-' + discount + '%'}</span>
-                            <img src="${image}" alt="${description}" class="img-fluid">
+                            <img src="${image}" alt="${description}" class="img-fluid imgProd">
                         </div>
                         <div class="card-body d-flex flex-column justify-content-between cardHover" onclick="productInfo(${id})">
                             <div>
