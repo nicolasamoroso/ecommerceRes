@@ -818,15 +818,3 @@ button.btn.btn-primary.ms-3 {
   color: #181818;
 }
 /* FIN PRODUCT-INFO */
-
-.d-flex {
-  display: -webkit-box !important;
-  display: -ms-flexbox !important;
-  display: flex !important;
-}
-
-.d-flex:before, .d-flex:after{ 
-  display: -webkit-box !important;
-  display: -ms-flexbox !important;
-  display: flex !important;
-} 
