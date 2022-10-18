@@ -819,4 +819,8 @@ button.btn.btn-primary.ms-3 {
 }
 /* FIN PRODUCT-INFO */
 
-.row:before, .row:after{ display: flex !important; } 
+.row:before, .row:after{ 
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+} 
