@@ -823,5 +823,6 @@ _::-webkit-full-page-media, _:future, :root .safari_only {
 
   color:#0000FF; 
   background-color:#0000FF; 
-
+  width: 100px;
+  height: 100px;
 }
