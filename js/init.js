@@ -8,7 +8,8 @@ const CART_BUY_URL = "https://japceibal.github.io/emercado-api/cart/buy.json";
 const EXT_TYPE = ".json";
 
 const LIST_URL = PRODUCTS_URL + localStorage.catID + EXT_TYPE;
-const P_INFO_URL = PRODUCT_INFO_URL + localStorage.getItem("product-info") + EXT_TYPE;
+const id = localStorage.getItem("product-info")
+const P_INFO_URL = PRODUCT_INFO_URL + id + EXT_TYPE;
 const P_INFO_COMMENTS_URL = PRODUCT_INFO_COMMENTS_URL + localStorage.getItem("product-info") + EXT_TYPE;
 
 let showSpinner = function(){
@@ -98,13 +99,13 @@ function showTopSaleProducts(array){
 
 function cart(value, pinfo) {
   let newProduct = { 
-      name: pinfo.name,
-      count: value,
-      unitCost: pinfo.cost,
-      currency: pinfo.currency,
-      image: pinfo.image ?? pinfo.images[0],
-      id: pinfo.id,
-      stock: pinfo.stock
+    name: pinfo.name,
+    count: value,
+    unitCost: pinfo.cost,
+    currency: pinfo.currency,
+    image: pinfo.image ?? pinfo.images[0],
+    id: pinfo.id,
+    stock: pinfo.stock
   }
 
   let cart = localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : []
@@ -112,17 +113,17 @@ function cart(value, pinfo) {
   let same_product = cart.find(product => product.id === newProduct.id)
 
   if (same_product) {
-      if (same_product.count + newProduct.count <= same_product.stock) {
-          same_product.count += newProduct.count
-          same_product.stock = newProduct.stock
-      }
-      else {
-          console.log("valor mayor al stock")
-          return false
-      }
+    if (same_product.count + newProduct.count <= same_product.stock) {
+      same_product.count += newProduct.count
+      same_product.stock = newProduct.stock
+    }
+    else {
+      console.log("valor mayor al stock")
+      return false
+    }
   }
   else {
-      cart.push(newProduct)
+    cart.push(newProduct)
   }
 
   localStorage.setItem("cart", JSON.stringify(cart))
