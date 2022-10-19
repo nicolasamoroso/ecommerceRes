@@ -1,10 +1,10 @@
-let id = 0
+let productInfo = {}
+let count_value = 1
+
 document.addEventListener("DOMContentLoaded", async () =>{
-    let productInfo = {}
     const productInfoArray = await getJSONData(P_INFO_URL);
     if (productInfoArray.status === "ok") {
         productInfo = productInfoArray.data;
-        console.log(productInfo);
         // hacer:
         //  el stock puede variar si ya se ha comprado antes
         //  utilizar localstorage para hacerlo
@@ -15,28 +15,27 @@ document.addEventListener("DOMContentLoaded", async () =>{
         productInfo.saleCost = Math.round(productInfo.cost*100/(100-productInfo.discount))
 
         if (!localStorage.getItem(`comments-${productInfo.id}`)) {
-            console.log("aaaa")
             const productInfoComments = await getJSONData(P_INFO_COMMENTS_URL);
             if (productInfoComments.status === "ok") {
                 productInfo.comments = productInfoComments.data;
+                
+                if (productInfo.comments.length > 0) {
+                    productInfo.comments.forEach(comment => {
+                        comment.img = "img/img_perfil.png"
+                    })
+        
+                    productInfo.comments.sort((a, b) => {
+                        return new Date(b.dateTime) - new Date(a.dateTime);
+                    });
     
-                productInfo.comments.forEach(comment => {
-                    comment.img = "img/img_perfil.png"
-                })
-    
-                productInfo.comments.sort((a, b) => {
-                    return new Date(b.dateTime) - new Date(a.dateTime);
-                });
-
-                localStorage.setItem(`comments-${productInfo.id}`, JSON.stringify(productInfo.comments))
+                    localStorage.setItem(`comments-${productInfo.id}`, JSON.stringify(productInfo.comments))
+                }
             }
         }
         else {
             productInfo.comments = JSON.parse(localStorage.getItem(`comments-${productInfo.id}`))
         }
     }
-
-    id = productInfo.id
 
     document.getElementById("categoryName").innerText = productInfo.category
     document.getElementById("productName").innerText = productInfo.name
@@ -74,17 +73,15 @@ addCart
 acceptedCreditCardsRes
 acceptedCreditCards
 
-rating
-comments
-profilePic_Comments
 */
 
 function addResume(pInfo) {
-    const {name, cost, category, score, stock, currency, soldCount, discount, saleCost} = pInfo
+    const {name, cost, category, stock, currency, soldCount, discount, saleCost} = pInfo
 
     document.getElementById("nameRes").innerHTML = `
     <small class="text-muted mb-0 d-md-none">${soldCount} vendidos</small>
     <h3 class="d-md-none mb-3">${name}</h3>
+    <hr>
     `
 
     document.getElementById("resumeRes").innerHTML = `
@@ -96,9 +93,26 @@ function addResume(pInfo) {
         <h5 class="card-text">${category}</h5>
         <h6 class="card-text">Puntuación</h6>
         <h6 class="card-text fw-bold">${stock ? 'Stock disponible' : 'Stock no disponible'}</h6>
-        <h6 class="card-text">Cantidad: <input type="number" style="width: 30px;" value="1"> (${stock > 1 ? stock + " disponibles" : stock + " disponible"})</h6>
+        <h6 class="card-text">
+            <div class="dropdown d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <span class="me-2">Cantidad:</span>
+                    <button class="btn btn-outline-secondary dropdown-toggle type="button" id="countDropdownRes" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                        1
+                    </button>
+                    <small class="ms-2">(${stock > 1 ? stock + " disponibles" : stock + " disponible"})</small>
+                    <ul class="dropdown-menu" aria-labelledby="countDropdownRes" id="lstCountRes">
+                        
+                    </ul>
+                </div>
+            </div>
+        </h6>
     </div>
-    `
+    <div class="mt-3">
+        <button class="btn btn-primary w-100 fw-bold" onclick="buy()">Comprar ahora</button>
+        <button class="btn btn-outline-primary w-100 mt-2 fw-bold" onclick="addToCart()">Agregar al carrito</button>
+    </div>
+    `  
 
     document.getElementById("resume").innerHTML = `
     <h3 class="d-none d-md-block mb-3">${name}</h3>
@@ -111,9 +125,123 @@ function addResume(pInfo) {
         <h6 class="card-text">Puntuación</h6>
         <h6 class="card-text">${soldCount} vendidos</h6>
         <h6 class="card-text fw-bold">${stock ? 'Stock disponible' : 'Stock no disponible'}</h6>
-        <h6 class="card-text">Cantidad: <input type="number" style="width: 30px;" value="1"> (${stock > 1 ? stock + " disponibles" : stock + " disponible"})</h6>
+        <h6 class="card-text">
+            <div class="dropdown d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <span class="me-2">Cantidad:</span>
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="countDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                        1
+                    </button>
+                    <small class="ms-2">(${stock > 1 ? stock + " disponibles" : stock + " disponible"})</small>
+                    <ul class="dropdown-menu" aria-labelledby="countDropdown" id="lstCount">
+                        
+                    </ul>
+                </div>
+            </div>
+        </h6>
+    </div>
+    <div class="mt-2">
+        <button class="btn btn-primary w-100 fw-bold" onclick="buy()">Comprar ahora</button>
+        <button class="btn btn-outline-primary w-100 mt-2 fw-bold" onclick="addToCart()">Agregar al carrito</button>
     </div>
     `
+
+    let length = stock > 5 ? 5 : stock
+    let i = 1
+    let htmlContentToAppend = ""
+    for (i; i <= length; i++) {
+        htmlContentToAppend += `
+        <li><a class="dropdown-item cursor-active" onclick="addToCount(${i})">${i}</a></li>
+        `
+    }
+    document.getElementById("lstCountRes").innerHTML = htmlContentToAppend
+    document.getElementById("lstCount").innerHTML = htmlContentToAppend
+
+    if (stock > 5) {
+        document.getElementById("lstCountRes").innerHTML += `
+        <li><div class="dropdown-item cursor-active" onclick="addInput(${stock})">Más de ${i-1} unidades</div></li>
+        <li id="countInputRes"></li>
+        `
+        document.getElementById("lstCount").innerHTML += `
+        <li><div class="dropdown-item cursor-active" onclick="addInput(${stock})">Más de ${i-1} unidades</div></li>
+        <li id="countInput"></li>
+        `
+    }
+}
+
+function addToCount(i) {
+    document.getElementById("countDropdown").innerText = i
+    document.getElementById("countDropdownRes").innerText = i
+    document.getElementById("countInputRes").innerText = ""
+    document.getElementById("countInput").innerText = ""
+    count_value = i
+    
+}
+
+function addInput(stock) {
+    document.getElementById("countInputRes").innerHTML = `
+    <a class="dropdown-item cursor-active"><input type="number" class="form-control" id="inputCountRes" min="1" max="${stock}" value="5" style="width: 100px;"></a>
+    <small class="m-2 text-danger d-none" id="stockInsuficienteRes">No hay stock suficiente</small>
+    `
+    document.getElementById("countInput").innerHTML = `
+    <a class="dropdown-item cursor-active"><input type="number" class="form-control" id="inputCount" min="1" max="${stock}" value="5" style="width: 100px;"></a>
+    <small class="m-2 text-danger d-none" id="stockInsuficiente">No hay stock suficiente</small>
+    `
+    
+    const inputCount = document.getElementById("inputCount")
+    const inputCountRes = document.getElementById("inputCountRes")
+
+    document.getElementById("countDropdown").innerText = inputCount.value
+    document.getElementById("countDropdownRes").innerText = inputCountRes.value
+    count_value = inputCount ? parseInt(inputCount.value) : parseInt(inputCountRes.value)
+    
+    inputCount.addEventListener("keyup", function(e) {
+        let i = parseInt(e.target.value)
+        if (i) {
+            if (i < 0) {
+                document.getElementById("inputCount").value = 1
+            }
+            else if (i > stock) {
+                document.getElementById("stockInsuficiente").classList.remove("d-none")
+            }
+            else {
+                if (!document.getElementById("stockInsuficiente").classList.contains("d-none")) {
+                    document.getElementById("stockInsuficiente").classList.add("d-none")
+                }
+                document.getElementById("countDropdown").innerText = i
+            }
+        }
+        else {
+            document.getElementById("stockInsuficiente").classList.add("d-none")
+            document.getElementById("countDropdown").innerText = 1
+        }
+        count_value = i
+        
+    })
+
+    document.getElementById("inputCountRes").addEventListener("keyup", function(e) {
+        let i = parseInt(e.target.value)
+        if (i) {
+            if (i < 0) {
+                document.getElementById("inputCountRes").value = 1
+            }
+            else if (i > stock) {
+                document.getElementById("stockInsuficienteRes").classList.remove("d-none")
+            }
+            else {
+                if (!document.getElementById("stockInsuficienteRes").classList.contains("d-none")) {
+                    document.getElementById("stockInsuficienteRes").classList.add("d-none")
+                }
+                document.getElementById("countDropdownRes").innerText = i
+            }
+        }
+        else {
+            document.getElementById("stockInsuficienteRes").classList.add("d-none")
+            document.getElementById("countDropdownRes").innerText = 1
+        }
+        count_value = i
+        
+    })
 }
 
 function showImagesGallery(images) {
@@ -143,15 +271,19 @@ function showImagesGallery(images) {
                 const imageSrc = images[i];
                 if (i === 0) {
                     htmlContentToAppend += `
-                    <button type="button" data-bs-target="#carouselProductIndicators" onclick="setCarouselActiveButton(${i})" data-bs-slide-to="${i}" class="active btn" aria-current="true" aria-label="Slide ${i+1}">
-                        <img src="${imageSrc}" class="indicators">
+                    <button type="button" data-bs-target="#carouselProductIndicators" 
+                        onclick="setCarouselActiveButton(${i})" data-bs-slide-to="${i}" 
+                        class="active btn" aria-current="true" aria-label="Slide ${i+1}">
+                            <img src="${imageSrc}" class="indicators">
                     </button>
                     `
                 }
                 else {
                     htmlContentToAppend += `
-                    <button type="button" data-bs-target="#carouselProductIndicators" onclick="setCarouselActiveButton(${i})" data-bs-slide-to="${i}" class="btn" aria-current="true" aria-label="Slide ${i+1}">
-                        <img src="${imageSrc}" class="indicators">
+                    <button type="button" data-bs-target="#carouselProductIndicators" 
+                        onclick="setCarouselActiveButton(${i})" data-bs-slide-to="${i}" 
+                        class="btn" aria-current="true" aria-label="Slide ${i+1}">
+                            <img src="${imageSrc}" class="indicators">
                     </button>
                     `
                 }
@@ -171,14 +303,14 @@ function showRelatedProducts(relatedProducts) {
     for (let i = 0; i < relatedProducts.length; i++) {
         let relatedProduct = relatedProducts[i];
         htmlContentToAppend += `
-        <div class="card cursor-active cardHover mt-4">
+        <div class="card cursor-active cardHover mt-4" onclick="product_info(${relatedProduct.id})">
             <img class="bd-placeholder-img card-img-top" src="${relatedProduct.image}">
             <h5 class="m-3 text-center">${relatedProduct.name}</h5>
         </div>
         `
         htmlContentToAppend2 += `
         <div class="col-12 col-sm-6">
-            <div class="card cursor-active cardHover mt-4">
+            <div class="card cursor-active cardHover mt-4" onclick="product_info(${relatedProduct.id})">
                 <img class="bd-placeholder-img card-img-top" src="${relatedProduct.image}">
                 <h4 class="m-3 text-center">${relatedProduct.name}</h4>
             </div>
@@ -209,6 +341,9 @@ function changeDayFormat(date) {
 }
 
 function showComments(comments) {
+    if (comments.length < 1) {
+        document.getElementById("commentsTitle").innerText = ""
+    } 
     let htmlContentToAppend = "";
     for (let i = 0; i < comments.length; i++) {
         let comment = comments[i];
@@ -216,7 +351,7 @@ function showComments(comments) {
         <hr>
         <div class="d-flex justify-content-between">
         <div class="d-flex gap-2">
-            <img id="profilePic_Comments" class="rounded-circle" src="${comment.img}" style="width: 20px; height: 20px;">
+            <img class="rounded-circle" src="${comment.img}" style="width: 20px; height: 20px;">
             <h6>${comment.user}</h6>
         </div>
         <small class="text-muted">${changeDayFormat(new Date(comment.dateTime))}</small>
@@ -276,9 +411,8 @@ function formatDate(date) {
     );
 }
   
-  
-
 document.getElementById("commentBtn").addEventListener("click", function () {
+    let id = productInfo.id
     const comment = document.getElementById("textAreaComment").value
     document.getElementById("textAreaComment").value = ""
     if(comment !== "") {
@@ -293,3 +427,20 @@ document.getElementById("commentBtn").addEventListener("click", function () {
         showComments(commentsArray)
     }
 })
+
+function addToCart() {
+    const value = count_value
+    if (value > productInfo.stock) {
+        console.log("valor mayor al stock")
+        return false
+    }
+    return cart(value, productInfo)
+}
+
+function buy() {
+    let added = addToCart()
+    if (added) 
+        window.location = "cart.html"
+    else 
+        console.log("valor mayor al stock")   
+}

@@ -133,14 +133,14 @@ function showProductsList(productsArray) {
                 ((minPriceRes == undefined) || (minPriceRes != undefined && parseInt(soldCount) >= minPriceRes)) &&
                 ((maxPriceRes == undefined) || (maxPriceRes != undefined && parseInt(soldCount) <= maxPriceRes))) {
                 htmlContentToAppend += `
-                <div class="col-12 col-sm-6 col-md-6 col-lg- mt-1">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4 mt-1">
                     <div class="card cursor-active h-100">
-                        <button class="col-4 col-xs-3 btn btn-success position-absolute buyBtn" onclick="buy(${id})">Comprar</button>
-                        <div class="card-header p-0 m-auto" onclick="productInfo(${id})">
+                        <button class="col-4 col-xs-3 btn btn-success position-absolute buyBtn" onclick="cartBtn(${id}, cat_name)">Comprar</button>
+                        <div class="card-header p-0 m-auto" onclick="product_info(${id})">
                             <span class="badge bg-danger position-absolute prodDiscount">${discount === 0 ? "" : '-' + discount + '%'}</span>
                             <img src="${image}" alt="${description}" class="img-fluid imgProd">
                         </div>
-                        <div class="card-body d-flex flex-column justify-content-between cardHover" onclick="productInfo(${id})">
+                        <div class="card-body d-flex flex-column justify-content-between cardHover" onclick="product_info(${id})">
                             <div>
                                 <h4>${name}</h4>
                                 <p>${description}</p>
@@ -150,7 +150,7 @@ function showProductsList(productsArray) {
                                 <h5 class="col-7 col-xs-9 fw-bold medium">${currency} ${cost}</h5>
                             </div>
                         </div>
-                        <div class="card-footer" onclick="productInfo(${id})">
+                        <div class="card-footer" onclick="product_info(${id})">
                             <small class="text-muted">${soldCount} vendidos</small> 
                         </div>
                     </div>

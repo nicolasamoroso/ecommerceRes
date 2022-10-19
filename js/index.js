@@ -56,7 +56,7 @@ function showSaleProducts() {
 
     salesProducts.forEach(({name, cost, currency, image, saleCost, discount, stock, id}) => {
         document.getElementById("sales").innerHTML += `
-        <div class="col-6 col-md-4 col-lg-3" onclick="productInfo(${id})">
+        <div class="col-6 col-md-4 col-lg-3" onclick="product_info(${id})">
             <div class="mb-4 cursor-active cardSales cardHover">
                 <img class="card-img-top" src="${image}">
                 <div class="card-body">
@@ -82,7 +82,7 @@ function showTopSales() {
 
     topSales.forEach(({name, cost, currency, soldCount, image, id}) => {
         document.getElementById("topSales").innerHTML += `
-        <div class="col-6 col-md-4 col-lg-3" onclick="productInfo(${id})">
+        <div class="col-6 col-md-4 col-lg-3" onclick="product_info(${id})">
             <div class="mb-4 cursor-active cardSales cardHover">
                 <img class="card-img-top" src="${image}">
                 <div class="card-body">

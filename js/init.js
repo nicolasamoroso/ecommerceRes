@@ -54,7 +54,8 @@ function setCatID(id) {
   window.location = "products.html"
 }
 
-function productInfo(id) {
+function product_info(id) {
+  if (!id) return
   localStorage.setItem("product-info", id);
   window.location.href = "product-info.html"    
 }
@@ -87,10 +88,55 @@ function showTopSaleProducts(array){
       product.products.forEach(({id, name, soldCount}) => {
         if (soldCount > 10) {
           document.getElementById(`lstCat-${i}`).innerHTML += `
-          <a class="col-6 col-sm-4 col-md-12" onclick="productInfo(${id})">${name}</a>
+          <a class="col-6 col-sm-4 col-md-12" onclick="product_info(${id})">${name}</a>
           `
         }
       })
     }
   }
+}
+
+function cart(value, pinfo) {
+  let newProduct = { 
+      name: pinfo.name,
+      count: value,
+      unitCost: pinfo.cost,
+      currency: pinfo.currency,
+      image: pinfo.image ?? pinfo.images[0],
+      id: pinfo.id,
+      stock: pinfo.stock
+  }
+
+  let cart = localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : []
+
+  let same_product = cart.find(product => product.id === newProduct.id)
+
+  if (same_product) {
+      if (same_product.count + newProduct.count <= same_product.stock) {
+          same_product.count += newProduct.count
+          same_product.stock = newProduct.stock
+      }
+      else {
+          console.log("valor mayor al stock")
+          return false
+      }
+  }
+  else {
+      cart.push(newProduct)
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart))
+  return true
+}
+
+function cartBtn(id, catName) {
+  let array = JSON.parse(localStorage.getItem("newProductArray"))
+  let cat = array.find(cat => cat.catName === catName).products
+  let pinfo = cat.find(prod => prod.id === id)
+
+  let added = cart(1, pinfo)
+  if (added) 
+    window.location = "cart.html"
+  else 
+    console.log("valor mayor al stock")
 }
