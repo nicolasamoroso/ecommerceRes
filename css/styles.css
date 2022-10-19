@@ -851,3 +851,85 @@ button.btn.btn-primary.ms-3 {
   color: #ffffff;
 }
 /* FIN PRODUCT-INFO */
+
+/* INICIO CARRITO */
+/* .minus {
+  font-size: 10px;
+  border:#b3b3b3 1px solid;
+  border-right: none;
+  border-radius: 2px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  padding-left: 12px;
+  padding-right: 12px;
+  height: auto;
+}
+
+.plus {
+  font-size: 10px;
+  border:#b3b3b3 1px solid;
+  border-left: none;
+  border-radius: 2px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding-left: 12px;
+  padding-right: 12px;
+  height: auto;
+}
+
+.cart_counter {
+  border-top: #b3b3b3 1px solid;
+  border-bottom: #b3b3b3 1px solid;
+  font-size: 10px;
+}
+
+.cartUnitCost {
+  font-size: 12px;
+} */
+
+.prodImg {
+	max-width: 30%;
+}
+
+.counter {
+	color: grey;
+	padding: 0 5px;
+}
+
+.countGroup {
+	border: 1px solid grey;
+	border-radius: 5px;
+}
+
+.controlGroupMin {
+	color: grey;
+	border: none;
+	background-color: transparent;
+	min-width: 30px;
+}
+
+.controlGroupPlus {
+	color: grey;
+	border: none;
+	background-color: transparent;
+	min-width: 30px;
+}
+
+.controlGroupMin:hover {
+	border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+	background-color:rgba(217, 217, 217, 0.235);
+}
+
+.controlGroupPlus:hover {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+	background-color:rgba(217, 217, 217, 0.235);
+}
+
+.cartList {
+  flex-direction: row;
+  gap: 10px;
+}
+
+/* FIN CARRITO */

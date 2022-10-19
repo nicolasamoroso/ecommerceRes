@@ -6,21 +6,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>eMercado - Todo lo que busques está aquí</title>
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/font-awesome.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
+
+  <script src="https://kit.fontawesome.com/95b02ed607.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-1">
-    <div class="container">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid container-lg mt-1">
+      <a class="navbar-brand" href="index.html"><img src="img/logo.png" class="imgLogo"></a>
+      <button class="navToggler d-lg-none" id="btnBurger" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navBarContent" aria-controls="navBarContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <div></div>
+        <div></div>
+        <div></div>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav w-100 justify-content-between">
-          <li class="nav-item">
+      <div class="collapse navbar-collapse" id="navBarContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex gap-lg-4 mt-lg-0 mt-3">
+          <li class="nav-item d-lg-none">
+            <a class="nav-link" href="my-profile.html">
+              <img src="img/img_perfil.png" alt="user" class="img-fluid rounded-circle" width="25">
+              <span id="username">username</span>
+            </a>
+          </li>
+          <hr class="m-0 text-muted d-lg-none">
+          <li class="nav-item d-lg-none">
             <a class="nav-link" href="index.html">Inicio</a>
           </li>
           <li class="nav-item">
@@ -29,27 +43,136 @@
           <li class="nav-item">
             <a class="nav-link" href="sell.html">Vender</a>
           </li>
+          <li class="nav-item d-lg-none">
+            <a class="nav-link" href="cart.html">Carrito</a>
+          </li>
           <li class="nav-item">
+            <a class="nav-link" href="help.html">Ayuda</a>
+          </li>
+          <hr class="m-0 text-muted d-lg-none">
+          <li class="nav-item d-lg-none">
+            <a class="nav-link text-danger" href="index.html">Cerrar sesión</a>
           </li>
         </ul>
+        <div class="d-flex gap-lg-3">
+          <ul class="navbar-nav mb-lg-0 d-none d-lg-block">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="img/img_perfil.png" alt="user" class="img-fluid rounded-circle" width="25">
+                <span id="username">username</span>
+              </a>
+              <ul class="dropdown-menu bg-dark dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="my-profile.html">Perfil</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item text-danger" href="login.html">Cerrar Sesión</a></li>
+              </ul>
+            </li>
+          </ul>
+          <div class="position-relative d-none d-lg-block">
+            <a href="cart.html" class="m-auto">
+              <i class="fa-solid fa-cart-shopping"></i><span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">9 <span
+                  class="visually-hidden"></span></span>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
   <main>
-    <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+    <div class="container-fluid container-lg">
+      <div class="mt-4 mb-3">
+        <div class="d-flex h6">
+          <a href="index.html" class="redirectOnTop">Inicio</a>
+          <span class="mx-2">></span>
+          <span class="text-muted">Carrito de compras</span>
+        </div>
+      </div>
+
+      <h1 class="text-center mb-5">Carrito</h1>
+
+      <div class="row gap-3">
+        <div class="col">
+          <div class="card p-2 cartList align-items-center">
+            <div class="prodImg">
+              <img src="img/car1.jpg" alt="producto" class="img-fluid rounded">
+            </div>
+            <div class="flex-column w-100">
+              <div class="d-flex justify-content-between">
+                <h6 class="m-0">Producto 1</h6>
+                <small class="fw-bold">USD 9999999</small>
+              </div>
+              <small class="text-muted">USD 9999999</small>
+              <div class="d-flex justify-content-between">
+                <div class="countGroup my-auto d-flex align-items-center">
+                  <button class="controlGroupMin d-flex align-items-center justify-content-center" id="cart-decrease">-</button>
+                  <label class="counter">1</label>
+                  <button class="controlGroupPlus d-flex align-items-center justify-content-center" id="cart-increase">+</button>
+                </div>
+                <a href="">Eliminar</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </main>
-  <footer class="text-muted">
-    <div class="container">
-      <p class="float-end">
-        <a href="#">Volver arriba</a>
-      </p>
-      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a Programar</a> -
+  <footer class="mt-5">
+    <hr>
+    <div class="container-fluid container-lg">
+      <div class="row mb-3">
+        <div class="col-6 col-md-4 text-muted">
+          <h6 class="text-dark">Categorias</h6>
+          <div class="px-2 preFooterList">
+            <ul class="list-unstyled">
+              <li><a href="">Autos</a></li>
+              <li><a href="">Juguetes</a></li>
+              <li><a href="">Muebles</a></li>
+              <li><a href="">Herramientas</a></li>
+              <li><a href="">Computadoras</a></li>
+              <li><a href="">Vestimenta</a></li>
+              <li><a href="">Electrodomésticos</a></li>
+              <li><a href="">Deporte</a></li>
+              <li><a href="">Celulares</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 text-muted px-0 px-md-3">
+          <h6 class="text-dark">Marcas populares</h6>
+          <div class="px-2 preFooterList">
+            <ul class="list-unstyled">
+              <li><a href="">Chevrolet</a></li>
+              <li><a href="">Suzuki</a></li>
+              <li><a href="">Buggatti</a></li>
+              <li><a href="">Samsung</a></li>
+              <li><a href="">Apple</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 text-muted mt-3 mt-md-0">
+          <h6 class="text-dark">Información útil</h6>
+          <div class="px-2 preFooterList">
+            <ul class="list-unstyled">
+              <li><a href="">Nosotros</a></li>
+              <li><a href="">Blog</a></li>
+              <li><a href="">Contacto</a></li>
+              <li><a href="">FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <p class="mb-0 text-muted">Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/"
+          target="_blank">Jovenes a Programar</a> -
         2022</p>
-      <p>Clickea <a target="_blank" href="Letra.pdf">aquí</a> para descargar la letra del obligatorio.</p>
+      <div class="d-flex justify-content-between">
+        <p class="text-muted">Clickea <a target="_blank" href="Letra.pdf">aquí</a> para descargar la letra del
+          obligatorio.</p>
+        <a href="#">Volver arriba</a>
+      </div>
     </div>
   </footer>
   <div id="spinner-wrapper">
