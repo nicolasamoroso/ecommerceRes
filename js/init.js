@@ -7,10 +7,13 @@ const CART_INFO_URL = "https://japceibal.github.io/emercado-api/user_cart/";
 const CART_BUY_URL = "https://japceibal.github.io/emercado-api/cart/buy.json";
 const EXT_TYPE = ".json";
 
+const idUser1 = 25801
+
 const LIST_URL = PRODUCTS_URL + localStorage.catID + EXT_TYPE;
 const id = localStorage.getItem("product-info")
 const P_INFO_URL = PRODUCT_INFO_URL + id + EXT_TYPE;
 const P_INFO_COMMENTS_URL = PRODUCT_INFO_COMMENTS_URL + localStorage.getItem("product-info") + EXT_TYPE;
+const C_INFO_URL = CART_INFO_URL + idUser1 + EXT_TYPE;
 
 let showSpinner = function(){
   document.getElementById("spinner-wrapper").style.display = "block";
@@ -97,20 +100,36 @@ function showTopSaleProducts(array){
   }
 }
 
-function cart(value, pinfo) {
+const cart = async (cant, product) => {
+
   let newProduct = { 
-    name: pinfo.name,
-    count: value,
-    unitCost: pinfo.cost,
-    currency: pinfo.currency,
-    image: pinfo.image ?? pinfo.images[0],
-    id: pinfo.id,
-    stock: pinfo.stock
+    name: product.name,
+    count: cant,
+    unitCost: product.cost,
+    currency: product.currency,
+    image: product.image ?? product.images[0],
+    id: product.id,
+    stock: product.stock,
+    description: product.description ?? 'xD'
   }
 
-  let cart = localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : []
+  let cartArray = []
+  if (!localStorage.getItem("cart")) {
+    const cartData = await getJSONData(C_INFO_URL)
+    if (cartData.status === 'ok') {
+      let cart = cartData.data.articles
+      cart.forEach(prod => {
+        prod.stock = prod.currency === "USD" ? Math.round(40000/prod.cost) + 1 : Math.round(40000/prod.cost * 23) + 1 
+        cartArray.push(prod)
+      })
+    }
+    localStorage.setItem("cart", JSON.stringify(cartArray))
+  }
+  else {
+    cartArray = JSON.parse(localStorage.getItem("cart"))
+  }
 
-  let same_product = cart.find(product => product.id === newProduct.id)
+  let same_product = cartArray.find(product => product.id === newProduct.id)
 
   if (same_product) {
     if (same_product.count + newProduct.count <= same_product.stock) {
@@ -123,10 +142,10 @@ function cart(value, pinfo) {
     }
   }
   else {
-    cart.push(newProduct)
+    cartArray.push(newProduct)
   }
 
-  localStorage.setItem("cart", JSON.stringify(cart))
+  localStorage.setItem("cart", JSON.stringify(cartArray))
   return true
 }
 

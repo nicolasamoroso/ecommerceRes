@@ -14,7 +14,7 @@ cambiar los console log por alertas o textos por debajo
 que el stock cambie en el localstorage si el producto fue comprado
 */
 
-document.addEventListener("DOMContentLoaded", async () =>{
+document.addEventListener("DOMContentLoaded", async () => {
     if (localStorage.getItem(`pInfo-${id}}`)) {
         // Si se entra acá, es porque el stock cambió de dicho producto
     }
@@ -22,10 +22,10 @@ document.addEventListener("DOMContentLoaded", async () =>{
     const productInfoArray = await getJSONData(P_INFO_URL);
     if (productInfoArray.status === "ok") {
         productInfo = productInfoArray.data;
-        productInfo.stock = productInfo.currency === "USD" ? Math.round(40000/productInfo.cost) + 1 : Math.round(40000/productInfo.cost * 23) + 1
-        let discount = Math.round(productInfo.cost/1000) > 100 ? 25 : Math.round(productInfo.cost/1000)
+        productInfo.stock = productInfo.currency === "USD" ? Math.round(40000 / productInfo.cost) + 1 : Math.round(40000 / productInfo.cost * 23) + 1
+        let discount = Math.round(productInfo.cost / 1000) > 100 ? 25 : Math.round(productInfo.cost / 1000)
         productInfo.discount = productInfo.soldCount < 15 ? discount : 0
-        productInfo.saleCost = Math.round(productInfo.cost*100/(100-productInfo.discount))
+        productInfo.saleCost = Math.round(productInfo.cost * 100 / (100 - productInfo.discount))
 
         if (!localStorage.getItem(`comments-${productInfo.id}`)) {
             const productInfoComments = await getJSONData(P_INFO_COMMENTS_URL);
@@ -35,11 +35,11 @@ document.addEventListener("DOMContentLoaded", async () =>{
                     productInfo.comments.forEach(comment => {
                         comment.img = "img/img_perfil.png"
                     })
-        
+
                     productInfo.comments.sort((a, b) => {
                         return new Date(b.dateTime) - new Date(a.dateTime);
                     });
-    
+
                     localStorage.setItem(`comments-${productInfo.id}`, JSON.stringify(productInfo.comments))
                 }
             }
@@ -77,7 +77,7 @@ function detectInterval() {
 }
 
 function addResume(pInfo) {
-    const {name, cost, category, stock, currency, soldCount, discount, saleCost} = pInfo
+    const { name, cost, category, stock, currency, soldCount, discount, saleCost } = pInfo
 
     document.getElementById("nameRes").innerHTML = `
     <small class="text-muted mb-0 d-md-none">${soldCount} vendidos</small>
@@ -98,12 +98,15 @@ function addResume(pInfo) {
             <div class="dropdown d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <span class="me-2">Cantidad:</span>
-                    <button class="btn btn-outline-secondary dropdown-toggle type="button" id="countDropdownRes" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="countDropdownRes" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                         1
                     </button>
                     <small class="ms-2">(${stock > 1 ? stock + " disponibles" : stock + " disponible"})</small>
-                    <ul class="dropdown-menu" aria-labelledby="countDropdownRes" id="lstCountRes">
-                        
+                    <ul class="dropdown-menu" aria-labelledby="countDropdownRes" id="ulCountRes">
+                        <div id="lstCountRes">
+                        </div>
+                        <div id="countInputResDiv">
+                        </div>
                     </ul>
                 </div>
             </div>
@@ -113,7 +116,7 @@ function addResume(pInfo) {
         <button class="btn btn-primary w-100 fw-bold" onclick="buy()">Comprar ahora</button>
         <button class="btn btn-outline-primary w-100 mt-2 fw-bold" onclick="addToCart()">Agregar al carrito</button>
     </div>
-    `  
+    `
 
     document.getElementById("resume").innerHTML = `
     <h3 class="d-none d-md-block mb-3">${name}</h3>
@@ -134,8 +137,11 @@ function addResume(pInfo) {
                         1
                     </button>
                     <small class="ms-2 text-break">(${stock > 1 ? stock + " disponibles" : stock + " disponible"})</small>
-                    <ul class="dropdown-menu" aria-labelledby="countDropdown" id="lstCount">
-                        
+                    <ul class="dropdown-menu" aria-labelledby="countDropdown" id="ulCount">
+                        <div id="lstCount">
+                        </div>
+                        <div id="countInputDiv">
+                        </div>
                     </ul>
                 </div>
             </div>
@@ -150,9 +156,11 @@ function addResume(pInfo) {
     let length = stock > 5 ? 5 : stock
     let i = 1
     let htmlContentToAppend = ""
+    document.getElementById("countInputResDiv").innerHTML = `<li id="countInputRes"></li>`
+    document.getElementById("countInputDiv").innerHTML = `<li id="countInput"></li>`
     for (i; i <= length; i++) {
         htmlContentToAppend += `
-        <li><a class="dropdown-item cursor-active" onclick="addToCount(${i})">${i}</a></li>
+        <li><a class="dropdown-item cursor-active liNumbers">${i}</a></li>
         `
     }
     document.getElementById("lstCountRes").innerHTML = htmlContentToAppend
@@ -160,23 +168,29 @@ function addResume(pInfo) {
 
     if (stock > 5) {
         document.getElementById("lstCountRes").innerHTML += `
-        <li><div class="dropdown-item cursor-active" onclick="addInput(${stock})">Más de ${i-1} unidades</div></li>
-        <li id="countInputRes"></li>
+        <li><div class="dropdown-item cursor-active" onclick="addInput(${stock})">Más de ${i - 1} unidades</div></li>
         `
         document.getElementById("lstCount").innerHTML += `
-        <li><div class="dropdown-item cursor-active" onclick="addInput(${stock})">Más de ${i-1} unidades</div></li>
-        <li id="countInput"></li>
+        <li><div class="dropdown-item cursor-active" onclick="addInput(${stock})">Más de ${i - 1} unidades</div></li>
         `
     }
-}
 
-function addToCount(i) {
-    document.getElementById("countDropdown").innerText = i
-    document.getElementById("countDropdownRes").innerText = i
-    document.getElementById("countInputRes").innerText = ""
-    document.getElementById("countInput").innerText = ""
-    count_value = i
-    
+    let liNumbers = document.getElementsByClassName("liNumbers")
+    for (let i = 0; i < liNumbers.length; i++) {
+        liNumbers[i].addEventListener("click", function (e) {
+            const j = parseInt(this.innerText)
+            document.getElementById("countDropdown").innerText = j
+            document.getElementById("countDropdownRes").innerText = j
+            document.getElementById("countInputRes").innerText = ""
+            document.getElementById("countInput").innerText = ""
+            document.getElementById("ulCountRes").classList.remove("show")
+            document.getElementById("ulCount").classList.remove("show")
+            document.getElementById("countDropdownRes").classList.remove("show")
+            document.getElementById("countDropdown").classList.remove("show")
+            count_value = j
+
+        })
+    }
 }
 
 function addInput(stock) {
@@ -188,21 +202,33 @@ function addInput(stock) {
     <a class="dropdown-item cursor-active"><input type="number" class="form-control" id="inputCount" min="1" max="${stock}" value="5" style="width: 100px;"></a>
     <small class="m-2 text-danger d-none" id="stockInsuficiente">No hay stock suficiente</small>
     `
-    
+
     const inputCount = document.getElementById("inputCount")
     const inputCountRes = document.getElementById("inputCountRes")
 
     document.getElementById("countDropdown").innerText = inputCount.value
     document.getElementById("countDropdownRes").innerText = inputCountRes.value
     count_value = inputCount ? parseInt(inputCount.value) : parseInt(inputCountRes.value)
-    
-    inputCount.addEventListener("keyup", function(e) {
+
+    const cartArray = JSON.parse(localStorage.getItem("cart"))
+    let count = 0;
+    if (cartArray) {
+        cartArray.forEach(element => {
+            if (element.id === parseInt(id)) {
+                count = element.count
+            }
+        });
+    }
+
+    console.log(count)
+
+    inputCount.addEventListener("keyup", function (e) {
         let i = parseInt(e.target.value)
         if (i) {
             if (i < 0) {
                 document.getElementById("inputCount").value = 1
             }
-            else if (i > stock) {
+            else if (i > stock - count) {
                 document.getElementById("stockInsuficiente").classList.remove("d-none")
                 document.getElementById("inputCount").classList.remove("is-valid")
                 document.getElementById("inputCount").classList.add("is-invalid")
@@ -218,19 +244,21 @@ function addInput(stock) {
         }
         else {
             document.getElementById("stockInsuficiente").classList.add("d-none")
+            document.getElementById("inputCount").classList.remove("is-valid")
+            document.getElementById("inputCount").classList.add("is-invalid")
             document.getElementById("countDropdown").innerText = 1
         }
         count_value = i
-        
+
     })
 
-    document.getElementById("inputCountRes").addEventListener("keyup", function(e) {
+    document.getElementById("inputCountRes").addEventListener("keyup", function (e) {
         let i = parseInt(e.target.value)
         if (i) {
             if (i < 0) {
                 document.getElementById("inputCountRes").value = 1
             }
-            else if (i > stock) {
+            else if (i > stock - count) {
                 document.getElementById("stockInsuficienteRes").classList.remove("d-none")
                 document.getElementById("inputCountRes").classList.remove("is-valid")
                 document.getElementById("inputCountRes").classList.add("is-invalid")
@@ -246,10 +274,12 @@ function addInput(stock) {
         }
         else {
             document.getElementById("stockInsuficienteRes").classList.add("d-none")
+            document.getElementById("inputCountRes").classList.remove("is-valid")
+            document.getElementById("inputCountRes").classList.add("is-invalid")
             document.getElementById("countDropdownRes").innerText = 1
         }
         count_value = i
-        
+
     })
 }
 
@@ -282,7 +312,7 @@ function showImagesGallery(images) {
                     htmlContentToAppend += `
                     <button type="button" data-bs-target="#carouselProductIndicators" 
                         onclick="setCarouselActiveButton(${i})" data-bs-slide-to="${i}" 
-                        class="active btn" aria-current="true" aria-label="Slide ${i+1}">
+                        class="active btn" aria-current="true" aria-label="Slide ${i + 1}">
                             <img src="${imageSrc}" class="indicators">
                     </button>
                     `
@@ -291,7 +321,7 @@ function showImagesGallery(images) {
                     htmlContentToAppend += `
                     <button type="button" data-bs-target="#carouselProductIndicators" 
                         onclick="setCarouselActiveButton(${i})" data-bs-slide-to="${i}" 
-                        class="btn" aria-current="true" aria-label="Slide ${i+1}">
+                        class="btn" aria-current="true" aria-label="Slide ${i + 1}">
                             <img src="${imageSrc}" class="indicators">
                     </button>
                     `
@@ -363,7 +393,7 @@ function changeDayFormat(date) {
 function showComments(comments) {
     if (comments.length < 1) {
         document.getElementById("commentsTitle").innerText = ""
-    } 
+    }
     let htmlContentToAppend = "";
     for (let i = 0; i < comments.length; i++) {
         let comment = comments[i];
@@ -386,20 +416,20 @@ function showComments(comments) {
 const ratingStars = [...document.getElementsByClassName("ratingStar")]
 
 function executeRating(stars) {
-  const starClassActive = "ratingStar fa fa-star checked"
-  const starClassInactive = "ratingStar fa fa-star"
-  const starsLength = stars.length
-  let i
-  stars.map((star) => {
-    star.onclick = () => {
-      i = stars.indexOf(star)
+    const starClassActive = "ratingStar fa fa-star checked"
+    const starClassInactive = "ratingStar fa fa-star"
+    const starsLength = stars.length
+    let i
+    stars.map((star) => {
+        star.onclick = () => {
+            i = stars.indexOf(star)
 
-      if (star.className === starClassInactive)
-        for (i; i >= 0; --i) stars[i].className = starClassActive
-      else
-        for (i; i < starsLength -1 ; ++i) stars[i+1].className = starClassInactive
-    }
-  })
+            if (star.className === starClassInactive)
+                for (i; i >= 0; --i) stars[i].className = starClassActive
+            else
+                for (i; i < starsLength - 1; ++i) stars[i + 1].className = starClassInactive
+        }
+    })
 }
 
 executeRating(ratingStars)
@@ -416,30 +446,30 @@ function padTo2Digits(num) { return num.toString().padStart(2, '0') }
 function formatDate(date) {
     return (
         [
-        date.getFullYear(),
-        padTo2Digits(date.getMonth() + 1),
-        padTo2Digits(date.getDate()),
+            date.getFullYear(),
+            padTo2Digits(date.getMonth() + 1),
+            padTo2Digits(date.getDate()),
         ].join('-') +
         ' ' +
         [
-        padTo2Digits(date.getHours()),
-        padTo2Digits(date.getMinutes()),
-        padTo2Digits(date.getSeconds()),
+            padTo2Digits(date.getHours()),
+            padTo2Digits(date.getMinutes()),
+            padTo2Digits(date.getSeconds()),
         ].join(':')
     )
 }
-  
+
 document.getElementById("commentBtn").addEventListener("click", function () {
     let id = productInfo.id
     const comment = document.getElementById("textAreaComment").value
     document.getElementById("textAreaComment").value = ""
-    if(comment !== "") {
+    if (comment !== "") {
         const score = checkScore()
         const dateTime = formatDate(new Date())
-        const {user, img} = localStorage.getItem("profile") ? JSON.parse(localStorage.getItem("profile")) : {user: "Anónimo", img: "img/img_perfil.png"}
-        
+        const { user, img } = localStorage.getItem("profile") ? JSON.parse(localStorage.getItem("profile")) : { user: "Anónimo", img: "img/img_perfil.png" }
+
         let commentsArray = localStorage.getItem(`comments-${id}`) ? JSON.parse(localStorage.getItem(`comments-${id}`)) : []
-        commentsArray.unshift({user, img, score, description: comment, dateTime})
+        commentsArray.unshift({ user, img, score, description: comment, dateTime })
         localStorage.setItem(`comments-${id}`, JSON.stringify(commentsArray))
 
         showComments(commentsArray)
@@ -457,8 +487,8 @@ function addToCart() {
 
 function buy() {
     let added = addToCart()
-    if (added) 
+    if (added)
         window.location = "cart.html"
-    else 
-        console.log("valor mayor al stock")   
+    else
+        console.log("valor mayor al stock")
 }
