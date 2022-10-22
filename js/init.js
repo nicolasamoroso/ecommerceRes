@@ -89,7 +89,7 @@ function showTopSaleProducts(array){
       product.products.forEach(({id, name, soldCount}) => {
         if (soldCount > 10) {
           document.getElementById(`lstCat-${i}`).innerHTML += `
-          <a class="col-6 col-sm-4 col-md-12" onclick="product_info(${id})">${name}</a>
+          <a class="col-6 col-sm-4 col-md-12 text-decoration-underline" onclick="product_info(${id})">${name}</a>
           `
         }
       })

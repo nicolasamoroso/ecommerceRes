@@ -1,0 +1,131 @@
+.carousel-control-next-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+}
+
+.carousel-control-prev-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+}
+
+.indicators {
+    width: 100%;
+    max-width: 100px;
+    opacity: 0.5;
+}
+
+.indicators:hover {
+    opacity: .8;
+}
+
+.active .indicators {
+    /* smooth transition */
+    -webkit-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+    opacity: 1;
+    /* border: 1px solid black; */
+}
+
+.btn:focus {
+    box-shadow: none;
+}
+
+.c-indicators button {
+    padding: 0 5px;
+}
+
+textarea {
+    resize: none;
+}
+
+.form-control:focus {
+    border-color: rgb(83, 83, 83);
+    box-shadow: none;
+}
+
+.stars {
+    user-select: none;
+}
+
+button.btn.btn-primary.ms-3 {
+    height: 40px;
+    margin: auto;
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .col-lg-8.p-info {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 auto;
+        flex: 0 0 auto;
+        width: 65%;
+    }
+
+    .col-lg-4.p-info {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 auto;
+        flex: 0 0 auto;
+        width: 35%;
+    }
+}
+
+.btn.btn-outline-secondary.dropdown-toggle {
+    background-color: transparent;
+    color: #000000;
+}
+
+.btn.btn-outline-secondary.dropdown-toggle:hover {
+    background-color: transparent;
+    color: #000000;
+}
+
+.btn.btn-outline-secondary.dropdown-toggle:focus {
+    background-color: transparent;
+    color: #000000;
+    box-shadow: none;
+}
+
+.btn.btn-outline-primary.w-100.mt-2.fw-bold:hover {
+    background-color: #007bff1f;
+    border: #005ec3 1px solid;
+    color: #007bff;
+}
+
+.btn.btn-primary.w-100.fw-bold:hover {
+    background-color: #004d9f;
+    border: #005ec3 1px solid;
+    color: #ffffff;
+}
+
+img.creditCard {
+    width: 40px;
+    height: 40px;
+}
+
+.col-6.cards {
+    padding-right: 0;
+}
+
+.cardSpan {
+    font-size: 11px;
+}
+
+.cardsShowMore {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.card-body.line {
+    border-top: #DFDFDF 1px solid;
+    padding: 5px;
+}

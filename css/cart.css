@@ -1,0 +1,55 @@
+.prodImg {
+	max-width: 35%;
+}
+
+.counter {
+	color: grey;
+	padding: 0 5px;
+}
+
+.countGroup {
+	border: 1px solid rgb(197, 197, 197);
+	border-radius: 15px;
+}
+
+.controlGroupMin {
+	color: grey;
+	border: none;
+	background-color: transparent;
+	min-width: 30px;
+}
+
+.controlGroupPlus {
+	color: grey;
+	border: none;
+	background-color: transparent;
+	min-width: 30px;
+}
+
+.controlGroupMin:hover {
+	color: black;
+}
+
+.controlGroupPlus:hover {
+	color: black;
+}
+
+.deleteGroup {
+	border: 1px solid rgb(197, 197, 197);
+	border-radius: 15px;
+	justify-content: center;
+}
+
+.deleteBtn {
+	border: none;
+	background-color: transparent;
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+	.col-lg-4 {
+		-webkit-box-flex: 0;
+		-ms-flex: 0 0 auto;
+		flex: 0 0 auto;
+		width: 33.336%;
+	}
+}

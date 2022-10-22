@@ -133,7 +133,7 @@ function showProductsList(productsArray) {
                 ((minPriceRes == undefined) || (minPriceRes != undefined && parseInt(soldCount) >= minPriceRes)) &&
                 ((maxPriceRes == undefined) || (maxPriceRes != undefined && parseInt(soldCount) <= maxPriceRes))) {
                 htmlContentToAppend += `
-                <div class="col-12 col-sm-6 col-md-6 col-lg-4 mt-1">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 mt-1">
                     <div class="card cursor-active h-100">
                         <button class="col-4 col-xs-3 btn btn-success position-absolute buyBtn" onclick="cartBtn(${id}, cat_name)">Comprar</button>
                         <div class="card-header p-0 m-auto" onclick="product_info(${id})">

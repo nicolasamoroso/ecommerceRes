@@ -80,7 +80,7 @@ function showCategoriesList(currentCategoriesArray){
                 ((maxCountRes == undefined) || (maxCountRes != undefined && parseInt(productCount) <= maxCountRes))) {
 
                 htmlContentToAppend += `
-                <div class="col-12 col-sm-6 col-md-6 col-lg-4 mt-1" onclick="setCatID(${id})">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 mt-1" onclick="setCatID(${id})">
                     <div class="card cursor-active h-100 cardHover">
                         <div class="card-header p-0 m-auto">
                             <img src="${imgSrc}" alt="${description}" class="img-fluid imgCat">

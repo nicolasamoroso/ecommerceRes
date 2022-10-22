@@ -82,7 +82,7 @@ function addResume(pInfo) {
     document.getElementById("nameRes").innerHTML = `
     <small class="text-muted mb-0 d-md-none">${soldCount} vendidos</small>
     <h3 class="d-md-none mb-3">${name}</h3>
-    <hr>
+    <hr class="d-md-none">
     `
 
     document.getElementById("resumeRes").innerHTML = `
@@ -133,7 +133,7 @@ function addResume(pInfo) {
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="countDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                         1
                     </button>
-                    <small class="ms-2">(${stock > 1 ? stock + " disponibles" : stock + " disponible"})</small>
+                    <small class="ms-2 text-break">(${stock > 1 ? stock + " disponibles" : stock + " disponible"})</small>
                     <ul class="dropdown-menu" aria-labelledby="countDropdown" id="lstCount">
                         
                     </ul>
@@ -204,11 +204,15 @@ function addInput(stock) {
             }
             else if (i > stock) {
                 document.getElementById("stockInsuficiente").classList.remove("d-none")
+                document.getElementById("inputCount").classList.remove("is-valid")
+                document.getElementById("inputCount").classList.add("is-invalid")
             }
             else {
                 if (!document.getElementById("stockInsuficiente").classList.contains("d-none")) {
                     document.getElementById("stockInsuficiente").classList.add("d-none")
                 }
+                document.getElementById("inputCount").classList.remove("is-invalid")
+                document.getElementById("inputCount").classList.add("is-valid")
                 document.getElementById("countDropdown").innerText = i
             }
         }
@@ -228,11 +232,15 @@ function addInput(stock) {
             }
             else if (i > stock) {
                 document.getElementById("stockInsuficienteRes").classList.remove("d-none")
+                document.getElementById("inputCountRes").classList.remove("is-valid")
+                document.getElementById("inputCountRes").classList.add("is-invalid")
             }
             else {
                 if (!document.getElementById("stockInsuficienteRes").classList.contains("d-none")) {
                     document.getElementById("stockInsuficienteRes").classList.add("d-none")
                 }
+                document.getElementById("inputCountRes").classList.remove("is-invalid")
+                document.getElementById("inputCountRes").classList.add("is-valid")
                 document.getElementById("countDropdownRes").innerText = i
             }
         }
@@ -300,12 +308,12 @@ function addDescription(description) {
 
 function showPaymentMethods(currency, cost) {
     if (currency === "USD" && cost > 10000) {
-        document.getElementById("bankMethod").classList.add("d-none")
-        document.getElementById("bankMethodRes").classList.add("d-none")
-        document.getElementById("creditMethodRes").classList.remove("col-6")
-        document.getElementById("creditMethodRes").classList.add("col-12")
-        document.getElementById("creditMethod").classList.remove("col-6")
-        document.getElementById("creditMethod").classList.add("col-12")
+        document.getElementById("creditMethod").classList.add("d-none")
+        document.getElementById("creditMethodRes").classList.add("d-none")
+        document.getElementById("bankMethodRes").classList.remove("col-6")
+        document.getElementById("bankMethodRes").classList.add("col-12")
+        document.getElementById("bankMethod").classList.remove("col-6")
+        document.getElementById("bankMethod").classList.add("col-12")
     }
 }
 
@@ -389,7 +397,7 @@ function executeRating(stars) {
       if (star.className === starClassInactive)
         for (i; i >= 0; --i) stars[i].className = starClassActive
       else
-        for (i; i < starsLength; ++i) stars[i+1].className = starClassInactive
+        for (i; i < starsLength -1 ; ++i) stars[i+1].className = starClassInactive
     }
   })
 }

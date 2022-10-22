@@ -1,0 +1,219 @@
+.popularCat {
+    font-size: 12px;
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+
+.imgHoverContainer {
+    position: relative;
+}
+
+img.imgCatInIndex {
+    height: 80px;
+    width: 100px;
+    border-radius: 50%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    opacity: 1;
+    display: block;
+}
+
+.imgHoverContainer:hover .imgCatInIndex {
+    opacity: 0.7;
+}
+
+@media (min-width: 320px) {
+    img.imgCatInIndex {
+        height: 80px;
+        width: 85px;
+    }
+}
+
+.col-4.col-md-1.col-sm-2.text-center {
+    width: auto;
+}
+
+.stockAvailable,
+.soldCount {
+    font-size: 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+
+.discount {
+    font-size: 10px;
+}
+
+.cardSales,
+.cardTopSales {
+    border-radius: 4px;
+    border: 1px solid #DFDFDF;
+    padding: 0;
+}
+
+.priceSales,
+.priceTopSales {
+    font-size: 12px;
+}
+
+.saleDiscount {
+    font-size: 8px;
+}
+
+.nameProductSale,
+.nameProductTopSale {
+    font-size: 12px;
+}
+
+.mb-4.shadow-sm.cursor-active.cardTopSales .card-body,
+.mb-4.shadow-sm.cursor-active.cardSales .card-body {
+    padding: 10px;
+}
+
+a.showMore {
+    font-size: small;
+}
+
+@media (min-width: 768px) {
+    h4.subtitles {
+        font-size: 30px;
+    }
+
+    a.showMore {
+        font-size: 15px;
+        padding-left: 10px;
+    }
+
+    img.imgCatInIndex {
+        height: 100px;
+        width: 105px;
+    }
+
+
+    .popularCat {
+        font-size: 17px;
+    }
+
+    .nameProductSale,
+    .nameProductTopSale {
+        font-size: 18px;
+    }
+
+    .nameProductTopSale {
+        margin-bottom: 10px;
+    }
+
+    .discount {
+        font-size: 14px;
+    }
+
+    .saleDiscount {
+        margin-top: 10px;
+        font-size: 12px;
+    }
+
+    .priceSales,
+    .priceTopSales {
+        font-size: 18px;
+    }
+
+    .stockAvailable,
+    .soldCount {
+        font-size: 13px;
+    }
+
+}
+
+@media (max-width: 767px) and (min-width: 400px) {
+
+    .nameProductSale,
+    .nameProductTopSale {
+        font-size: 18px;
+    }
+
+    .priceSales,
+    .priceTopSales {
+        font-size: 14px;
+    }
+
+    .stockAvailable,
+    .soldCount {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 1399px) and (min-width: 1200px) {
+
+    .nameProductSale,
+    .nameProductTopSale {
+        font-size: 18px;
+    }
+
+    .priceSales,
+    .priceTopSales {
+        font-size: 18px;
+    }
+
+    .stockAvailable,
+    .soldCount {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+
+    .nameProductSale,
+    .nameProductTopSale {
+        font-size: 14px;
+    }
+
+    .priceSales,
+    .priceTopSales {
+        font-size: 15px;
+    }
+
+    .stockAvailable,
+    .soldCount {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 992px) {
+    img.imgCatInIndex {
+        height: 125px;
+        width: 125px;
+    }
+
+    .row.flex-nowrap.overflow-auto.catImgName {
+        gap: 20px;
+    }
+
+    .row.flex-nowrap.overflow-auto {
+        margin-bottom: 50px;
+    }
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(143, 143, 143, 0.611) rgba(233, 233, 233, 0.542);
+}
+
+*::-webkit-scrollbar {
+    width: 12px;
+    height: 5px;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgba(233, 233, 233, 0.542);
+    border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: rgba(143, 143, 143, 0.611);
+    border-radius: 10px;
+    border: rgba(233, 233, 233, 0.542);
+}
