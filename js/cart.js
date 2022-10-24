@@ -21,12 +21,10 @@ function iOSMobile() {
 
 document.addEventListener('DOMContentLoaded', async () => {
   const dateTime = new Date().toLocaleString()
-  const date = dateTime.split(",")[0]
-  const time = dateTime.split(", ")[1]
+  const date = dateTime.split("/")[0]
   const day = new Date().getDay()
   alert(dateTime)
   alert(date)
-  alert(time)
   alert(day)
 
   if (!localStorage.getItem("cart")) {

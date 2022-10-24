@@ -381,14 +381,14 @@ function ScoreToStars(score) {
 
 function changeDayFormat(date) {
     if (iOS()) {   
-        return date.toLocaleString('es-ES', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'numeric', year: 'numeric' })
+        return new Date().toLocaleString()
     }
     const day = date.getDate() <= 9 ? "0" + date.getDate() : date.getDate()
     const month = (date.getMonth() + 1) <= 9 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)
     const year = date.getFullYear()
     const hour = (date.getHours() <= 9) ? "0" + date.getHours() : date.getHours()
     const minute = (date.getMinutes() <= 9) ? "0" + date.getMinutes() : date.getMinutes()
-    return `${hour}:${minute} - ${day}/${month}/${year}`
+    return `${day}/${month}/${year} - ${hour}:${minute}`
 }
 
 function showComments(comments) {
