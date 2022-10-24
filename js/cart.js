@@ -20,13 +20,6 @@ function iOSMobile() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const dateTime = new Date().toLocaleString()
-  const date = dateTime.split("/")[0]
-  const day = new Date().getDay()
-  alert(dateTime)
-  alert(date)
-  alert(day)
-
   if (!localStorage.getItem("cart")) {
     const cartData = await getJSONData(C_INFO_URL)
     if (cartData.status === 'ok') {
@@ -40,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     localStorage.setItem("cart", JSON.stringify(cartArray))
   }
   else cartArray = JSON.parse(localStorage.getItem("cart"))
-  
+
   addItemsToCart(cartArray)
   updateTotalCosts(cartArray)
   refreshCountCart()
@@ -108,11 +101,11 @@ function count_Delete_Fav(id, i, count, res) {
   <div class="col text-center px-sm-0">
     <div class="countGroup d-flex m-auto" style="height: 28px;">
       <button class="controlGroupMin d-flex align-items-center mx-auto flex-row-reverse" ${isMobile ? `ontouchend="mouseUp()" ontouchstart="mouseDown('negative', ${id})"` : `onmouseup="mouseUp()" onmousedown="mouseDown('negative', ${id})"`} >-</button>
-      ${res ? 
-        `<label class="counter d-block d-sm-none" id="countProductRes-${i}">${count}</label>` 
-        : 
-        `<label class="counter d-none d-sm-block" id="countProduct-${i}">${count}</label>`
-      }
+      ${res ?
+      `<label class="counter d-block d-sm-none" id="countProductRes-${i}">${count}</label>`
+      :
+      `<label class="counter d-none d-sm-block" id="countProduct-${i}">${count}</label>`
+    }
       <button class="controlGroupPlus d-flex align-items-center mx-auto" ${isMobile ? `ontouchend="mouseUp()" ontouchstart="mouseDown('positive', ${id})"` : `onmouseup="mouseUp()" onmousedown="mouseDown('positive', ${id})"`}>+</button>
     </div>
   </div>
@@ -128,19 +121,19 @@ function count_Delete_Fav(id, i, count, res) {
   <div class="col px-sm-0">
     <div class="favGroup d-flex m-auto" style="height: 28px;" onclick="fav(${id})">
       <button class="favBtn d-flex align-items-center justify-content-center">
-        ${res ? 
-          `<div class="d-block d-sm-none">
+        ${res ?
+      `<div class="d-block d-sm-none">
             <i class="fa-regular fa-heart" id="noFavRes-${id}"></i>
             <i class="fa-solid fa-heart d-none" id="FavRes-${id}"></i>
           </div>`
-          :
-          `
+      :
+      `
           <div class="d-none d-sm-block">
             <i class="fa-regular fa-heart" id="noFav-${id}"></i>
             <i class="fa-solid fa-heart d-none" id="Fav-${id}"></i>
           </div>
           `
-        }
+    }
       </button>
     </div>
   </div>
@@ -205,9 +198,9 @@ function mouseDown(type, id) {
     if (cartArray[i].count < 1) cartArray[i].count = 1
     if (cartArray[i].count > cartArray[i].stock) cartArray[i].count = cartArray[i].stock
 
-    document.getElementById(`countProduct-${i}`).textContent = cartArray[i].count  
+    document.getElementById(`countProduct-${i}`).textContent = cartArray[i].count
     document.getElementById(`countProductRes-${i}`).textContent = cartArray[i].count
-    
+
     localStorage.setItem("cart", JSON.stringify(cartArray))
     updateTotalCosts(cartArray)
     changeProductTotal(cartArray[i].unitCost, cartArray[i].count, i)
@@ -503,7 +496,10 @@ function checkOutBtn() {
 }
 
 function resumeOfPurchase() {
-  return
+  const dateTime = new Date().toLocaleString()
+  const date = parseInt(dateTime.split("/")[0])
+  const month = parseInt(dateTime.split("/")[1])
+  const day = new Date().getDay()
 
   const dia = {
     0: "Domingo",
@@ -534,36 +530,24 @@ function DiaDeLlegada(dia, envio, day, date, month) {
   if (envio[perccentage][0] === 0)
     return `Su compra se puede retirar en el local a las 12:00hs del ${dia[day + 1]}`
 
-  let dayOfArrival = {
-    0: day + envio[perccentage][0],
-    1: day + envio[perccentage][1]
-  }
-
-  let dateOfArrival = {
-    0: date + envio[perccentage][0],
-    1: date + envio[perccentage][1]
-  }
-
-  if (dayOfArrival[0] > 6)
-    while (dayOfArrival[0] > 6)
-      dayOfArrival[0] -= 7
-
-  if (dayOfArrival[1] > 6)
-    while (dayOfArrival[1] > 6)
-      dayOfArrival[1] -= 7
-
   function checkDate(date, month) {
-    if (month === 2 && date > 28)
-      return date - 28
-    else if ((month === 4 || month === 6 || month === 9 || month === 11) && date > 30)
-      return date - 30
-    else if (date > 31)
-      return date - 31
-
-    return date
+    if (month === 2 && date > 28) {
+      date = date - 28
+      month++
+    }
+    else if ((month === 4 || month === 6 || month === 9 || month === 11) && date > 30) {
+      date = date - 30
+      month++
+    }
+    else if (date > 31) {
+      date = date - 31
+      month++
+    }
+    return {date, month}
   }
-
-  dateOfArrival[0] = checkDate(dateOfArrival[0], month)
-  dateOfArrival[1] = checkDate(dateOfArrival[1], month)
-  return `Su compra llegará entre los días ${dia[dayOfArrival[0]]} ${dateOfArrival[0]} y ${dia[dayOfArrival[1]]} ${dateOfArrival[1]}`
+  let newDate1 = checkDate(date + envio[perccentage][0], month)
+  let newDate2 = checkDate(date + envio[perccentage][1], month)
+  let newDay1 = new Date(`${newDate1.month}/${newDate1.date}/2022`).getDay()
+  let newDay2 = new Date(`${newDate2.month}/${newDate2.date}/2022`).getDay()
+  return `Su compra llegará entre los días ${dia[newDay1]} ${newDate1.date} y ${dia[newDay2]} ${newDate2.date}`
 }
