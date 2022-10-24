@@ -1,6 +1,7 @@
 let typeOfCurrency = "USD"
 let cartArray = []
-let isMobile =  iOS() ? iOSMobile() : navigator.userAgentData.mobile
+let isMobile = iOS() ? iOSMobile() : navigator.userAgentData.mobile
+
 function iOSMobile() {
   var iDevices = [
     'iPad Simulator',
@@ -12,11 +13,12 @@ function iOSMobile() {
   ];
   if (!!navigator.platform) {
     while (iDevices.length) {
-      if (navigator.platform === iDevices.pop()){ return true; }
+      if (navigator.platform === iDevices.pop()) { return true; }
     }
   }
   return false;
 }
+
 document.addEventListener('DOMContentLoaded', async () => {
   const d = new Date()
   // 
@@ -71,15 +73,15 @@ function addItemsToCart(cartArray) {
             <small class="fw-bold mb-0 d-sm-none text-end" id="totalPerProductRes-${i}">${typeOfCurrency} ${verifyCurrency(currency, unitCost, i) * count}</small>
             <div class="col-11 mx-auto">
               <div class="row d-none d-sm-flex justify-content-center gap-3">
-                ${count_Delete_Fav(id, i, count)}
+                ${count_Delete_Fav(id, i, count, false)}
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-12 d-sm-none mt-3">
+      <div class="col-12 d-block d-sm-none mt-3">
         <div class="row justify-content-center">
-          ${count_Delete_Fav(id, i, count)}
+          ${count_Delete_Fav(id, i, count, true)}
         </div>
       </div>
     </div>
@@ -95,22 +97,20 @@ function fav(idProductCart) {
 }
 
 function verifyCurrency(currency, unitCost) {
-  if (currency === "UYU") {
-    if (typeOfCurrency === "USD") return `${Math.trunc(unitCost / 42)}`
-    else return `${unitCost}`
-  }
-  else {
-    if (typeOfCurrency === "UYU") return `${Math.trunc(unitCost * 42)}`
-    else return `${unitCost}`
-  }
+  if (currency === "UYU" && typeOfCurrency === "USD") return `${Math.trunc(unitCost / 42)}`
+  else if (typeOfCurrency === "UYU") return `${Math.trunc(unitCost * 42)}`
+  return `${unitCost}`
 }
 
-function count_Delete_Fav(id, i, count) {
+function count_Delete_Fav(id, i, count, res) {
   return `
   <div class="col text-center px-sm-0">
     <div class="countGroup d-flex m-auto" style="height: 28px;">
       <button class="controlGroupMin d-flex align-items-center mx-auto flex-row-reverse" ${isMobile ? `ontouchend="mouseUp()" ontouchstart="mouseDown('negative', ${id})"` : `onmouseup="mouseUp()" onmousedown="mouseDown('negative', ${id})"`} >-</button>
-      <label class="counter" ${isMobile ? 'id="countProductRes-"' + i : 'id="countProduct-"' + i }>${count}</label>
+      ${res ? 
+        `<label class="counter d-block d-sm-none" id="countProductRes-${i}">${count}</label>` 
+        : `<label class="counter d-none d-sm-block" id="countProduct-${i}">${count}</label>`
+      }
       <button class="controlGroupPlus d-flex align-items-center mx-auto" ${isMobile ? `ontouchend="mouseUp()" ontouchstart="mouseDown('positive', ${id})"` : `onmouseup="mouseUp()" onmousedown="mouseDown('positive', ${id})"`}>+</button>
     </div>
   </div>
@@ -126,8 +126,19 @@ function count_Delete_Fav(id, i, count) {
   <div class="col px-sm-0">
     <div class="favGroup d-flex m-auto" style="height: 28px;" onclick="fav(${id})">
       <button class="favBtn d-flex align-items-center justify-content-center">
-        <i class="fa-regular fa-heart" ${isMobile ? 'id="noFavRes-"' + id : 'id="noFav-"' + id} ></i>
-        <i class="fa-solid fa-heart d-none" ${isMobile ? 'id="FavRes-"' + id : 'id="Fav-"' + id} ></i>
+        ${res ? 
+          `<div class="d-block d-sm-none">
+            <i class="fa-regular fa-heart" id="noFavRes-${id}"></i>
+            <i class="fa-solid fa-heart d-none" id="FavRes-${id}"></i>
+          </div>`
+          :
+          `
+          <div class="d-none d-sm-block">
+            <i class="fa-regular fa-heart" id="noFav-${id}"></i>
+            <i class="fa-solid fa-heart d-none" id="Fav-${id}"></i>
+          </div>
+          `
+        }
       </button>
     </div>
   </div>
@@ -192,11 +203,10 @@ function mouseDown(type, id) {
     if (cartArray[i].count < 1) cartArray[i].count = 1
     if (cartArray[i].count > cartArray[i].stock) cartArray[i].count = cartArray[i].stock
 
-
-    document.getElementById(`countProduct-${i}`).innerText = cartArray[i].count
-    document.getElementById(`countProductRes-${i}`).innerText = cartArray[i].count
+    document.getElementById(`countProduct-${i}`).textContent = cartArray[i].count  
+    document.getElementById(`countProductRes-${i}`).textContent = cartArray[i].count
+    
     localStorage.setItem("cart", JSON.stringify(cartArray))
-
     updateTotalCosts(cartArray)
     changeProductTotal(cartArray[i].unitCost, cartArray[i].count, i)
 
@@ -219,8 +229,8 @@ function changeTotal(type, id) {
     if (cartArray[i].stock >= count) {
       cartArray[i].count = count
       localStorage.setItem("productBuyArray", JSON.stringify(cartArray))
-      document.getElementById(`countProduct-${i}`).innerText = count
-      document.getElementById(`countProductRes-${i}`).innerText = count
+      document.getElementById(`countProduct-${i}`).textContent = count
+      document.getElementById(`countProductRes-${i}`).textContent = count
       updateTotalCosts(cartArray)
       changeProductTotal(cartArray[i].unitCost, count, i)
     }
@@ -228,9 +238,7 @@ function changeTotal(type, id) {
 }
 
 function changeProductTotal(unitCost, count, i) {
-  document.getElementById(`totalPerProduct-${i}`).innerText = `${typeOfCurrency} ${verifyCurrency(cartArray[i].currency, unitCost, i) * count
-    }
-  `
+  document.getElementById(`totalPerProduct-${i}`).innerText = `${typeOfCurrency} ${verifyCurrency(cartArray[i].currency, unitCost, i) * count}`
 }
 
 let perccentage = 0
