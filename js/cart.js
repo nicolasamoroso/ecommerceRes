@@ -109,7 +109,8 @@ function count_Delete_Fav(id, i, count, res) {
       <button class="controlGroupMin d-flex align-items-center mx-auto flex-row-reverse" ${isMobile ? `ontouchend="mouseUp()" ontouchstart="mouseDown('negative', ${id})"` : `onmouseup="mouseUp()" onmousedown="mouseDown('negative', ${id})"`} >-</button>
       ${res ? 
         `<label class="counter d-block d-sm-none" id="countProductRes-${i}">${count}</label>` 
-        : `<label class="counter d-none d-sm-block" id="countProduct-${i}">${count}</label>`
+        : 
+        `<label class="counter d-none d-sm-block" id="countProduct-${i}">${count}</label>`
       }
       <button class="controlGroupPlus d-flex align-items-center mx-auto" ${isMobile ? `ontouchend="mouseUp()" ontouchstart="mouseDown('positive', ${id})"` : `onmouseup="mouseUp()" onmousedown="mouseDown('positive', ${id})"`}>+</button>
     </div>
