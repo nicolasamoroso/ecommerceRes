@@ -175,5 +175,9 @@ function continueBuying() {
 }
 
 function iOS() {
-  return /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+  const ua = navigator.userAgent.toLowerCase(); 
+  if (ua.indexOf('safari') != -1) { 
+    return ua.indexOf('chrome') > -1 ? false : true;
+  }
+  return false
 }
