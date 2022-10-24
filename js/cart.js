@@ -21,8 +21,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateTotalCosts(cartArray)
   refreshCountCart()
   checkOutBtn()
-
-  console.log(isMobile)
 })
 
 function addItemsToCart(cartArray) {
