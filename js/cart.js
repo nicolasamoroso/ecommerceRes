@@ -1,6 +1,25 @@
 let typeOfCurrency = "USD"
 let cartArray = []
-let isMobile =  iOS() ? (navigator.userAgent.match("Mobile Safari")[0] === "Mobile Safari" ? true : false) : navigator.userAgentData.mobile
+let isMobile =  iOS() ? iOSMobile() : false
+// if isMobile === true, if (is Mobile Safari)
+function iOSMobile() {
+  var iDevices = [
+    'iPad Simulator',
+    'iPhone Simulator',
+    'iPod Simulator',
+    'iPad',
+    'iPhone',
+    'iPod'
+  ];
+  if (!!navigator.platform) {
+    while (iDevices.length) {
+      if (navigator.platform === iDevices.pop()){ return true; }
+    }
+  }
+  return false;
+}
+
+console.log(iOSMobile())
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (!localStorage.getItem("cart")) {
