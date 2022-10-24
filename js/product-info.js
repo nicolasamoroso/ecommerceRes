@@ -220,8 +220,6 @@ function addInput(stock) {
         });
     }
 
-    console.log(count)
-
     inputCount.addEventListener("keyup", function (e) {
         let i = parseInt(e.target.value)
         if (i) {
@@ -382,6 +380,9 @@ function ScoreToStars(score) {
 }
 
 function changeDayFormat(date) {
+    if (iOS()) {   
+        return date.toLocaleString('es-ES', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'numeric', year: 'numeric' })
+    }
     const day = date.getDate() <= 9 ? "0" + date.getDate() : date.getDate()
     const month = (date.getMonth() + 1) <= 9 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)
     const year = date.getFullYear()
@@ -479,7 +480,7 @@ document.getElementById("commentBtn").addEventListener("click", function () {
 function addToCart() {
     const value = count_value
     if (value > productInfo.stock) {
-        console.log("valor mayor al stock")
+        alert("valor mayor al stock")
         return false
     }
     return cart(value, productInfo)
@@ -490,5 +491,5 @@ function buy() {
     if (added)
         window.location = "cart.html"
     else
-        console.log("valor mayor al stock")
+        alert("valor mayor al stock")
 }

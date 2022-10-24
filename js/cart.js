@@ -468,10 +468,17 @@ function checkOutBtn() {
 }
 
 function resumeOfPurchase() {
-  const d = new Date()
-  let day = d.getDay()
-  let date = d.getDate()
-  let month = d.getMonth() + 1
+  const d = iOS() ? new Date().toISOString().slice(0, 19).replace('T', ' ') : new Date().toISOString().slice(0, 19).replace('T', ' ').replace('-', '/').replace('-', '/')
+  let day = iOS() ? new Date(d).getDay() + 1 : new Date(d).getDay()
+  let date = iOS() ? new Date(d).getDate() : new Date(d).getDate()
+  let month = iOS() ? new Date(d).getMonth() : new Date(d).getMonth() + 1
+  // let year = d.slice(0, 4)
+  // let hour = d.slice(11, 13)
+  // let minutes = d.slice(14, 16)
+  // const d = new Date()
+  // let day = d.getDay()
+  // let date = d.getDate()
+  // let month = d.getMonth() + 1
 
   const dia = {
     0: "Domingo",
