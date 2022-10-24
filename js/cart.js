@@ -20,12 +20,15 @@ function iOSMobile() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const d = new Date()
-  // 
-  if (iOS()) {
-    d = new Date(d)
-  }
-  console.log(d)
+  const dateTime = new Date().toLocaleString()
+  const date = dateTime.split(",")[0]
+  const time = dateTime.split(", ")[1]
+  const day = new Date().getDay()
+  alert(dateTime)
+  alert(date)
+  alert(time)
+  alert(day)
+
   if (!localStorage.getItem("cart")) {
     const cartData = await getJSONData(C_INFO_URL)
     if (cartData.status === 'ok') {
@@ -39,7 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     localStorage.setItem("cart", JSON.stringify(cartArray))
   }
   else cartArray = JSON.parse(localStorage.getItem("cart"))
-
+  
   addItemsToCart(cartArray)
   updateTotalCosts(cartArray)
   refreshCountCart()
@@ -502,17 +505,7 @@ function checkOutBtn() {
 }
 
 function resumeOfPurchase() {
-  const d = iOS() ? new Date('2011-04-12'.replace(/-/g, "/")) : new Date()
-  let day = iOS() ? new Date(d).getDay() + 1 : new Date(d).getDay()
-  let date = iOS() ? new Date(d).getDate() : new Date(d).getDate()
-  let month = iOS() ? new Date(d).getMonth() : new Date(d).getMonth() + 1
-  // let year = d.slice(0, 4)
-  // let hour = d.slice(11, 13)
-  // let minutes = d.slice(14, 16)
-  // const d = new Date()
-  // let day = d.getDay()
-  // let date = d.getDate()
-  // let month = d.getMonth() + 1
+  return
 
   const dia = {
     0: "Domingo",
