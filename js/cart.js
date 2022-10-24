@@ -1,6 +1,6 @@
 let typeOfCurrency = "USD"
 let cartArray = []
-let isMobile = navigator.userAgentData.mobile;
+let isMobile =  iOS() ? (navigator.userAgent.match("Mobile Safari")[0] === "Mobile Safari" ? true : false) : navigator.userAgentData.mobile
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (!localStorage.getItem("cart")) {
@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateTotalCosts(cartArray)
   refreshCountCart()
   checkOutBtn()
+
+  console.log(isMobile)
 })
 
 function addItemsToCart(cartArray) {
