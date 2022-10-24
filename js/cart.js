@@ -1,7 +1,6 @@
 let typeOfCurrency = "USD"
 let cartArray = []
-let isMobile =  iOS() ? iOSMobile() : false
-// if isMobile === true, if (is Mobile Safari)
+let isMobile =  iOS() ? iOSMobile() : navigator.userAgentData.mobile
 function iOSMobile() {
   var iDevices = [
     'iPad Simulator',
@@ -18,10 +17,13 @@ function iOSMobile() {
   }
   return false;
 }
-
-console.log(iOSMobile())
-
 document.addEventListener('DOMContentLoaded', async () => {
+  const d = new Date()
+  // 
+  if (iOS()) {
+    d = new Date(d)
+  }
+  console.log(d)
   if (!localStorage.getItem("cart")) {
     const cartData = await getJSONData(C_INFO_URL)
     if (cartData.status === 'ok') {
@@ -87,7 +89,9 @@ function addItemsToCart(cartArray) {
 
 function fav(idProductCart) {
   document.getElementById(`noFav-${idProductCart}`).classList.toggle("d-none")
+  document.getElementById(`noFavRes-${idProductCart}`).classList.toggle("d-none")
   document.getElementById(`Fav-${idProductCart}`).classList.toggle("d-none")
+  document.getElementById(`FavRes-${idProductCart}`).classList.toggle("d-none")
 }
 
 function verifyCurrency(currency, unitCost) {
@@ -106,7 +110,7 @@ function count_Delete_Fav(id, i, count) {
   <div class="col text-center px-sm-0">
     <div class="countGroup d-flex m-auto" style="height: 28px;">
       <button class="controlGroupMin d-flex align-items-center mx-auto flex-row-reverse" ${isMobile ? `ontouchend="mouseUp()" ontouchstart="mouseDown('negative', ${id})"` : `onmouseup="mouseUp()" onmousedown="mouseDown('negative', ${id})"`} >-</button>
-      <label class="counter" id="countProduct-${i}">${count}</label>
+      <label class="counter" ${isMobile ? 'id="countProductRes-"' + i : 'id="countProduct-"' + i }>${count}</label>
       <button class="controlGroupPlus d-flex align-items-center mx-auto" ${isMobile ? `ontouchend="mouseUp()" ontouchstart="mouseDown('positive', ${id})"` : `onmouseup="mouseUp()" onmousedown="mouseDown('positive', ${id})"`}>+</button>
     </div>
   </div>
@@ -122,8 +126,8 @@ function count_Delete_Fav(id, i, count) {
   <div class="col px-sm-0">
     <div class="favGroup d-flex m-auto" style="height: 28px;" onclick="fav(${id})">
       <button class="favBtn d-flex align-items-center justify-content-center">
-        <i class="fa-regular fa-heart" id="noFav-${id}"></i>
-        <i class="fa-solid fa-heart d-none" id="Fav-${id}"></i>
+        <i class="fa-regular fa-heart" ${isMobile ? 'id="noFavRes-"' + id : 'id="noFav-"' + id} ></i>
+        <i class="fa-solid fa-heart d-none" ${isMobile ? 'id="FavRes-"' + id : 'id="Fav-"' + id} ></i>
       </button>
     </div>
   </div>
@@ -190,6 +194,7 @@ function mouseDown(type, id) {
 
 
     document.getElementById(`countProduct-${i}`).innerText = cartArray[i].count
+    document.getElementById(`countProductRes-${i}`).innerText = cartArray[i].count
     localStorage.setItem("cart", JSON.stringify(cartArray))
 
     updateTotalCosts(cartArray)
@@ -215,6 +220,7 @@ function changeTotal(type, id) {
       cartArray[i].count = count
       localStorage.setItem("productBuyArray", JSON.stringify(cartArray))
       document.getElementById(`countProduct-${i}`).innerText = count
+      document.getElementById(`countProductRes-${i}`).innerText = count
       updateTotalCosts(cartArray)
       changeProductTotal(cartArray[i].unitCost, count, i)
     }
@@ -487,7 +493,7 @@ function checkOutBtn() {
 }
 
 function resumeOfPurchase() {
-  const d = iOS() ? new Date().toISOString().slice(0, 19).replace('T', ' ') : new Date().toISOString().slice(0, 19).replace('T', ' ').replace('-', '/').replace('-', '/')
+  const d = iOS() ? new Date('2011-04-12'.replace(/-/g, "/")) : new Date()
   let day = iOS() ? new Date(d).getDay() + 1 : new Date(d).getDay()
   let date = iOS() ? new Date(d).getDate() : new Date(d).getDate()
   let month = iOS() ? new Date(d).getMonth() : new Date(d).getMonth() + 1
