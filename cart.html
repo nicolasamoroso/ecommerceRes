@@ -15,9 +15,7 @@
   <script src="https://kit.fontawesome.com/95b02ed607.js" crossorigin="anonymous"></script>
 </head>
 
-<!-- <body onmouseup="mouseUp()"> -->
-
-<body>
+<body onmouseup="mouseUp()">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid container-lg mt-1">
       <a class="navbar-brand" href="index.html"><img src="img/logo.png" class="imgLogo"></a>
@@ -76,9 +74,11 @@
           </ul>
           <div class="position-relative d-none d-lg-block">
             <a href="cart.html" class="m-auto">
-              <i class="fa-solid fa-cart-shopping"></i><span
-                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">9 <span
-                  class="visually-hidden"></span></span>
+              <i class="fa-solid fa-cart-shopping active"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                id="cartLenght">0
+                <span class="visually-hidden"></span>
+              </span>
             </a>
           </div>
         </div>
@@ -87,108 +87,20 @@
   </nav>
   <main>
     <div class="container-fluid container-lg">
-      <h1 class="text-center mb-5">Carrito de compras</h1>
+      <h1 class="text-center my-4 my-lg-5">Carrito de compras</h1>
       <div class="row row-gap-2">
         <div class="col-xl-8 col-lg-8 col-sm-12 px-0">
           <div class="card-body card">
-            <h4 class="card-title">Mi Carrito (0 artículos)</h4>
+            <h4 class="card-title">Mi Carrito</h4>
             <div id="items">
-
-              <hr>
-              <div class="row">
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col-4 pe-0 h-100">
-                      <img src="img/car1.jpg" alt="product" class="img-fluid rounded">
-                    </div>
-                    <div class="col-8 flex-column d-flex justify-content-around">
-                      <div class="row">
-                        <div class="col-12 col-sm-7">
-                          <h5 class="mb-0">Chevrolet Onix Joy</h5>
-                          <small class="text-muted d-sm-none">USD 99999</small>
-                          <small class="text-muted d-none d-sm-block">USD 99999</small>
-                        </div>
-                        <div class="col-sm-5 d-flex justify-content-end">
-                          <h6 class="fw-bold d-none d-sm-block">USD 99999999</h6>
-                        </div>
-                      </div>
-                      <p class="d-none d-sm-block mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi,
-                        adipisci.</p>
-                      <small class="fw-bold mb-0 d-sm-none text-end">USD 99999999</small>
-
-                      <div class="col-11 ms-2">
-                        <div class="row d-none d-sm-flex justify-content-center gap-3">
-                          <div class="col text-center px-0">
-                            <div class="countGroup d-flex m-auto" style="height: 28px;">
-                              <button class="controlGroupMin d-flex align-items-center mx-auto">-</button>
-                              <label class="counter">1</label>
-                              <button class="controlGroupPlus d-flex align-items-center mx-auto">+</button>
-                            </div>
-                          </div>
-                          <div class="col px-0">
-                            <div class="deleteGroup d-flex m-auto" style="height: 28px;">
-                              <button class="deleteBtn d-flex align-items-center justify-content-center">
-                                <svg width="20" height="20" viewBox="0 0 15 15" fill="none"
-                                  xmlns="http://www.w3.org/2000/svg">
-                                  <path
-                                    d="M5.5 1C5.22386 1 5 1.22386 5 1.5C5 1.77614 5.22386 2 5.5 2H9.5C9.77614 2 10 1.77614 10 1.5C10 1.22386 9.77614 1 9.5 1H5.5ZM3 3.5C3 3.22386 3.22386 3 3.5 3H5H10H11.5C11.7761 3 12 3.22386 12 3.5C12 3.77614 11.7761 4 11.5 4H11V12C11 12.5523 10.5523 13 10 13H5C4.44772 13 4 12.5523 4 12V4L3.5 4C3.22386 4 3 3.77614 3 3.5ZM5 4H10V12H5V4Z"
-                                    fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path>
-                                </svg>
-                              </button>
-                            </div>
-                          </div>
-                          <div class="col px-0">
-                            <div class="deleteGroup d-flex m-auto" style="height: 28px;">
-                              <button class="deleteBtn d-flex align-items-center justify-content-center">
-                                <i class="fa-regular fa-heart"></i>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12 d-sm-none mt-3">
-                  <div class="row justify-content-center">
-                    <div class="col text-center">
-                      <div class="countGroup d-flex m-auto justify-content-center" style="height: 28px;">
-                        <button class="controlGroupMin d-flex align-items-center justify-content-center">-</button>
-                        <label class="counter">1</label>
-                        <button class="controlGroupPlus d-flex align-items-center justify-content-center">+</button>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="deleteGroup d-flex m-auto" style="height: 28px;">
-                        <button class="deleteBtn d-flex align-items-center justify-content-center">
-                          <svg width="20" height="20" viewBox="0 0 15 15" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                              d="M5.5 1C5.22386 1 5 1.22386 5 1.5C5 1.77614 5.22386 2 5.5 2H9.5C9.77614 2 10 1.77614 10 1.5C10 1.22386 9.77614 1 9.5 1H5.5ZM3 3.5C3 3.22386 3.22386 3 3.5 3H5H10H11.5C11.7761 3 12 3.22386 12 3.5C12 3.77614 11.7761 4 11.5 4H11V12C11 12.5523 10.5523 13 10 13H5C4.44772 13 4 12.5523 4 12V4L3.5 4C3.22386 4 3 3.77614 3 3.5ZM5 4H10V12H5V4Z"
-                              fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path>
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="deleteGroup d-flex m-auto" style="height: 28px;">
-                        <button class="deleteBtn d-flex align-items-center justify-content-center">
-                          <i class="fa-regular fa-heart"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
             </div>
             <hr>
             <div class="col-12">
-              <a href="products.html" class="prev"> <i class="fa-solid fa-arrow-left"></i> Continuar comprando </a>
+              <a class="prev" onclick="continueBuying()"> <i class="fa-solid fa-arrow-left"></i> Continuar comprando </a>
             </div>
           </div>
         </div>
-        <div class="col-lg-4 col-xl-4 col-sm-12 cart_summary" id="summary">
+        <div class="col-lg-4 col-xl-4 col-sm-12 cart_summary px-0 px-lg-3" id="summary">
           <div class="card-body card">
             <h4 class="card-title">Resumen de la compra</h4>
             <hr>
@@ -226,7 +138,7 @@
                 </p>
               </div>
               <div class="col-12">
-                <p class="card-text text-muted">Envío <span class="float-end" id="shipping-value">-</span>
+                <p class="card-text text-muted">Envío <span class="float-end" id="shipping-value">Gratis</span>
                 </p>
               </div>
               <div class="col-12">
@@ -269,15 +181,16 @@
                 </div>
               </div>
             </div>
-            <button type="button" id="buy" class="btn btn-success mt-2 ms-auto" data-bs-toggle="modal"
-              data-bs-target="#checkoutModal1">
+            <button type="button" class="btn btn-success mt-2 ms-auto" data-bs-toggle="modal"
+              data-bs-target="#checkoutModal1" id="checkout">
               Checkout
             </button>
           </div>
         </div>
       </div>
     </div>
-    <!-- Modal -->
+
+    <!-- Modals -->
     <div class="modal fade" id="checkoutModal1" tabindex="-1" aria-labelledby="checkoutModalLabel1" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -305,21 +218,31 @@
               <div class="col-6">
                 <label for="street" class="form-label">Calle</label>
                 <input type="text" class="form-control" id="street" placeholder="Calle">
+                <div class="invalid-feedback">
+                  Por favor ingrese una calle válida.
+                </div>
               </div>
               <div class="col-6">
                 <label for="number" class="form-label">Número</label>
-                <input type="text" class="form-control" id="number" placeholder="Número">
+                <input type="text" class="form-control" id="number" placeholder="xxxx"
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1').slice(0,4)">
+                <div class="invalid-feedback">
+                  Por favor ingrese un número válido.
+                </div>
               </div>
               <div class="col-6">
                 <label for="corner" class="form-label">Esquina</label>
                 <input type="text" class="form-control" id="corner" placeholder="Esquina">
+                <div class="invalid-feedback">
+                  Por favor ingrese una esquina válida.
+                </div>
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal"
-              data-bs-target="#checkoutModal2">Next</button>
+              data-bs-target="#checkoutModal2" id="BtnSigDireccion" disabled>Siguiente</button>
           </div>
         </div>
       </div>
@@ -349,24 +272,31 @@
                 style="width: 2rem; height:2rem;">3</button>
             </div>
             <div class="form-check">
+              <span class="text-danger d-none">Como la compra es mayor a USD 10.000, solo podrá abonar con una cuenta
+                bancaria.</span>
               <div class="pt-3">
-                <input class="form-check-input" type="radio" name="payment" id="credit" checked>
+                <input class="form-check-input" type="radio" name="payment" id="credit">
                 <label class="form-check-label" for="credit">
                   Tarjeta de crédito
                 </label>
                 <hr>
                 <div class="row">
-                  <div class="col-12">
+                  <div class="col-8 col-sm-6">
                     <label for="creditNumber" class="form-label">Número de tarjeta</label>
-                    <input type="text" class="form-control" id="creditNumber" placeholder="Número de tarjeta">
+                    <input type="text" class="form-control" id="creditNumber" placeholder="xxxx xxxx xxxx xxxx"
+                      oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1').slice(0, 16)"
+                      style="width: 200px;" disabled>
                   </div>
-                  <div class="col-6">
-                    <label for="cvv" class="form-label">CVV</label>
-                    <input type="text" class="form-control" id="cvv" placeholder="CVV">
+                  <div class="col-5 col-sm-4">
+                    <label for="cvv" class="form-label mt-2 mt-sm-0">CVV</label>
+                    <input type="text" class="form-control" id="cvv" placeholder="xxx"
+                      oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1').slice(0,3)"
+                      style="width: 80px;" disabled>
                   </div>
+                  <label for="date" class="form-label mt-2">Fecha de vencimiento</label>
                   <div class="col-6">
-                    <label for="date" class="form-label">Fecha de vencimiento</label>
-                    <input type="text" class="form-control" id="date" placeholder="Fecha de vencimiento">
+                    <input type="text" class="form-control" id="date" placeholder="mm/aa" maxlength="5"
+                      style="width: 120px;" disabled>
                   </div>
                 </div>
               </div>
@@ -379,16 +309,22 @@
                 <div class="row">
                   <div class="col-12">
                     <label for="bankNumber" class="form-label">Número de cuenta</label>
-                    <input type="text" class="form-control" id="bankNumber" placeholder="Número de cuenta" disabled>
+                    <input type="text" class="form-control" id="bankNumber" placeholder="Número de cuenta"
+                      oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1').slice(0, 20)"
+                      disabled>
+                    <div class="invalid-feedback">
+                      Por favor ingrese un número de cuenta válido.
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal"
+              data-bs-target="#checkoutModal1">Atrás</button>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal"
-              data-bs-target="#checkoutModal3">Next</button>
+              data-bs-target="#checkoutModal3" id="BtnSigPayment" disabled>Siguiente</button>
           </div>
         </div>
       </div>
@@ -398,7 +334,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="checkoutModalLabel3">Gracias por su compra</h5>
+            <h5 class="modal-title" id="checkoutModalLabel3">Resumen de la compra</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -417,13 +353,12 @@
                 class="position-absolute top-0 start-100 translate-middle btn btn-sm btn-primary rounded-pill"
                 style="width: 2rem; height:2rem;">3</button>
             </div>
-              <p>El envío le llegará entre dd/mm hasta dd/mm</p>
-              <p class="mb-0">Si tiene alguna duda, puede contactarnos en el siguiente correo: <a
-                  href="">example@mail.com</a>
-              </p>
+            <div id="purchase"></div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal"
+              data-bs-target="#checkoutModal2">Atrás</button>
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="buy">Pagar</button>
           </div>
         </div>
       </div>

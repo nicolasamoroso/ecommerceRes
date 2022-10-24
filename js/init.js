@@ -15,42 +15,42 @@ const P_INFO_URL = PRODUCT_INFO_URL + id + EXT_TYPE;
 const P_INFO_COMMENTS_URL = PRODUCT_INFO_COMMENTS_URL + localStorage.getItem("product-info") + EXT_TYPE;
 const C_INFO_URL = CART_INFO_URL + idUser1 + EXT_TYPE;
 
-let showSpinner = function(){
+let showSpinner = function () {
   document.getElementById("spinner-wrapper").style.display = "block";
 }
 
-let hideSpinner = function(){
+let hideSpinner = function () {
   document.getElementById("spinner-wrapper").style.display = "none";
 }
 
-const getJSONData = async (url) =>{
-    let result = {};
-    showSpinner();
-    return fetch(url)
+const getJSONData = async (url) => {
+  let result = {};
+  showSpinner();
+  return fetch(url)
     .then(response => {
       if (response.ok) {
         return response.json();
-      }else{
+      } else {
         throw Error(response.statusText);
       }
     })
-    .then(function(response) {
-          result.status = 'ok';
-          result.data = response;
-          hideSpinner();
-          return result;
+    .then(function (response) {
+      result.status = 'ok';
+      result.data = response;
+      hideSpinner();
+      return result;
     })
-    .catch(function(error) {
-        result.status = 'error';
-        result.data = error;
-        hideSpinner();
-        return result;
+    .catch(function (error) {
+      result.status = 'error';
+      result.data = error;
+      hideSpinner();
+      return result;
     });
 }
 
 const burger = document.getElementById("btnBurger");
-burger.addEventListener("click", function() {
-    burger.classList.contains("active") ? burger.classList.remove("active") : burger.classList.add("active");
+burger.addEventListener("click", function () {
+  burger.classList.contains("active") ? burger.classList.remove("active") : burger.classList.add("active");
 })
 
 function setCatID(id) {
@@ -61,15 +61,11 @@ function setCatID(id) {
 function product_info(id) {
   if (!id) return
   localStorage.setItem("product-info", id);
-  window.location.href = "product-info.html"    
+  window.location.href = "product-info.html"
 }
 
-function buy(id) {
-  console.log("compre " + id)
-}
-
-function showTopSaleProducts(array){
-  for(let i = 0; i < array.length; i++){
+function showTopSaleProducts(array) {
+  for (let i = 0; i < array.length; i++) {
     let product = array[i]
     if (product.products.length > 0) {
       document.getElementById("lstTopSale").innerHTML += `
@@ -89,7 +85,7 @@ function showTopSaleProducts(array){
           </div>
       </div>
       `
-      product.products.forEach(({id, name, soldCount}) => {
+      product.products.forEach(({ id, name, soldCount }) => {
         if (soldCount > 10) {
           document.getElementById(`lstCat-${i}`).innerHTML += `
           <a class="col-6 col-sm-4 col-md-12 text-decoration-underline" onclick="product_info(${id})">${name}</a>
@@ -102,7 +98,7 @@ function showTopSaleProducts(array){
 
 const cart = async (cant, product) => {
 
-  let newProduct = { 
+  let newProduct = {
     name: product.name,
     count: cant,
     unitCost: product.cost,
@@ -110,7 +106,7 @@ const cart = async (cant, product) => {
     image: product.image ?? product.images[0],
     id: product.id,
     stock: product.stock,
-    description: product.description ?? 'xD'
+    description: product.description
   }
 
   let cartArray = []
@@ -119,7 +115,8 @@ const cart = async (cant, product) => {
     if (cartData.status === 'ok') {
       let cart = cartData.data.articles
       cart.forEach(prod => {
-        prod.stock = prod.currency === "USD" ? Math.round(40000/prod.cost) + 1 : Math.round(40000/prod.cost * 23) + 1 
+        prod.stock = prod.currency === "USD" ? Math.round(40000 / prod.cost) + 1 : Math.round(40000 / prod.cost * 23) + 1
+        prod.description = 'El modelo de auto que se sigue renovando y manteniendo su prestigio en comodidad.'
         cartArray.push(prod)
       })
     }
@@ -137,7 +134,7 @@ const cart = async (cant, product) => {
       same_product.stock = newProduct.stock
     }
     else {
-      console.log("valor mayor al stock")
+      alert("valor mayor al stock")
       return false
     }
   }
@@ -146,17 +143,33 @@ const cart = async (cant, product) => {
   }
 
   localStorage.setItem("cart", JSON.stringify(cartArray))
+  refreshCountCart()
   return true
 }
 
-function cartBtn(id, catName) {
+const cartBtn = async (id, catName) => {
   let array = JSON.parse(localStorage.getItem("newProductArray"))
   let cat = array.find(cat => cat.catName === catName).products
   let pinfo = cat.find(prod => prod.id === id)
 
-  let added = cart(1, pinfo)
-  if (added) 
-    window.location = "cart.html"
-  else 
-    console.log("valor mayor al stock")
+  let added = await cart(1, pinfo)
+  if (added === true) window.location = "cart.html"
+
+}
+
+function refreshCountCart() {
+  document.getElementById("cartLenght").innerText = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")).length : 1 
+}
+
+document.addEventListener("DOMContentLoaded", function (e) {
+  refreshCountCart()
+});
+
+function continueBuying() {
+  if (localStorage.getItem("catID")) {
+    window.location = "products.html"
+  }
+  else {
+    window.location = "categories.html"
+  }
 }
