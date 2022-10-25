@@ -42,16 +42,12 @@ document.getElementById("form").addEventListener("submit", function (event) {
 });
 
 function signIn(n_email, name = undefined, picture = undefined) {
-
     const profileArray = JSON.parse(localStorage.getItem("profile"));
-
     if (profileArray) {
         const catchProfile = profileArray.find(function ({ email }) {
             return email === n_email
         })
-
         if (catchProfile) {
-
             const profile = {
                 name: catchProfile.name,
                 email: catchProfile.email,
@@ -89,7 +85,6 @@ function signIn(n_email, name = undefined, picture = undefined) {
     }
 
     if (profileArray) {
-
         profileArray.push(profile);
         localStorage.setItem("profile", JSON.stringify(profileArray));
         redirect();
@@ -110,15 +105,6 @@ function redirect() {
         })
         if (catchProfile) window.location = "index.html";
     }
-}
-
-function showAlertError() {
-    document.getElementById("alert-danger").classList.add("show");
-    setTimeout(removeAlertError, 3000);
-}
-
-function removeAlertError() {
-    document.getElementById("alert-danger").classList.remove("show")
 }
 
 document.addEventListener("DOMContentLoaded", function () {
