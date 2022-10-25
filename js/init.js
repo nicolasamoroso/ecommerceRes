@@ -52,6 +52,9 @@ const burger = document.getElementById("btnBurger");
 burger.addEventListener("click", function () {
   burger.classList.contains("active") ? burger.classList.remove("active") : burger.classList.add("active");
 })
+burger.addEventListener("doubleclick", function () {
+  burger.classList.contains("active") ? burger.classList.remove("active") : burger.classList.add("active");
+})
 
 function setCatID(id) {
   localStorage.setItem("catID", id);
