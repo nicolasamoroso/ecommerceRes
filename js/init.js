@@ -97,7 +97,6 @@ function showTopSaleProducts(array) {
 }
 
 const cart = async (cant, product) => {
-
   let newProduct = {
     name: product.name,
     count: cant,
@@ -134,7 +133,7 @@ const cart = async (cant, product) => {
       same_product.stock = newProduct.stock
     }
     else {
-      alert("valor mayor al stock")
+      addOutOfStockAlert()
       return false
     }
   }
@@ -153,8 +152,12 @@ const cartBtn = async (id, catName) => {
   let pinfo = cat.find(prod => prod.id === id)
 
   let added = await cart(1, pinfo)
-  if (added === true) window.location = "cart.html"
-
+  if (added === true) {
+    addToCartAlert('')
+    setTimeout(() => {
+      window.location = "cart.html"
+    }, 1000)
+  }
 }
 
 function refreshCountCart() {
@@ -166,12 +169,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
 });
 
 function continueBuying() {
-  if (localStorage.getItem("catID")) {
-    window.location = "products.html"
-  }
-  else {
-    window.location = "categories.html"
-  }
+  if (localStorage.getItem("catID")) window.location = "products.html"
+  else window.location = "categories.html"
 }
 
 function iOS() {
@@ -180,4 +179,20 @@ function iOS() {
     return ua.indexOf('chrome') > -1 ? false : true;
   }
   return false
+}
+
+function addToCartAlert(string) {
+  document.getElementById("add-success").innerHTML = `<strong>Producto agregado al carrito!</strong> ${string}`
+  document.getElementById("add-success").classList.add("show")
+  setTimeout(() => {
+    document.getElementById("add-success").classList.remove("show")
+  }, 2500);
+}
+
+function addOutOfStockAlert() {
+  document.getElementById("add-error").innerHTML = `<strong>Superó el límite de stock para este producto!</strong>`
+  document.getElementById("add-error").classList.add("show")
+  setTimeout(() => {
+    document.getElementById("add-error").classList.remove("show")
+  }, 2500);
 }

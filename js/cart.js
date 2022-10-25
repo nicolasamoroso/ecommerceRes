@@ -141,16 +141,35 @@ function count_Delete_Fav(id, i, count, res) {
 }
 
 function remove(id) {
-  if (confirm("¿Está seguro que desea eliminar el producto?")) {
-    cartArray = cartArray.filter(product => product.id !== id)
-    localStorage.setItem("cart", JSON.stringify(cartArray))
-    addItemsToCart(cartArray)
-    refreshCountCart()
-    updateTotalCosts(cartArray)
-    if (cartArray.length === 0) checkOutBtn()
-    return true
-  }
-  return false
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: "El producto se eliminará del carrito!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sí, eliminar!',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire(
+        'Eliminado!',
+        'El producto ha sido eliminado.',
+        'success'
+      )
+      setTimeout(() => {
+        location.reload()
+      }, 1500)
+      cartArray = cartArray.filter(product => product.id !== id)
+      localStorage.setItem("cart", JSON.stringify(cartArray))
+      addItemsToCart(cartArray)
+      refreshCountCart()
+      updateTotalCosts(cartArray)
+      if (cartArray.length === 0) checkOutBtn()
+      return true
+    }
+    else return false
+  })
 }
 
 let startTime = 0
@@ -196,7 +215,10 @@ function mouseDown(type, id) {
     }
 
     if (cartArray[i].count < 1) cartArray[i].count = 1
-    if (cartArray[i].count > cartArray[i].stock) cartArray[i].count = cartArray[i].stock
+    if (cartArray[i].count > cartArray[i].stock) {
+      addOutOfStockAlert()
+      cartArray[i].count = cartArray[i].stock
+    }
 
     document.getElementById(`countProduct-${i}`).textContent = cartArray[i].count
     document.getElementById(`countProductRes-${i}`).textContent = cartArray[i].count
@@ -486,6 +508,10 @@ document.getElementById("buy").addEventListener("click", function () {
   refreshCountCart()
   updateTotalCosts(cartArray)
   checkOutBtn()
+  document.getElementById("success-alert").classList.add("show")
+  setTimeout(function () {
+    document.getElementById("success-alert").classList.remove("show")
+  }, 2500)
 })
 
 function checkOutBtn() {

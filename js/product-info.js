@@ -177,7 +177,7 @@ function addResume(pInfo) {
 
     let liNumbers = document.getElementsByClassName("liNumbers")
     for (let i = 0; i < liNumbers.length; i++) {
-        liNumbers[i].addEventListener("click", function (e) {
+        liNumbers[i].addEventListener("click", function () {
             const j = parseInt(this.innerText)
             document.getElementById("countDropdown").innerText = j
             document.getElementById("countDropdownRes").innerText = j
@@ -478,18 +478,21 @@ document.getElementById("commentBtn").addEventListener("click", function () {
 })
 
 function addToCart() {
-    const value = count_value
+    let value = count_value
+    const cartArray = localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : {}
+    const pinfo = cartArray.find((product) => product.id === productInfo.id)
+    if (pinfo) value += pinfo.count
     if (value > productInfo.stock) {
-        alert("valor mayor al stock")
+        addOutOfStockAlert()
         return false
     }
-    return cart(value, productInfo)
+    else {
+        addToCartAlert('Puedes verlo en el carrito de compras.')
+        return cart(value, productInfo)
+    }
 }
 
 function buy() {
     let added = addToCart()
-    if (added)
-        window.location = "cart.html"
-    else
-        alert("valor mayor al stock")
+    if (added) window.location = "cart.html"
 }

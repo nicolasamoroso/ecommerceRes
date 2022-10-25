@@ -252,9 +252,10 @@ a.navbar-brand {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
+  margin-right: 10px
 }
 
-.navToggler>div {
+.navToggler > div {
   background-color: white;
   height: 2px;
   width: 100%;
