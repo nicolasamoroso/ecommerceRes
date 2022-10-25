@@ -164,9 +164,27 @@ function refreshCountCart() {
   document.getElementById("cartLenght").innerText = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")).length : 1 
 }
 
+let catchProfile = {}
+
 document.addEventListener("DOMContentLoaded", function (e) {
   refreshCountCart()
-});
+
+  const profile = JSON.parse(localStorage.getItem("profile"))
+  
+  if (!profile) {
+    window.location = "login.html"
+    return
+  }
+  catchProfile = profile.find(function({logged}) {
+    return logged === true
+  })
+  if (!catchProfile) {
+    window.location = "login.html"
+    return
+  }
+
+  resizeProfile()
+})
 
 function continueBuying() {
   if (localStorage.getItem("catID")) window.location = "products.html"
@@ -195,4 +213,43 @@ function addOutOfStockAlert() {
   setTimeout(() => {
     document.getElementById("add-error").classList.remove("show")
   }, 2500);
+}
+
+function signOut() {
+  if (localStorage.getItem("profile")) {
+    const profileArray = JSON.parse(localStorage.getItem("profile"))
+    const catchProfile = profileArray.find(function({logged}) {
+      return logged === true
+    })
+    if (catchProfile) {
+      catchProfile.logged = false
+      localStorage.setItem("profile", JSON.stringify(profileArray));
+    }
+  }
+  localStorage.removeItem("cart")
+  window.location = "login.html"
+}
+
+let resize = false
+
+window.addEventListener("resize", function() {
+  if (!resize && window.innerWidth <= 991) {
+    resize = true
+    resizeProfile()
+  }
+  else if (resize && window.innerWidth > 991) {
+    resize = false
+    resizeProfile()
+  }
+})
+
+function resizeProfile() {
+  if (window.innerWidth <= 991) {
+    document.getElementById("username").textContent = catchProfile.name ?? "username"
+    document.getElementById("imgUser").src = catchProfile.picture ?? "img/img_perfil.png"
+  }
+  else {
+    document.getElementById("usernameRes").textContent = catchProfile.name ?? "username"
+    document.getElementById("imgUserRes").src = catchProfile.picture ?? "img/img_perfil.png"
+  }
 }

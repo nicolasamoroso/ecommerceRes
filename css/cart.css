@@ -10,6 +10,9 @@
 .countGroup {
 	border: 1px solid rgb(197, 197, 197);
 	border-radius: 15px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
 	user-select: none;
 }
 
@@ -27,7 +30,8 @@
 	min-width: 30px;
 }
 
-.deleteGroup, .favGroup {
+.deleteGroup,
+.favGroup {
 	border: 1px solid rgb(197, 197, 197);
 	border-radius: 15px;
 	justify-content: center;
@@ -65,7 +69,8 @@
 	color: rgb(207, 0, 0);
 }
 
-.fa-solid.fa-heart:hover, .favGroup:hover .fa-solid.fa-heart  {
+.fa-solid.fa-heart:hover,
+.favGroup:hover .fa-solid.fa-heart {
 	color: rgba(255, 0, 0, 0.582);
 }
 
@@ -78,17 +83,17 @@
 }
 
 input#credit {
-    margin-left: 0;
-    margin-right: 5px;
+	margin-left: 0;
+	margin-right: 5px;
 }
 
 input#bank {
-    margin-left: 0;
-    margin-right: 10px;
+	margin-left: 0;
+	margin-right: 10px;
 }
 
-.imgHoverCartProduct:hover{
-    opacity: 0.88;
+.imgHoverCartProduct:hover {
+	opacity: 0.88;
 	cursor: pointer;
 }
 
@@ -99,13 +104,13 @@ input#bank {
 }
 
 .prev {
-  color: #494949;
-  text-decoration: none;
-  cursor: pointer;
+	color: #494949;
+	text-decoration: none;
+	cursor: pointer;
 }
 
 .prev:hover {
-  color: #000000;
+	color: #000000;
 }
 
 .fa-solid.fa-cart-shopping.active {

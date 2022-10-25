@@ -30,7 +30,7 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex gap-lg-4 mt-lg-0 mt-3">
           <li class="nav-item d-lg-none">
             <a class="nav-link" href="my-profile.html">
-              <img src="img/img_perfil.png" alt="user" class="img-fluid rounded-circle" width="25">
+              <img id="imgUser" src="img/img_perfil.png" alt="user" class="img-fluid rounded-circle" width="25">
               <span id="username">username</span>
             </a>
           </li>
@@ -52,7 +52,7 @@
           </li>
           <hr class="m-0 text-muted d-lg-none">
           <li class="nav-item d-lg-none">
-            <a class="nav-link text-danger" href="login.html">Cerrar sesión</a>
+            <a class="nav-link text-danger" onclick="signOut()">Cerrar sesión</a>
           </li>
         </ul>
         <div class="d-flex gap-lg-3">
@@ -60,15 +60,15 @@
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="img/img_perfil.png" alt="user" class="img-fluid rounded-circle" width="25">
-                <span id="username">username</span>
+                <img id="imgUserRes" src="img/img_perfil.png" alt="user" class="img-fluid rounded-circle" width="25">
+                <span id="usernameRes">username</span>
               </a>
               <ul class="dropdown-menu bg-dark dropdown-menu-dark" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="my-profile.html">Perfil</a></li>
                 <li>
                   <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item text-danger" href="login.html">Cerrar Sesión</a></li>
+                <li><a class="dropdown-item text-danger" onclick="signOut()">Cerrar Sesión</a></li>
               </ul>
             </li>
           </ul>
@@ -295,7 +295,7 @@
                   </div>
                   <label for="date" class="form-label mt-2">Fecha de vencimiento</label>
                   <div class="col-6">
-                    <input type="text" class="form-control" id="date" placeholder="mm/aa" maxlength="5"
+                    <input type="text" class="form-control" id="date" placeholder="mm/aa" onkeypress='validate(event)' maxlength="5"
                       style="width: 120px;" disabled>
                   </div>
                 </div>

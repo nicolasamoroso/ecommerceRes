@@ -256,6 +256,7 @@ function changeTotal(type, id) {
 
 function changeProductTotal(unitCost, count, i) {
   document.getElementById(`totalPerProduct-${i}`).innerText = `${typeOfCurrency} ${verifyCurrency(cartArray[i].currency, unitCost, i) * count}`
+  document.getElementById(`totalPerProductRes-${i}`).innerText = `${typeOfCurrency} ${verifyCurrency(cartArray[i].currency, unitCost, i) * count}`
 }
 
 let perccentage = 0
@@ -310,14 +311,14 @@ document.getElementById("free-shipping").addEventListener("click", function () {
 
 // detect when close mobile inspector and reload page
 window.addEventListener("resize", function () {
-  let mobile = navigator.userAgentData.mobile;
+  let mobile = iOS() ? iOSMobile() : navigator.userAgentData.mobile
   if (mobile !== isMobile) {
     isMobile = mobile
     addItemsToCart(cartArray)
   }
 })
 
-document.getElementById("street").addEventListener("keyup", function () {
+document.getElementById("street").addEventListener("input", function () {
   if (this.value.length > 0) {
     document.getElementById("street").classList.remove("is-invalid")
     document.getElementById("street").classList.add("is-valid")
@@ -329,7 +330,7 @@ document.getElementById("street").addEventListener("keyup", function () {
   validateDireccion()
 })
 
-document.getElementById("number").addEventListener("keyup", function () {
+document.getElementById("number").addEventListener("input", function () {
   if (this.value.length > 3) {
     document.getElementById("number").classList.remove("is-invalid")
     document.getElementById("number").classList.add("is-valid")
@@ -341,7 +342,7 @@ document.getElementById("number").addEventListener("keyup", function () {
   validateDireccion()
 })
 
-document.getElementById("corner").addEventListener("keyup", function () {
+document.getElementById("corner").addEventListener("input", function () {
   if (this.value.length > 0) {
     document.getElementById("corner").classList.remove("is-invalid")
     document.getElementById("corner").classList.add("is-valid")
@@ -403,7 +404,7 @@ document.getElementById("bank").addEventListener("click", function () {
   validatePayment()
 })
 
-document.getElementById("creditNumber").addEventListener("keyup", function () {
+document.getElementById("creditNumber").addEventListener("input", function () {
   if (this.value.length === 16) {
     document.getElementById("creditNumber").classList.remove("is-invalid")
     document.getElementById("creditNumber").classList.add("is-valid")
@@ -415,7 +416,7 @@ document.getElementById("creditNumber").addEventListener("keyup", function () {
   validatePayment()
 })
 
-document.getElementById("cvv").addEventListener("keyup", function () {
+document.getElementById("cvv").addEventListener("input", function () {
   if (this.value.length === 3) {
     document.getElementById("cvv").classList.remove("is-invalid")
     document.getElementById("cvv").classList.add("is-valid")
@@ -427,11 +428,30 @@ document.getElementById("cvv").addEventListener("keyup", function () {
   validatePayment()
 })
 
-document.getElementById("date").addEventListener("keyup", function (e) {
-  if (isNaN(e.key) && e.key !== "Backspace") {
-    this.value = this.value.substring(0, this.value.length - 1)
-  }
+function validate(evt) {
+  let theEvent = evt || window.event;
 
+  if (theEvent.type === 'paste') {
+      key = evt.clipboardData.getData('text/plain');
+  } else {
+      var key = theEvent.keyCode || theEvent.which;
+      key = String.fromCharCode(key);
+  }
+  let regex = /[0-9]|\./;
+  if( !regex.test(key) ) {
+    theEvent.returnValue = false;
+    if(theEvent.preventDefault) theEvent.preventDefault();
+  }
+}
+
+// id date, when user only press a letter and dont keyup, change the format
+document.getElementById("date").addEventListener("input", function () {
+  if (this.value.length === 2) {
+    this.value = this.value + "/"
+  }
+})
+
+document.getElementById("date").addEventListener("keyup", function (e) {
   const date = this.value.split("/")
   if (e.key !== "Backspace") {
     if (date[0] && date[0].length === 2 && date[0] > 12) {
@@ -465,7 +485,7 @@ document.getElementById("date").addEventListener("keyup", function (e) {
   validatePayment()
 })
 
-document.getElementById("bankNumber").addEventListener("keyup", function () {
+document.getElementById("bankNumber").addEventListener("input", function () {
   if (this.value.length === 20) {
     document.getElementById("bankNumber").classList.remove("is-invalid")
     document.getElementById("bankNumber").classList.add("is-valid")
