@@ -108,7 +108,7 @@ function addCountDeleteFavBtns(id, i, count, res) {
       >+</button>
     </div>
   </div>
-  <div class="col px-sm-0" onclick="remove(${id})">
+  <div class="col px-sm-0" onclick="removeProduct(${id})">
     <div class="deleteGroup d-flex m-auto" style="height: 28px;">
       <button class="deleteBtn d-flex align-items-center justify-content-center">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
