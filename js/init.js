@@ -74,19 +74,21 @@ function showTopSaleProducts(array) {
     if (product.products.length > 0) {
       document.getElementById("lstTopSale").innerHTML += `
       <div class="mt-3">
-          <h2 class="accordion-header" id="btnCat-${i}">
-              <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCat-${i}" aria-expanded="false" aria-controls="collapseCat-${i}">
-                  <i class="fa-solid fa-arrow-down-from-line"></i> <span class="text-muted">${product.catName}</span>
-              </button>
-          </h2>
-          <div class="accordion" id="productCat-${i}">
-              <div id="collapseCat-${i}" class="accordion-collapse collapse" aria-labelledby="btnCat-${i}" data-bs-parent="#productCat-${i}">
-                  <div class="accordion-body d-lg-flex flex-lg-column text-muted pb-0">
-                      <div class="row" id="lstCat-${i}">
-                      </div>
-                  </div>
+        <h2 class="accordion-header" id="btnCat-${i}">
+          <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseCat-${i}" aria-expanded="false" aria-controls="collapseCat-${i}">
+            <i class="fa-solid fa-arrow-down-from-line"></i> <span class="text-muted">${product.catName}</span>
+          </button>
+        </h2>
+        <div class="accordion" id="productCat-${i}">
+          <div id="collapseCat-${i}" class="accordion-collapse collapse" aria-labelledby="btnCat-${i}"
+            data-bs-parent="#productCat-${i}">
+            <div class="accordion-body d-lg-flex flex-lg-column text-muted pb-0">
+              <div class="row" id="lstCat-${i}">
               </div>
+            </div>
           </div>
+        </div>
       </div>
       `
       product.products.forEach(({ id, name, soldCount }) => {
@@ -118,7 +120,8 @@ const cart = async (cant, product) => {
     if (cartData.status === 'ok') {
       let cart = cartData.data.articles
       cart.forEach(prod => {
-        prod.stock = prod.currency === "USD" ? Math.round(40000 / prod.cost) + 1 : Math.round(40000 / prod.cost * 23) + 1
+        prod.count = 1
+        prod.stock = prod.currency === "USD" ? Math.round(40000 / prod.unitCost) + 1 : Math.round(40000 / prod.unitCost * 23) + 1
         prod.description = 'El modelo de auto que se sigue renovando y manteniendo su prestigio en comodidad.'
         cartArray.push(prod)
       })
@@ -201,6 +204,23 @@ function iOS() {
   return false
 }
 
+function iOSMobile() {
+  var iDevices = [
+    'iPad Simulator',
+    'iPhone Simulator',
+    'iPod Simulator',
+    'iPad',
+    'iPhone',
+    'iPod'
+  ];
+  if (!!navigator.platform) {
+    while (iDevices.length) {
+      if (navigator.platform === iDevices.pop()) { return true; }
+    }
+  }
+  return false;
+}
+
 function addToCartAlert(string) {
   document.getElementById("add-success").innerHTML = `<strong>Producto agregado al carrito!</strong> ${string}`
   document.getElementById("add-success").classList.add("show")
@@ -253,5 +273,17 @@ function resizeProfile() {
   else {
     document.getElementById("usernameRes").textContent = catchProfile.name ?? "username"
     document.getElementById("imgUserRes").src = catchProfile.picture ?? "img/img_perfil.png"
+  }
+}
+
+function toggleValidate(id, bool) {
+  const element = document.getElementById(id)
+  if (bool) {
+    element.classList.remove("is-invalid")
+    element.classList.add("is-valid")
+  }
+  else {
+    element.classList.remove("is-valid")
+    element.classList.add("is-invalid")
   }
 }

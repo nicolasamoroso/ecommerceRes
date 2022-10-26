@@ -310,13 +310,6 @@ searchBar.addEventListener("keyup", (e) => {
         document.getElementById("category-subtitle").innerHTML = `
         <p class="lead">No hay categorías que coincidan con tu búsqueda.</p>
         `
-        document.getElementById("cat-list-container").innerHTML = "";
+        document.getElementById("catList").innerHTML = "";
     }
 })
-
-function X() {
-    var searchString = searchBar.value;
-    if (searchString.length === 0) {
-        showCategoriesList(currentCategoriesArray);
-    }
-}

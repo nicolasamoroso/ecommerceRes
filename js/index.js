@@ -2,7 +2,6 @@ let categoriesArray = []
 let newProductArray = []
 
 document.addEventListener("DOMContentLoaded", async () =>{
-
     if (localStorage.getItem("categoriesArray")) {
         categoriesArray = JSON.parse(localStorage.getItem("categoriesArray"))
         if (localStorage.getItem("newProductArray")) 

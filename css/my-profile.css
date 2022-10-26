@@ -1,0 +1,45 @@
+img#profile_img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    img#profile_img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+    }
+}
+
+@media (max-width: 576px) {
+    img#profile_img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
+}
+
+.form-control:focus {
+    border-color: rgb(83, 83, 83);
+    box-shadow: none;
+  }
+  
+  .form-control[type=search] {
+    box-shadow: none;
+  }

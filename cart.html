@@ -293,9 +293,9 @@
                       oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1').slice(0,3)"
                       style="width: 80px;" disabled>
                   </div>
-                  <label for="date" class="form-label mt-2">Fecha de vencimiento</label>
+                  <label for="expirationDate" class="form-label mt-2">Fecha de vencimiento</label>
                   <div class="col-6">
-                    <input type="text" class="form-control" id="date" placeholder="mm/aa" onkeypress='validate(event)'
+                    <input type="text" class="form-control" id="expirationDate" placeholder="mm/aa" onkeypress='validateExpDate(event)'
                       maxlength="5" style="width: 120px;" disabled>
                   </div>
                 </div>
@@ -324,7 +324,7 @@
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal"
               data-bs-target="#checkoutModal1">Atrás</button>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal"
-              data-bs-target="#checkoutModal3" id="BtnSigPayment" disabled>Siguiente</button>
+              data-bs-target="#checkoutModal3" id="BtnNextPayment" disabled>Siguiente</button>
           </div>
         </div>
       </div>

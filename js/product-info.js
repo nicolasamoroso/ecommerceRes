@@ -209,81 +209,61 @@ function addInput(stock) {
     document.getElementById("countDropdown").innerText = inputCount.value
     document.getElementById("countDropdownRes").innerText = inputCountRes.value
     count_value = inputCount ? parseInt(inputCount.value) : parseInt(inputCountRes.value)
-    console.log("parseInt = " + count_value)
 
     const cartArray = JSON.parse(localStorage.getItem("cart"))
     let count = 0;
     if (cartArray) {
         cartArray.forEach(element => {
-            if (element.id === parseInt(id)) {
-                count = element.count
-            }
+            if (element.id === parseInt(id)) count = element.count
         });
     }
 
     inputCount.addEventListener("keyup", function (e) {
         let i = parseInt(e.target.value)
         if (i) {
-            if (i < 0) {
-                document.getElementById("inputCount").value = 1
-            }
+            if (i < 0) document.getElementById("inputCount").value = 1
             else if (i > stock - count) {
                 document.getElementById("stockInsuficiente").classList.remove("d-none")
-                document.getElementById("inputCount").classList.remove("is-valid")
-                document.getElementById("inputCount").classList.add("is-invalid")
+                toggleValidate("inputCount", false)
             }
             else {
-                if (!document.getElementById("stockInsuficiente").classList.contains("d-none")) {
+                if (!document.getElementById("stockInsuficiente").classList.contains("d-none")) 
                     document.getElementById("stockInsuficiente").classList.add("d-none")
-                }
-                document.getElementById("inputCount").classList.remove("is-invalid")
-                document.getElementById("inputCount").classList.add("is-valid")
+                toggleValidate("inputCount", true)
                 document.getElementById("countDropdown").innerText = i
                 count_value = i
             }
         }
         else {
             document.getElementById("stockInsuficiente").classList.add("d-none")
-            document.getElementById("inputCount").classList.remove("is-valid")
-            document.getElementById("inputCount").classList.add("is-invalid")
+            toggleValidate("inputCount", false)
             document.getElementById("countDropdown").innerText = 1
             count_value = 0
         }
-        
-        console.log("i = " + count_value)
-
     })
 
     document.getElementById("inputCountRes").addEventListener("keyup", function (e) {
         let i = parseInt(e.target.value)
         if (i) {
-            if (i < 0) {
-                document.getElementById("inputCountRes").value = 1
-            }
+            if (i < 0) document.getElementById("inputCountRes").value = 1
             else if (i > stock - count) {
                 document.getElementById("stockInsuficienteRes").classList.remove("d-none")
-                document.getElementById("inputCountRes").classList.remove("is-valid")
-                document.getElementById("inputCountRes").classList.add("is-invalid")
+                toggleValidate("inputCountRes", false)
             }
             else {
-                if (!document.getElementById("stockInsuficienteRes").classList.contains("d-none")) {
+                if (!document.getElementById("stockInsuficienteRes").classList.contains("d-none")) 
                     document.getElementById("stockInsuficienteRes").classList.add("d-none")
-                }
-                document.getElementById("inputCountRes").classList.remove("is-invalid")
-                document.getElementById("inputCountRes").classList.add("is-valid")
+                toggleValidate("inputCountRes", true)
                 document.getElementById("countDropdownRes").innerText = i
                 count_value = i
             }
         }
         else {
             document.getElementById("stockInsuficienteRes").classList.add("d-none")
-            document.getElementById("inputCountRes").classList.remove("is-valid")
-            document.getElementById("inputCountRes").classList.add("is-invalid")
+            toggleValidate("inputCountRes", false)
             document.getElementById("countDropdownRes").innerText = 1
             count_value = 0
         }
-        
-        console.log("i = " + count_value)
     })
 }
 
@@ -407,11 +387,11 @@ function showComments(comments) {
         htmlContentToAppend += `
         <hr>
         <div class="d-flex justify-content-between">
-        <div class="d-flex gap-2">
-            <img class="rounded-circle" src="${comment.img}" style="width: 20px; height: 20px;">
-            <h6>${comment.user}</h6>
-        </div>
-        <small class="text-muted">${changeDayFormat(new Date(comment.dateTime))}</small>
+            <div class="d-flex gap-2">
+                <img class="rounded-circle" src="${comment.img}" style="width: 20px; height: 20px;">
+                <h6>${comment.user}</h6>
+            </div>
+            <small class="text-muted">${changeDayFormat(new Date(comment.dateTime))}</small>
         </div>
         <div class="ps-4 stars">${ScoreToStars(comment.score)}</div>
         <p class="ps-4 pt-2 text-break">${comment.description}</p>       
@@ -431,10 +411,8 @@ function executeRating(stars) {
         star.onclick = () => {
             i = stars.indexOf(star)
 
-            if (star.className === starClassInactive)
-                for (i; i >= 0; --i) stars[i].className = starClassActive
-            else
-                for (i; i < starsLength - 1; ++i) stars[i + 1].className = starClassInactive
+            if (star.className === starClassInactive) for (i; i >= 0; --i) stars[i].className = starClassActive
+            else for (i; i < starsLength - 1; ++i) stars[i + 1].className = starClassInactive
         }
     })
 }

@@ -10,7 +10,6 @@ let minPriceRes = undefined;
 let maxPriceRes = undefined;
     
 document.addEventListener("DOMContentLoaded", async (e) => {
-
     productsArray = JSON.parse(localStorage.getItem("newProductArray"));
 
     showTopSaleProducts(productsArray)
@@ -101,13 +100,9 @@ document.addEventListener("DOMContentLoaded", async (e) => {
     document.getElementById("clearRangeFilterRes").addEventListener("click", clearRangeFilter)
     document.getElementById("rangeFilterPriceRes").addEventListener("click", rangeFilterPrice)
 
-
-    //guarda la ubicación actual por si llega a ir a un lugar no permitido.
-    const location = window.location.href;
-    localStorage.setItem("prev_location", JSON.stringify(location));
 });
 
-//cambia el background color de los botones que ordenan los productos
+
 function changeColor(a, b, c) {
     document.getElementById(a).classList.remove("bg-sort");
     document.getElementById(a).classList.add("bg-sort-active");
@@ -229,16 +224,9 @@ document.getElementById("searchBar").addEventListener("keyup", (e) => {
             <span class="text-dark">${cat_name}</span>
         </h4>
         `
-        document.getElementById("product-list-container").innerHTML = "";
+        document.getElementById("prodList").innerHTML = "";
     }
 
     showProductsList(filteredProductsArray);
     
 })
-
-function X() {
-    var searchString = document.getElementById("searchBar").value;
-    if (searchString.length === 0) {
-        showProductsList(productsArray);
-    }
-}
