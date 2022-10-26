@@ -125,9 +125,7 @@ const cart = async (cant, product) => {
     }
     localStorage.setItem("cart", JSON.stringify(cartArray))
   }
-  else {
-    cartArray = JSON.parse(localStorage.getItem("cart"))
-  }
+  else cartArray = JSON.parse(localStorage.getItem("cart"))
 
   let same_product = cartArray.find(product => product.id === newProduct.id)
 

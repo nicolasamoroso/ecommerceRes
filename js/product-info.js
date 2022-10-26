@@ -188,7 +188,7 @@ function addResume(pInfo) {
             document.getElementById("countDropdownRes").classList.remove("show")
             document.getElementById("countDropdown").classList.remove("show")
             count_value = j
-
+            console.log("j = " + count_value)
         })
     }
 }
@@ -209,6 +209,7 @@ function addInput(stock) {
     document.getElementById("countDropdown").innerText = inputCount.value
     document.getElementById("countDropdownRes").innerText = inputCountRes.value
     count_value = inputCount ? parseInt(inputCount.value) : parseInt(inputCountRes.value)
+    console.log("parseInt = " + count_value)
 
     const cartArray = JSON.parse(localStorage.getItem("cart"))
     let count = 0;
@@ -238,6 +239,7 @@ function addInput(stock) {
                 document.getElementById("inputCount").classList.remove("is-invalid")
                 document.getElementById("inputCount").classList.add("is-valid")
                 document.getElementById("countDropdown").innerText = i
+                count_value = i
             }
         }
         else {
@@ -245,8 +247,10 @@ function addInput(stock) {
             document.getElementById("inputCount").classList.remove("is-valid")
             document.getElementById("inputCount").classList.add("is-invalid")
             document.getElementById("countDropdown").innerText = 1
+            count_value = 0
         }
-        count_value = i
+        
+        console.log("i = " + count_value)
 
     })
 
@@ -268,6 +272,7 @@ function addInput(stock) {
                 document.getElementById("inputCountRes").classList.remove("is-invalid")
                 document.getElementById("inputCountRes").classList.add("is-valid")
                 document.getElementById("countDropdownRes").innerText = i
+                count_value = i
             }
         }
         else {
@@ -275,9 +280,10 @@ function addInput(stock) {
             document.getElementById("inputCountRes").classList.remove("is-valid")
             document.getElementById("inputCountRes").classList.add("is-invalid")
             document.getElementById("countDropdownRes").innerText = 1
+            count_value = 0
         }
-        count_value = i
-
+        
+        console.log("i = " + count_value)
     })
 }
 
@@ -380,7 +386,7 @@ function ScoreToStars(score) {
 }
 
 function changeDayFormat(date) {
-    if (iOS()) {   
+    if (iOS()) {
         return new Date().toLocaleString()
     }
     const day = date.getDate() <= 9 ? "0" + date.getDate() : date.getDate()
@@ -402,8 +408,8 @@ function showComments(comments) {
         <hr>
         <div class="d-flex justify-content-between">
         <div class="d-flex gap-2">
-            <img class="rounded-circle" src="${comment.img ?? comment.picture}" style="width: 20px; height: 20px;">
-            <h6>${comment.user ?? comment.name}</h6>
+            <img class="rounded-circle" src="${comment.img}" style="width: 20px; height: 20px;">
+            <h6>${comment.user}</h6>
         </div>
         <small class="text-muted">${changeDayFormat(new Date(comment.dateTime))}</small>
         </div>
@@ -461,38 +467,64 @@ function formatDate(date) {
 }
 
 document.getElementById("commentBtn").addEventListener("click", function () {
-    let id = productInfo.id
-    const comment = document.getElementById("textAreaComment").value
-    document.getElementById("textAreaComment").value = ""
-    if (comment !== "") {
-        const score = checkScore()
-        const dateTime = formatDate(new Date())
-        const { user, img } = localStorage.getItem("profile") ? JSON.parse(localStorage.getItem("profile")) : { user: "Anónimo", img: "img/img_perfil.png" }
-
-        let commentsArray = localStorage.getItem(`comments-${id}`) ? JSON.parse(localStorage.getItem(`comments-${id}`)) : []
-        commentsArray.unshift({ user, img, score, description: comment, dateTime })
-        localStorage.setItem(`comments-${id}`, JSON.stringify(commentsArray))
-
-        showComments(commentsArray)
+    const profileArray = JSON.parse(localStorage.getItem("profile"))
+    const profileData = profileArray.find(({ logged }) => logged === true)
+    const commentArray = JSON.parse(localStorage.getItem(`comments-${id}`))
+    const commentData = commentArray.find(({ email }) => email === profileData.email)
+    if (!commentData) {
+        let id = productInfo.id
+        const comment = document.getElementById("textAreaComment").value
+        document.getElementById("textAreaComment").value = ""
+        if (comment !== "") {
+            const score = checkScore()
+            const dateTime = formatDate(new Date())
+            const user = profileData.name ?? "Anónimo"
+            const img = profileData.picture ?? "img/img_perfil.png"
+            const newComment = {
+                score: score,
+                description: comment,
+                user: user,
+                dateTime: dateTime,
+                img: img,
+                email: profileData.email
+            }
+            let commentsArray = localStorage.getItem(`comments-${id}`) ? JSON.parse(localStorage.getItem(`comments-${id}`)) : []
+            commentsArray.unshift(newComment)
+            localStorage.setItem(`comments-${id}`, JSON.stringify(commentsArray))
+            showComments(commentsArray)
+        }
+    }
+    else {
+        document.getElementById("comment-alert").innerHTML = `<strong>Ya has comentado este producto!</strong> No puedes comentar más de una vez.`
+        document.getElementById("comment-alert").classList.add("show")
+        setTimeout(() => {
+            document.getElementById("comment-alert").classList.remove("show")
+        }, 3000)
     }
 })
 
 function addToCart() {
     let value = count_value
     const cartArray = localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : {}
-    const pinfo = cartArray.find((product) => product.id === productInfo.id)
-    if (pinfo) value += pinfo.count
+    let pinfo = {}
+    if (Object.values(cartArray).length > 0) pinfo = cartArray.find((product) => product.id === productInfo.id)
+    if (pinfo && Object.values(pinfo).length > 0) value += pinfo.count
     if (value > productInfo.stock) {
         addOutOfStockAlert()
         return false
     }
     else {
         addToCartAlert('Puedes verlo en el carrito de compras.')
-        return cart(value, productInfo)
+        return cart(count_value, productInfo)
     }
 }
 
-function buy() {
-    let added = addToCart()
-    if (added) window.location = "cart.html"
+const buy = async () => {
+    let added = await cart(1, productInfo)
+    if (added === true) {
+        addToCartAlert('')
+        setTimeout(() => {
+        window.location = "cart.html"
+        }, 1000)
+    }
 }
