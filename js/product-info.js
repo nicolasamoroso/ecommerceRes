@@ -520,7 +520,7 @@ function addToCart() {
 }
 
 const buy = async () => {
-    let added = await cart(1, productInfo)
+    let added = await cart(count_value, productInfo)
     if (added === true) {
         addToCartAlert('')
         setTimeout(() => {
