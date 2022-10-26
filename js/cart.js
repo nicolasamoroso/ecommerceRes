@@ -470,7 +470,7 @@ document.getElementById("date").addEventListener("keyup", function (e) {
   if (this.value.indexOf("/") === -1 && this.value.length > 2 && e.key !== "Backspace" && !this.value.includes("00")) {
     this.value = this.value.slice(0, 2) + "/" + this.value.slice(2)
   }
-  else if (this.value.length === 2 && e.key !== "Backspace") {
+  else if (this.value.length === 2 && e.key !== "Backspace" && this.value.indexOf("/") === -1) {
     this.value += "/"
   }
   else if (this.value.length === 5 && !this.value.includes("00")) {

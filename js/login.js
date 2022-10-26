@@ -28,16 +28,21 @@ function decodeJwtResponse(token) {
         })
 })()
 
+function mailVerification(email) {
+    return email.match(
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    )
+}
+
 document.getElementById("form").addEventListener("submit", function (event) {
     event.preventDefault();
     const n_email = document.getElementById("email").value
     const password = document.getElementById("password").value
-    if (n_email && password) {
-        if (password.length >= 8) {
+    if (n_email && password) { 
+        if (password.length >= 6 && mailVerification(n_email)) {
             signIn(n_email);
             return
         }
-        showAlertError();
     }
 });
 
