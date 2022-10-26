@@ -1,6 +1,5 @@
 function handleCredentialResponse(response) {
     const responsePayload = decodeJwtResponse(response.credential);
-
     signIn(responsePayload.email, responsePayload.name, responsePayload.picture);
 }
 
@@ -30,7 +29,7 @@ function decodeJwtResponse(token) {
 
 function mailVerification(email) {
     return email.match(
-        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/
     )
 }
 
