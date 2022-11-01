@@ -4,6 +4,10 @@ img#profile_img {
     border-radius: 50%;
 }
 
+img#profile_img:hover {
+    opacity: 0.8;
+}
+
 .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;
@@ -38,8 +42,49 @@ img#profile_img {
 .form-control:focus {
     border-color: rgb(83, 83, 83);
     box-shadow: none;
-  }
-  
-  .form-control[type=search] {
+}
+
+.form-control[type=search] {
     box-shadow: none;
-  }
+}
+
+.form-control-custom.form-control.is-valid, .was-validated .form-control-custom.form-control:valid {
+    border-color: #CED4DA;
+    background-image: none;
+}
+
+.form-control-custom.form-control.is-invalid, .was-validated .form-control-custom.form-control:invalid {
+    border-color: #CED4DA;
+    background-image: none;
+}
+
+.form-control-custom.form-control.is-valid:focus, .was-validated .form-control-custom.form-control:valid:focus {
+    border-color: none;
+    box-shadow: none;
+}
+
+.form-control-custom.form-control.is-invalid:focus, .was-validated .form-control-custom.form-control:invalid:focus {
+    border-color: none;
+    box-shadow: none;
+}
+
+.form-control.is-invalid,
+.was-validated .form-control:invalid ~ label {
+    color: #DC3545;
+}
+
+.form-control.is-valid,
+.was-validated .form-control:valid ~ label {
+    color: #198754;
+}
+
+.form-control-custom.is-invalid,
+.was-validated .form-control-custom:invalid ~ label {
+    color: black;
+}
+
+.form-control-custom.is-valid,
+.was-validated .form-control-custom:valid ~ label {
+    color: black;
+}
+
