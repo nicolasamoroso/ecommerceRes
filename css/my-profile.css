@@ -88,3 +88,6 @@ img#profile_img:hover {
     color: black;
 }
 
+.modal-open {
+    overflow: hidden;
+}
