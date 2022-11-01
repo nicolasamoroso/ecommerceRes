@@ -89,9 +89,9 @@ function addCountDeleteFavBtns(id, i, count, res) {
     <div class="countGroup d-flex m-auto" style="height: 28px;">
       <button class="controlGroupMin d-flex align-items-center mx-auto flex-row-reverse" 
         ${isMobile ? 
-          `ontouchend="mouseUp()" ontouchstart="mouseDown('negative', ${id})"`
+          `ontouchend="mouseUp()" ontouchstart="mouseDown('negative', ${id})" onclick="removeIfIsMinusThanOne('negative', ${id})"`
           : 
-          `onmouseup="mouseUp()" onmousedown="mouseDown('negative', ${id})"`
+          `onmouseup="mouseUp()" onmousedown="mouseDown('negative', ${id})" onclick="removeIfIsMinusThanOne('negative', ${id})"`
         }
       >-</button>
       ${res ?
@@ -140,6 +140,13 @@ function addCountDeleteFavBtns(id, i, count, res) {
   `
 }
 
+function removeIfIsMinusThanOne(type, id) {
+  const i = cartArray.findIndex(product => product.id === id)
+  if (cartArray[i].count < 1 && type === "negative" && !removeProduct(id)) {
+      cartArray[i].count = 0
+  }
+}
+
 function removeProduct(id) {
   Swal.fire({
     title: '¿Estás seguro?',
@@ -157,9 +164,6 @@ function removeProduct(id) {
         'El producto ha sido eliminado.',
         'success'
       )
-      setTimeout(() => {
-        location.reload()
-      }, 1500)
 
       cartArray = cartArray.filter(product => product.id !== id)
       localStorage.setItem("cart", JSON.stringify(cartArray))
@@ -169,8 +173,23 @@ function removeProduct(id) {
       if (cartArray.length === 0) checkOutBtn()
       return true
     }
-    else return false
+    else {
+      const i = cartArray.findIndex(product => product.id === id)
+      cartArray[i].count = 1
+      document.getElementById(`countProduct-${i}`).textContent = cartArray[i].count
+      document.getElementById(`countProductRes-${i}`).textContent = cartArray[i].count
+      localStorage.setItem("cart", JSON.stringify(cartArray))
+      addItemsToCart(cartArray)
+      return false
+    }
   })
+}
+
+function checkOutBtn() {
+  if (JSON.parse(localStorage.getItem("cart")).length === 0)
+    document.getElementById("checkout").setAttribute("disabled", "true")
+  else
+    document.getElementById("checkout").removeAttribute("disabled")
 }
 
 let startTime = 0
@@ -187,10 +206,6 @@ function mouseDown(type, id) {
   stepInterval = () => {
     const newTime = new Date().getTime();
     const elapsedTime = newTime - startTime;
-    if (cartArray[i].count === 1 && type === "negative") {
-      removeProduct(id)
-      return
-    }
 
     if (elapsedTime < 1000) intTime = updateCount(type, i, 1, "500")
     else if (elapsedTime < 2000) intTime = updateCount(type, i, 2, "250")
@@ -198,7 +213,7 @@ function mouseDown(type, id) {
     else if (elapsedTime < 6000) intTime = updateCount(type, i, 5, "70")
     else if (elapsedTime > 6000) intTime = updateCount(type, i, 10, "40")
 
-    if (cartArray[i].count < 1) cartArray[i].count = 1
+    // if (cartArray[i].count < 1) cartArray[i].count = 1
     if (cartArray[i].count > cartArray[i].stock) {
       addOutOfStockAlert()
       cartArray[i].count = cartArray[i].stock
@@ -343,6 +358,18 @@ function validateAddress() {
     document.getElementById("BtnSigDireccion").setAttribute("disabled", true)
 }
 
+function validatePayment() {
+  const creditNumber = document.getElementById("creditNumber").value
+  const cvv = document.getElementById("cvv").value
+  const date = document.getElementById("expirationDate").value
+
+  if (creditNumber.length === 16 && cvv.length === 3 && date.length === 5
+    || document.getElementById("bankNumber").value.length === 20)
+    document.getElementById("BtnNextPayment").removeAttribute("disabled")
+  else
+    document.getElementById("BtnNextPayment").setAttribute("disabled", "true")
+}
+
 document.getElementById("credit").addEventListener("click", function() {
   document.getElementById("creditNumber").removeAttribute("disabled")
   document.getElementById("cvv").removeAttribute("disabled")
@@ -399,14 +426,17 @@ function validateExpDate(evt) {
   }
 }
 
-document.getElementById("expirationDate").addEventListener("input", function (e) {
-  if (this.value.length === 3 && this.value.indexOf("/") === -1)
-    this.value = this.value.slice(0, 2) + '/' + this.value.slice(2);
-  else if (this.value.indexOf("/") !== 2)
-    this.value = this.value.replace("/", "")
+document.getElementById("expirationDate").addEventListener("keyup", function (e) {
+  if (this.value.length === 0) {
+    toggleValidate("expirationDate", false)
+    validatePayment()
+    return
+  }
+  if (this.value.length > 2 && this.value.indexOf("/") === -1)
+    this.value = this.value.slice(0, 2) + '/' 
 })
 
-document.getElementById("expirationDate").addEventListener("keyup", function (e) {
+document.getElementById("expirationDate").addEventListener("input", function (e) {
   const date = this.value.split("/")
   if (e.key !== "Backspace") {
     if (date[0] && date[0].length === 2 && date[0] > 12)
@@ -436,52 +466,9 @@ document.getElementById("bankNumber").addEventListener("input", function() {
   validatePayment()
 })
 
-function validatePayment() {
-  const creditNumber = document.getElementById("creditNumber").value
-  const cvv = document.getElementById("cvv").value
-  const date = document.getElementById("expirationDate").value
-
-  if (creditNumber.length === 16 && cvv.length === 3 && date.length === 5
-    || document.getElementById("bankNumber").value.length === 20)
-    document.getElementById("BtnNextPayment").removeAttribute("disabled")
-  else
-    document.getElementById("BtnNextPayment").setAttribute("disabled", "true")
-}
-
 document.getElementById("BtnNextPayment").addEventListener("click", function() {
   resumeOfPurchase()
 })
-
-document.getElementById("buy").addEventListener("click", function() {
-  document.getElementById("buy").setAttribute("disabled", "true")
-  document.getElementById("buy").innerHTML = "Procesando..."
-
-  setTimeout(function () {
-    document.getElementById("buy").innerHTML = "Compra realizada con éxito"
-    document.getElementById("buy").classList.remove("btn-primary")
-    document.getElementById("buy").classList.add("btn-success")
-  }, 2000)
-
-  cartArray = []
-  localStorage.setItem("cart", JSON.stringify(cartArray))
-
-  addItemsToCart(cartArray)
-  refreshCountCart()
-  updateTotalCosts(cartArray)
-  checkOutBtn()
-
-  document.getElementById("success-alert").classList.add("show")
-  setTimeout(function () {
-    document.getElementById("success-alert").classList.remove("show")
-  }, 2500)
-})
-
-function checkOutBtn() {
-  if (JSON.parse(localStorage.getItem("cart")).length === 0)
-    document.getElementById("checkout").setAttribute("disabled", "true")
-  else
-    document.getElementById("checkout").removeAttribute("disabled")
-}
 
 function resumeOfPurchase() {
   const dateTime = new Date().toLocaleString()
@@ -548,3 +535,21 @@ function dayOfArrival(dayOfWeek, shipping, day, date, month) {
   return `Su compra llegará entre los días 
   ${dayOfWeek[newDay0]} ${newDate0.date} y ${dayOfWeek[newDay1]} ${newDate1.date}`
 }
+
+document.getElementById("buy").addEventListener("click", function() {
+  document.getElementById("buy").setAttribute("disabled", "true")
+  document.getElementById("buy").innerHTML = "Procesando..."
+
+  cartArray = []
+  localStorage.setItem("cart", JSON.stringify(cartArray))
+
+  addItemsToCart(cartArray)
+  refreshCountCart()
+  updateTotalCosts(cartArray)
+  checkOutBtn()
+
+  document.getElementById("success-alert").classList.add("show")
+  setTimeout(function () {
+    document.getElementById("success-alert").classList.remove("show")
+  }, 2500)
+})
