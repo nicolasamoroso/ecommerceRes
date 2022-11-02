@@ -95,16 +95,75 @@
   </nav>
   <main>
     <div class="container-fluid container-lg px-0 px-sm-3">
-
       <h2 class="text-center mt-3">Perfil</h2>
-      <div id="datos" class="pt-3 m-auto card col-12 col-xl-9">
+      <div class="py-3 m-auto card col-12 col-xl-9 px-3" id="profile">
+        <div class="d-flex justify-content-center mb-4">
+          <img id="profileImg" src="img/img_perfil.png" alt="Foto de perfil" class="img-fluid mb-2 shadow">
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <span><b>Email</b></span>
+            <div class="form-floating mb-3" id="emailGroup">
+              <input class="form-control" placeholder="Correo electrónico" disabled>
+              <label id="emailLabel">example@hotmail.com</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <span><b>Nombre de usuario</b></span>
+            <div class="form-floating mb-3">
+              <input class="form-control" placeholder="Nombre de usuario" disabled>
+              <label id="usernameLabel">Nombre de usuario</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <span><b>Primer nombre</b></span>
+            <div class="form-floating mb-3">
+              <input class="form-control" placeholder="Primer nombre" disabled>
+              <label id="f-nameLabel">Primer nombre</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <span><b>Segundo nombre</b></span>
+            <div class="form-floating mb-3">
+              <input class="form-control" placeholder="Segundo nombre" disabled>
+              <label id="s-nameLabel">Segundo nombre</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <span><b>Primer apellido</b></span>
+            <div class="form-floating mb-3">
+              <input class="form-control" placeholder="Primer apellido" disabled>
+              <label id="f-lastnameLabel">Primer apellido</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <span><b>Segundo apellido</b></span>
+            <div class="form-floating mb-3">
+              <input class="form-control" placeholder="Segundo apellido" disabled>
+              <label id="s-lastnameLabel">Segundo apellido</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <span><b>Teléfono</b></span>
+            <div class="form-floating mb-3">
+              <input class="form-control" placeholder="Teléfono" disabled>
+              <label id="phoneLabel">Teléfono</label>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <button id="editProfile" class="btn btn-primary" type="button">Editar perfil</button>
+        </div>
+
+      </div>
+      <div class="pt-3 m-auto card col-12 col-xl-9 d-none" id="edit-profile">
         <div class="text-center">
           <canvas id="preview" class="d-none" width="0"></canvas>
           <div class="d-flex justify-content-center mb-2">
             <label class="btn mt-1 flex-column" id="image">
               <input class="d-none" type="file" name="image">
-              <img id="profile_img" src="img/img_perfil.png" alt="Foto de perfil" class="img-fluid mb-2 shadow">
-              <p class="text-primary" >Cambiar foto de perfil</p>
+              <img id="editProfileImg" src="img/img_perfil.png" alt="Foto de perfil" class="img-fluid mb-2 shadow">
+              <p class="text-primary">Cambiar foto de perfil</p>
             </label>
           </div>
         </div>
@@ -114,13 +173,13 @@
               <div class="col-12 col-md-6">
                 <div class="form-floating mb-3">
                   <input type="email" class="form-control" name="email" placeholder="Correo electrónico" disabled>
-                  <label for="email">example@hotmail.com</label>
+                  <label for="email" id="edit-emailLabel">example@hotmail.com</label>
                 </div>
               </div>
               <div class="col-12 col-md-6">
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control" name="username" placeholder="Nombre de usuario" minlength="3"
-                    maxlength="20" required>
+                  <input type="text" id="edit-inputUsername" class="form-control" name="username"
+                    placeholder="Nombre de usuario" maxlength="20" required>
                   <label for="username">Nombre de usuario</label>
                   <div class="invalid-feedback">
                     El nombre de usuario no puede estar vacío.
@@ -129,8 +188,8 @@
               </div>
               <div class="col-12 col-md-6">
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control" name="first-name" id="first-name" placeholder="Primer nombre"
-                    required>
+                  <input type="text" id="edit-inputFName" class="form-control" name="first_name" id="first-name"
+                    placeholder="Primer nombre" required>
                   <label for="first-name">Primer nombre</label>
                   <div class="invalid-feedback">
                     El primer nombre no puede estar vacío.
@@ -139,15 +198,15 @@
               </div>
               <div class="col-12 col-md-6">
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control form-control-custom" name="second-name" minlength="3"
-                    maxlength="20" placeholder="Segundo nombre">
+                  <input type="text" id="edit-inputSName" class="form-control form-control-custom" name="second_name"
+                    minlength="3" maxlength="20" placeholder="Segundo nombre">
                   <label for="second-name">Segundo nombre</label>
                 </div>
               </div>
               <div class="col-12 col-md-6">
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control" name="first-lastname" placeholder="Primer apellido"
-                    minlength="3" maxlength="20" required>
+                  <input type="text" id="edit-inputFLastname" class="form-control" name="first_lastname"
+                    placeholder="Primer apellido" minlength="3" maxlength="20" required>
                   <label for="first-lastname">Primer apellido</label>
                   <div class="invalid-feedback">
                     El primer apellido no puede estar vacío.
@@ -156,22 +215,22 @@
               </div>
               <div class="col-12 col-md-6">
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control form-control-custom" name="second-lastname"
-                    placeholder="Segundo apellido" minlength="3" maxlength="20">
+                  <input type="text" id="edit-inputSLastname" class="form-control form-control-custom"
+                    name="second_lastname" placeholder="Segundo apellido" minlength="3" maxlength="20">
                   <label for="second-lastname">Segundo apellido</label>
                 </div>
               </div>
               <div class="col-12 col-md-6">
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control form-control-custom" name="phone" placeholder="Teléfono"
-                    minlength="9" maxlength="9">
+                  <input type="text" id="edit-inputPhone" class="form-control form-control-custom" name="phone"
+                    placeholder="Teléfono" minlength="9" maxlength="9">
                   <label for="phone">Teléfono</label>
                 </div>
               </div>
             </div>
             <div class="justify-content-center d-flex gap-3">
-              <button id="save" class="btn btn-success" type="submit">Guardar</button>
-              <button id="cancel" class="btn btn-danger" type="button">Cancelar</button>
+              <button id="saveEdit" class="btn btn-success" type="click">Guardar</button>
+              <a id="cancelEdit" class="btn btn-danger">Cancelar</a>
             </div>
           </form>
         </div>

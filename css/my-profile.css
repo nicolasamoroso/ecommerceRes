@@ -1,10 +1,10 @@
-img#profile_img {
+#profileImg, #editProfileImg {
     width: 200px;
     height: 200px;
     border-radius: 50%;
 }
 
-img#profile_img:hover {
+#editProfileImg:hover {
     opacity: 0.8;
 }
 

@@ -1,4 +1,23 @@
 document.addEventListener("DOMContentLoaded", async () => {
+    getProfile() 
+    cutImage()
+})
+
+const profileArray = JSON.parse(localStorage.getItem('profile'))
+const profile = profileArray ? profileArray.find(({logged}) => logged === true) : {}
+
+function getProfile() {
+    document.getElementById('emailLabel').textContent = profile.email
+    document.getElementById('usernameLabel').textContent = profile.username
+    if (profile.f_name !== '') document.getElementById('f-nameLabel').textContent = profile.f_name
+    if (profile.s_name !== '') document.getElementById('s-nameLabel').textContent = profile.s_name
+    if (profile.f_lastname !== '') document.getElementById('f-lastnameLabel').textContent = profile.f_lastname
+    if (profile.s_lastname !== '') document.getElementById('s-lastnameLabel').textContent = profile.s_lastname
+    if (profile.phone !== '') document.getElementById('phoneLabel').textContent = profile.phone
+    document.getElementById("profileImg").src = profile.picture
+}
+
+function cutImage() {
     const inputImage = document.getElementById('image')
     const editor = document.getElementById('editor')
     const canvasPreview = document.getElementById('preview')
@@ -7,18 +26,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     inputImage.addEventListener('change', openEditor, false)
     var myModal = new bootstrap.Modal(document.getElementById('Modal'), {
         keyboard: false
-      })
+    })
 
     //Función que abre el editor con la imagen seleccionada
     function openEditor(e) {
+        if (e.target.files && !e.target.files[0]) return
 
-        if (e.target.files && !e.target.files[0]) {
-            return
-        }
-        else {
-            myModal.toggle()
-        }
-
+        myModal.toggle()
 
         //Obtiene la imagen si existe "e.target.files[0]"
         imgUrl = URL.createObjectURL(e.target.files[0])
@@ -64,15 +78,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             //Se transforma a base64
             base64Img = canvasPreview.toDataURL("image/png")
 
-            if (base64Img.includes("data:image/")) document.getElementById("profile_img").src = base64Img
+            if (base64Img.includes("data:image/")) document.getElementById("editProfileImg").src = base64Img
         }
         //Agrega y elimina sino se bugea
         tempImg.src = imgUrl
         document.querySelector("#preview").remove()
     }
-
-})
-
+}
 
 const form = document.getElementById("form-edit")
 
@@ -82,19 +94,40 @@ form.addEventListener("submit", async (e) => {
         e.preventDefault()
     }
     form.classList.add('was-validated')
+})
+
+document.getElementById("editProfile").addEventListener("click", () => {
+    document.getElementById("edit-profile").classList.remove("d-none")
+    document.getElementById("profile").classList.add("d-none")
+    document.getElementById("edit-emailLabel").textContent = profile.email
+    document.getElementById("edit-inputUsername").value = profile.username
+    document.getElementById("edit-inputFName").value = profile.f_name
+    document.getElementById("edit-inputSName").value = profile.s_name
+    document.getElementById("edit-inputFLastname").value = profile.f_lastname
+    document.getElementById("edit-inputSLastname").value = profile.s_lastname
+    document.getElementById("edit-inputPhone").value = profile.phone
+    document.getElementById("editProfileImg").src = profile.picture
+})
+
+document.getElementById("cancelEdit").addEventListener("click", () => {
+    document.getElementById("edit-profile").classList.add("d-none")
+    document.getElementById("profile").classList.remove("d-none")
+})
+
+document.getElementById("saveEdit").addEventListener("click", () => {
     const formData = new FormData(form)
     const data = Object.fromEntries(formData.entries())
-
-    console.log(data)
+    if (data.username.length > 0 && data.first_name.length > 0 && data.first_lastname.length > 0) {
+        profile.username = data.username
+        profile.f_name = data.first_name
+        profile.s_name = data.second_name
+        profile.f_lastname = data.first_lastname
+        profile.s_lastname = data.second_lastname
+        profile.phone = data.phone
+        profile.picture = document.getElementById("editProfileImg").src
+        localStorage.setItem('profile', JSON.stringify(profileArray))
+        getProfile()
+        document.getElementById("edit-profile").classList.add("d-none")
+        document.getElementById("profile").classList.remove("d-none")
+    }
 })
-
-document.getElementById("first-name").addEventListener("input", (e) => {
-    e.value = e.value.replace(/[^a-zA-Z]/, '')
-})
-
-// window onfocus input file
-
-function openModal() {
-    document.getElementById("inputImage").click()
-
-}
