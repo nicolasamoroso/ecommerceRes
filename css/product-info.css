@@ -17,12 +17,10 @@
 }
 
 .active .indicators {
-    /* smooth transition */
     -webkit-transition: opacity 0.3s ease;
     -o-transition: opacity 0.3s ease;
     transition: opacity 0.3s ease;
     opacity: 1;
-    /* border: 1px solid black; */
 }
 
 .btn:focus {

@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    getProfile() 
+    getProfile()
     cutImage()
 })
 
 const profileArray = JSON.parse(localStorage.getItem('profile'))
-const profile = profileArray ? profileArray.find(({logged}) => logged === true) : {}
+const profile = profileArray ? profileArray.find(({ logged }) => logged === true) : {}
 
 function getProfile() {
     document.getElementById('emailLabel').textContent = profile.email
@@ -118,12 +118,16 @@ document.getElementById("saveEdit").addEventListener("click", () => {
     const formData = new FormData(form)
     const data = Object.fromEntries(formData.entries())
     if (data.username.length > 0 && data.first_name.length > 0 && data.first_lastname.length > 0) {
+        if (data.second_name.length > 0)
+            profile.s_name = data.second_name
+        if (data.second_lastname.length > 0)
+            profile.s_lastname = data.second_lastname
+        if (data.phone.length === 9)
+            profile.phone = data.phone
+
         profile.username = data.username
         profile.f_name = data.first_name
-        profile.s_name = data.second_name
         profile.f_lastname = data.first_lastname
-        profile.s_lastname = data.second_lastname
-        profile.phone = data.phone
         profile.picture = document.getElementById("editProfileImg").src
         localStorage.setItem('profile', JSON.stringify(profileArray))
         getProfile()
