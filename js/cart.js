@@ -180,6 +180,7 @@ function removeProduct(id) {
       document.getElementById(`countProductRes-${i}`).textContent = cartArray[i].count
       localStorage.setItem("cart", JSON.stringify(cartArray))
       addItemsToCart(cartArray)
+      updateTotalCosts(cartArray)
       return false
     }
   })
@@ -558,6 +559,24 @@ document.getElementById("buy").addEventListener("click", function() {
   document.getElementById("buy").setAttribute("disabled", "true")
   document.getElementById("buy").innerHTML = "Procesando..."
 
+  let productsArray = JSON.parse(localStorage.getItem("newProductArray"))
+  for (let i = 0; i < productsArray.length; i++) {
+    const element = productsArray[i].products;
+    for (let j = 0; j < element.length; j++) {
+      const element2 = element[j];
+      const cartArrayID = cartArray.find(({id}) => id === element2.id)
+      if (cartArrayID) {
+        element2.stock = element2.stock - cartArrayID.count
+        element2.soldCount = element2.soldCount + cartArrayID.count
+
+        const { stock, soldCount } = element2
+        localStorage.setItem(`stock_soldCount_pInfo-${element2.id}`, JSON.stringify({ stock, soldCount }))
+      }
+    } 
+  }
+  localStorage.setItem("newProductArray", JSON.stringify(productsArray))
+
+
   cartArray = []
   localStorage.setItem("cart", JSON.stringify(cartArray))
 
@@ -569,5 +588,5 @@ document.getElementById("buy").addEventListener("click", function() {
   document.getElementById("success-alert").classList.add("show")
   setTimeout(function () {
     document.getElementById("success-alert").classList.remove("show")
-  }, 2500)
+  }, 2500) 
 })

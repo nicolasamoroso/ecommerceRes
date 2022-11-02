@@ -103,6 +103,10 @@ function showTopSaleProducts(array) {
 }
 
 const cart = async (cant, product) => {
+  if (cant > product.stock) {
+    addOutOfStockAlert()
+    return false
+  }
   let newProduct = {
     name: product.name,
     count: cant,

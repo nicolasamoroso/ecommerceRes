@@ -117,20 +117,19 @@ function changeColor(a, b, c) {
 }
 
 function showProductsList(productsArray) {
-    let htmlContentToAppend = "";
     if (!productsArray || productsArray.length === 0)
         document.getElementById("product-subtitle").innerHTML = `<h4 class="mb-4 text-muted">No hay productos para la categoría <span class="text-dark">${cat_name}</span></h4>`;
     else {
         document.getElementById("product-subtitle").innerHTML = `<h4 class="mb-4 text-muted">Verás aquí todos los productos de la categoría <span class="text-dark">${cat_name}</span></h4>`;
-        productsArray.forEach(({id, image, description, name, currency, cost, soldCount, saleCost, discount}) => {
+        productsArray.forEach(({ id, image, description, name, currency, cost, soldCount, saleCost, discount, stock }) => {
             if (((minPrice == undefined) || (minPrice != undefined && parseInt(soldCount) >= minPrice)) &&
                 ((maxPrice == undefined) || (maxPrice != undefined && parseInt(soldCount) <= maxPrice)) ||
                 ((minPriceRes == undefined) || (minPriceRes != undefined && parseInt(soldCount) >= minPriceRes)) &&
                 ((maxPriceRes == undefined) || (maxPriceRes != undefined && parseInt(soldCount) <= maxPriceRes))) {
-                htmlContentToAppend += `
+                document.getElementById("prodList").innerHTML  += `
                 <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 mt-1">
                     <div class="card cursor-active h-100">
-                        <button class="col-4 col-xs-3 btn btn-success position-absolute buyBtn" onclick="cartBtn(${id}, cat_name)">Comprar</button>
+                        <button id="buyBtn-${id}" class="col-4 col-xs-3 btn btn-success position-absolute buyBtn" onclick="cartBtn(${id}, cat_name)">Comprar</button>
                         <div class="card-header p-0 m-auto" onclick="product_info(${id})">
                             <span class="badge bg-danger position-absolute prodDiscount">${discount === 0 ? "" : '-' + discount + '%'}</span>
                             <img src="${image}" alt="${description}" class="img-fluid imgProd">
@@ -151,10 +150,12 @@ function showProductsList(productsArray) {
                     </div>
                 </div>
                 `
+                if (stock <= 0) {
+                    document.getElementById(`buyBtn-${id}`).classList.add("disabled");
+                }
             }
         });
     }
-    document.getElementById("prodList").innerHTML = htmlContentToAppend;
 }
 
 function sortProducts(criteria, array){

@@ -1,7 +1,7 @@
 let productInfo = {}
 let count_value = 1
-/* 
 
+/* 
 FALTA:
 que el stock cambie en el localstorage si el producto fue comprado
 */
@@ -42,6 +42,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             else productInfo.comments = JSON.parse(localStorage.getItem(`comments-${productInfo.id}`))
         }
     }
+    const stock_soldCount = JSON.parse(localStorage.getItem(`stock_soldCount_pInfo-${productInfo.id}`))
+    if (stock_soldCount) {
+        productInfo.stock = stock_soldCount.stock
+        productInfo.soldCount = stock_soldCount.soldCount
+    }
+
 
     document.getElementById("categoryName").innerText = productInfo.category
     document.getElementById("productName").innerText = productInfo.name
@@ -89,7 +95,7 @@ function addResume(pInfo) {
         <h5 class="card-text">${category}</h5>
         <h6 class="card-text">Puntuación</h6>
         <h6 class="card-text fw-bold">${stock ? 'Stock disponible' : 'Stock no disponible'}</h6>
-        <h6 class="card-text">
+        <h6 class="card-text" id="cantProdRes">
             <div class="dropdown d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <span class="me-2">Cantidad:</span>
@@ -107,7 +113,7 @@ function addResume(pInfo) {
             </div>
         </h6>
     </div>
-    <div class="mt-3">
+    <div class="mt-3" id="buyBtnsRes">
         <button class="btn btn-primary w-100 fw-bold" onclick="buy()">Comprar ahora</button>
         <button class="btn btn-outline-primary w-100 mt-2 fw-bold" onclick="addToCart()">Agregar al carrito</button>
     </div>
@@ -124,7 +130,7 @@ function addResume(pInfo) {
         <h6 class="card-text">Puntuación</h6>
         <h6 class="card-text">${soldCount} vendidos</h6>
         <h6 class="card-text fw-bold">${stock ? 'Stock disponible' : 'Stock no disponible'}</h6>
-        <h6 class="card-text">
+        <h6 class="card-text" id="cantProd">
             <div class="dropdown d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <span class="me-2">Cantidad:</span>
@@ -142,11 +148,18 @@ function addResume(pInfo) {
             </div>
         </h6>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" id="buyBtns">
         <button class="btn btn-primary w-100 fw-bold" onclick="buy()">Comprar ahora</button>
         <button class="btn btn-outline-primary w-100 mt-2 fw-bold" onclick="addToCart()">Agregar al carrito</button>
     </div>
     `
+
+    if (stock <= 0) {
+        document.getElementById("cantProd").classList.add("d-none")
+        document.getElementById("cantProdRes").classList.add("d-none")
+        document.getElementById("buyBtns").classList.add("d-none")
+        document.getElementById("buyBtnsRes").classList.add("d-none")
+    }
 
     let length = stock > 5 ? 5 : stock
     let i = 1
