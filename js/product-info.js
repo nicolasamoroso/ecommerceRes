@@ -1,64 +1,59 @@
 let productInfo = {}
 let count_value = 1
-
-
 /* 
 
 FALTA:
-
-acceptedCreditCardsRes
-acceptedCreditCards
-
-cambiar los console log por alertas o textos por debajo
-
 que el stock cambie en el localstorage si el producto fue comprado
 */
 
 document.addEventListener("DOMContentLoaded", async () => {
-    if (localStorage.getItem(`pInfo-${id}}`)) {
-        // Si se entra acá, es porque el stock cambió de dicho producto
+    const newProdInfo = JSON.parse(localStorage.getItem(`pInfo-${id}`))
+    if (newProdInfo) {
+        productInfo = newProdInfo
+        productInfo.comments = JSON.parse(localStorage.getItem(`comments-${productInfo.id}`))
     }
+    else {
+        const productInfoArray = await getJSONData(P_INFO_URL);
+        if (productInfoArray.status === "ok") {
+            productInfo = productInfoArray.data;
 
-    const productInfoArray = await getJSONData(P_INFO_URL);
-    if (productInfoArray.status === "ok") {
-        productInfo = productInfoArray.data;
-        productInfo.stock = productInfo.currency === "USD" ? Math.round(40000 / productInfo.cost) + 1 : Math.round(40000 / productInfo.cost * 23) + 1
-        let discount = Math.round(productInfo.cost / 1000) > 100 ? 25 : Math.round(productInfo.cost / 1000)
-        productInfo.discount = productInfo.soldCount < 15 ? discount : 0
-        productInfo.saleCost = Math.round(productInfo.cost * 100 / (100 - productInfo.discount))
+            productInfo.stock = productInfo.currency === "USD" ? Math.round(40000 / productInfo.cost) + 1 : Math.round(40000 / productInfo.cost * 23) + 1
 
-        if (!localStorage.getItem(`comments-${productInfo.id}`)) {
-            const productInfoComments = await getJSONData(P_INFO_COMMENTS_URL);
-            if (productInfoComments.status === "ok") {
-                productInfo.comments = productInfoComments.data;
-                if (productInfo.comments.length > 0) {
-                    productInfo.comments.forEach(comment => {
-                        comment.img = "img/img_perfil.png"
-                    })
-
-                    productInfo.comments.sort((a, b) => {
-                        return new Date(b.dateTime) - new Date(a.dateTime);
-                    });
-
-                    localStorage.setItem(`comments-${productInfo.id}`, JSON.stringify(productInfo.comments))
+            let discount = Math.round(productInfo.cost / 1000) > 100 ? 25 : Math.round(productInfo.cost / 1000)
+            productInfo.discount = productInfo.soldCount < 15 ? discount : 0
+            productInfo.saleCost = Math.round(productInfo.cost * 100 / (100 - productInfo.discount))
+    
+            if (!localStorage.getItem(`comments-${productInfo.id}`)) {
+                const productInfoComments = await getJSONData(P_INFO_COMMENTS_URL);
+                if (productInfoComments.status === "ok") {
+                    productInfo.comments = productInfoComments.data;
+                    if (productInfo.comments.length > 0) {
+                        productInfo.comments.forEach(comment => {
+                            comment.img = "img/img_perfil.png"
+                        })
+                        productInfo.comments.sort((a, b) => {
+                            return new Date(b.dateTime) - new Date(a.dateTime);
+                        });
+    
+                        localStorage.setItem(`comments-${productInfo.id}`, JSON.stringify(productInfo.comments))
+                    }
                 }
             }
+            else productInfo.comments = JSON.parse(localStorage.getItem(`comments-${productInfo.id}`))
         }
-        else productInfo.comments = JSON.parse(localStorage.getItem(`comments-${productInfo.id}`))
     }
 
     document.getElementById("categoryName").innerText = productInfo.category
     document.getElementById("productName").innerText = productInfo.name
 
+    detectInterval() //carousel
 
-    detectInterval(); //carousel
-
-    addResume(productInfo);
-    showImagesGallery(productInfo.images);
-    addDescription(productInfo.description);
-    showPaymentMethods(productInfo.currency, productInfo.cost);
-    showRelatedProducts(productInfo.relatedProducts);
-    showComments(productInfo.comments);
+    addResume(productInfo)
+    showImagesGallery(productInfo.images)
+    addDescription(productInfo.description)
+    showPaymentMethods(productInfo.currency, productInfo.cost)
+    showRelatedProducts(productInfo.relatedProducts)
+    showComments(productInfo.comments)
 });
 
 function setCarouselActiveButton(index) {
@@ -188,7 +183,6 @@ function addResume(pInfo) {
             document.getElementById("countDropdownRes").classList.remove("show")
             document.getElementById("countDropdown").classList.remove("show")
             count_value = j
-            console.log("j = " + count_value)
         })
     }
 }
@@ -334,6 +328,10 @@ function showPaymentMethods(currency, cost) {
 function showRelatedProducts(relatedProducts) {
     let htmlContentToAppend = "";
     let htmlContentToAppend2 = "";
+    if (relatedProducts.length === 0) {
+        document.getElementById("relatedProductsBlock").classList.add("d-none")
+        document.getElementById("relatedProductsBlockRes").classList.add("d-none")
+    }
     for (let i = 0; i < relatedProducts.length; i++) {
         let relatedProduct = relatedProducts[i];
         htmlContentToAppend += `
@@ -448,7 +446,8 @@ document.getElementById("commentBtn").addEventListener("click", function () {
     const profileArray = JSON.parse(localStorage.getItem("profile"))
     const profileData = profileArray.find(({ logged }) => logged === true)
     const commentArray = JSON.parse(localStorage.getItem(`comments-${id}`))
-    const commentData = commentArray.find(({ email }) => email === profileData.email)
+    let commentData = undefined
+    if (commentArray) commentData = commentArray.find(({ email }) => email === profileData.email)
     if (!commentData) {
         let id = productInfo.id
         const comment = document.getElementById("textAreaComment").value
@@ -456,7 +455,7 @@ document.getElementById("commentBtn").addEventListener("click", function () {
         if (comment !== "") {
             const score = checkScore()
             const dateTime = formatDate(new Date())
-            const user = profileData.name ?? "Anónimo"
+            const user = profileData.username ?? "Anónimo"
             const img = profileData.picture ?? "img/img_perfil.png"
             const newComment = {
                 score: score,

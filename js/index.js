@@ -49,7 +49,7 @@ function showPopularCategories() {
 
 function showSaleProducts() {
     let salesProducts = []
-    newProductArray.forEach(({products}) => { salesProducts.push(products.filter(({soldCount}) => soldCount < 15))})
+    newProductArray.forEach(({products}) => { salesProducts.push(products.filter(({soldCount, discount}) => soldCount < 15 && discount > 0)) })
     salesProducts = salesProducts.flat()
     salesProducts.sort((a, b) => b.soldCount - a.soldCount)
 

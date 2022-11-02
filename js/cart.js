@@ -281,6 +281,22 @@ function updateTotalCosts(productA) {
   document.getElementById("total-value").innerHTML = `
   ${typeOfCurrency} ${Math.round(subtotal + shipping, -1)}
   `
+
+  const credit = document.getElementById("credit")
+  if (typeOfCurrency === "USD" && Math.round(subtotal + shipping, -1) >= 10000) {
+    if (credit.checked) {
+      credit.checked = false
+      addDisabledAttribute("creditNumber")
+      addDisabledAttribute("cvv")
+      addDisabledAttribute("expirationDate")
+    }
+    credit.setAttribute("disabled", "true")
+    credit.classList.add("is-invalid")
+  }
+  else {
+    credit.removeAttribute("disabled")
+    credit.classList.remove("is-invalid")
+  }
 }
 
 function setTypeOfCurrency(type) {

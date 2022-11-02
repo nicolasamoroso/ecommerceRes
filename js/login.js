@@ -37,12 +37,8 @@ document.getElementById("form").addEventListener("submit", function (event) {
     event.preventDefault();
     const n_email = document.getElementById("email").value
     const password = document.getElementById("password").value
-    if (n_email && password) { 
-        if (password.length >= 6 && mailVerification(n_email)) {
-            signIn(n_email);
-            return
-        }
-    }
+    if (n_email && password && password.length >= 6 && mailVerification(n_email))
+        signIn(n_email);
 });
 
 function signIn(n_email, name = undefined, picture = undefined) {
@@ -53,15 +49,14 @@ function signIn(n_email, name = undefined, picture = undefined) {
         })
         if (catchProfile) {
             const profile = {
-                name: catchProfile.name,
+                username: catchProfile.username,
                 email: catchProfile.email,
-                picture: catchProfile.picture,
+                f_name: catchProfile.f_name,
+                s_name: catchProfile.s_name,
+                f_lastname: catchProfile.f_lastname,
+                s_lastname: catchProfile.s_lastname,
                 phone: catchProfile.phone,
-                street: catchProfile.street,
-                number: catchProfile.number,
-                department: catchProfile.department,
-                age: catchProfile.age,
-                name_lastname: catchProfile.name_lastnme,
+                picture: catchProfile.picture,
                 logged: true
             }
 
@@ -70,21 +65,20 @@ function signIn(n_email, name = undefined, picture = undefined) {
             }), 1, profile);
             localStorage.setItem("profile", JSON.stringify(profileArray));
             redirect();
-            return;
+            return
         }
     }
 
     name = name ? name : n_email.split("@")[0];
     const profile = {
-        name,
+        username: name,
         email: n_email,
+        f_name: "",
+        s_name: "",
+        f_lastname: "",
+        s_lastname: "",
+        phone: "",
         picture: picture ?? "img/img_perfil.png",
-        phone: null,
-        street: null,
-        number: null,
-        department: null,
-        age: null,
-        name_lastname: null,
         logged: true
     }
 
@@ -98,7 +92,6 @@ function signIn(n_email, name = undefined, picture = undefined) {
     const profileArray2 = [profile];
     localStorage.setItem("profile", JSON.stringify(profileArray2));
     redirect();
-    return;
 }
 
 function redirect() {

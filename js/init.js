@@ -267,11 +267,11 @@ window.addEventListener("resize", function() {
 
 function resizeProfile() {
   if (window.innerWidth <= 991) {
-    document.getElementById("username").textContent = catchProfile.name ?? "username"
+    document.getElementById("username").textContent = catchProfile.username ?? "username"
     document.getElementById("imgUser").src = catchProfile.picture ?? "img/img_perfil.png"
   }
   else {
-    document.getElementById("usernameRes").textContent = catchProfile.name ?? "username"
+    document.getElementById("usernameRes").textContent = catchProfile.username ?? "username"
     document.getElementById("imgUserRes").src = catchProfile.picture ?? "img/img_perfil.png"
   }
 }
