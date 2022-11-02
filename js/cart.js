@@ -509,6 +509,8 @@ function resumeOfPurchase() {
     0: [0]
   }
 
+  const profileArray = JSON.parse(localStorage.getItem("profile"))
+  const profile = profileArray.find(({logged}) => logged === true)
   document.getElementById("purchase").innerHTML = `
   <p class="mb-0 fw-bold">Total a pagar: <span
     class="fw-normal">${document.getElementById("total-value").innerText}</span></p>
@@ -519,7 +521,7 @@ function resumeOfPurchase() {
     </span>
   </p>
   <p class="mb-0 fw-bold">Correo del comprador: 
-    <span class="fw-normal">example@mail.com</span>
+    <span class="fw-normal">${profile.email}</span>
   </p>
   <p class="mb-0">${dayOfArrival(dayOfWeek, shipping, day, date, month)}</p>
   `
