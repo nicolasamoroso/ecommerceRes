@@ -389,12 +389,17 @@ function changeDayFormat(date) {
 }
 
 function showComments(comments) {
-    if (comments.length < 1) {
+    if (comments.length < 1) 
         document.getElementById("commentsTitle").innerText = ""
-    }
     let htmlContentToAppend = "";
     for (let i = 0; i < comments.length; i++) {
         let comment = comments[i];
+        let profileArray = JSON.parse(localStorage.getItem("profile"))
+        let profile = profileArray.find(profile => profile.email === comment.email)
+        if (profile) {
+            comment.img = profile.picture
+            comment.user = profile.username
+        } 
         htmlContentToAppend += `
         <hr>
         <div class="d-flex justify-content-between">
@@ -476,7 +481,7 @@ document.getElementById("commentBtn").addEventListener("click", function () {
                 user: user,
                 dateTime: dateTime,
                 img: img,
-                email: profileData.email
+                email: profileData.email,
             }
             let commentsArray = localStorage.getItem(`comments-${id}`) ? JSON.parse(localStorage.getItem(`comments-${id}`)) : []
             commentsArray.unshift(newComment)
