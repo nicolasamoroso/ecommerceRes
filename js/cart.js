@@ -79,6 +79,8 @@ function fav(idProductCart) {
 
 function verifyCurrency(currency, unitCost) {
   if (currency === "UYU" && typeOfCurrency === "USD") return `${Math.trunc(unitCost / 42)}`
+  else if (currency === "UYU" && typeOfCurrency === "UYU") return `${unitCost}`
+  else if (currency === "USD" && typeOfCurrency === "USD") return `${unitCost}`
   else if (typeOfCurrency === "UYU") return `${Math.trunc(unitCost * 42)}`
   return `${unitCost}`
 }

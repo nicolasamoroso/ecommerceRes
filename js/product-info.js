@@ -93,7 +93,6 @@ function addResume(pInfo) {
     </h6>
     <div class="row gap-2 mt-3">
         <h5 class="card-text">${category}</h5>
-        <h6 class="card-text">Puntuación</h6>
         <h6 class="card-text fw-bold">${stock ? 'Stock disponible' : 'Stock no disponible'}</h6>
         <h6 class="card-text" id="cantProdRes">
             <div class="dropdown d-flex justify-content-between align-items-center">
@@ -126,8 +125,7 @@ function addResume(pInfo) {
         <span class="badge bg-danger position-absolute ms-3">${discount === 0 ? '' : '-' + discount + '%'}</span>
     </h6>
     <div class="row gap-2 mt-3">
-        <h5 class="card-text">${category}</h5>
-        <h6 class="card-text">Puntuación</h6>
+        <h5 class="card-text">${category}</h5>  
         <h6 class="card-text">${soldCount} vendidos</h6>
         <h6 class="card-text fw-bold">${stock ? 'Stock disponible' : 'Stock no disponible'}</h6>
         <h6 class="card-text" id="cantProd">
@@ -225,52 +223,36 @@ function addInput(stock) {
         });
     }
 
-    inputCount.addEventListener("keyup", function (e) {
-        let i = parseInt(e.target.value)
+    function checkStock(e, input="") {
+        const i = parseInt(e.target.value)
         if (i) {
-            if (i < 0) document.getElementById("inputCount").value = 1
+            if (i < 0) document.getElementById(`inputCount${input}`).value = 1
             else if (i > stock - count) {
-                document.getElementById("stockInsuficiente").classList.remove("d-none")
-                toggleValidate("inputCount", false)
+                document.getElementById(`stockInsuficiente${input}`).classList.remove("d-none")
+                toggleValidate(`inputCount${input}`, false)
             }
             else {
-                if (!document.getElementById("stockInsuficiente").classList.contains("d-none")) 
-                    document.getElementById("stockInsuficiente").classList.add("d-none")
-                toggleValidate("inputCount", true)
-                document.getElementById("countDropdown").innerText = i
+                if (!document.getElementById(`stockInsuficiente`).classList.contains("d-none")) 
+                    document.getElementById(`stockInsuficiente`).classList.add("d-none")
+                toggleValidate(`inputCount${input}`, true)
+                document.getElementById(`countDropdown${input}`).innerText = i
                 count_value = i
             }
         }
         else {
-            document.getElementById("stockInsuficiente").classList.add("d-none")
-            toggleValidate("inputCount", false)
-            document.getElementById("countDropdown").innerText = 1
+            document.getElementById(`stockInsuficiente${input}`).classList.add("d-none")
+            toggleValidate(`inputCount${input}`, false)
+            document.getElementById(`countDropdown${input}`).innerText = 1
             count_value = 0
         }
+    }
+
+    inputCount.addEventListener("keyup", function (e) {
+        checkStock(e)
     })
 
-    document.getElementById("inputCountRes").addEventListener("keyup", function (e) {
-        let i = parseInt(e.target.value)
-        if (i) {
-            if (i < 0) document.getElementById("inputCountRes").value = 1
-            else if (i > stock - count) {
-                document.getElementById("stockInsuficienteRes").classList.remove("d-none")
-                toggleValidate("inputCountRes", false)
-            }
-            else {
-                if (!document.getElementById("stockInsuficienteRes").classList.contains("d-none")) 
-                    document.getElementById("stockInsuficienteRes").classList.add("d-none")
-                toggleValidate("inputCountRes", true)
-                document.getElementById("countDropdownRes").innerText = i
-                count_value = i
-            }
-        }
-        else {
-            document.getElementById("stockInsuficienteRes").classList.add("d-none")
-            toggleValidate("inputCountRes", false)
-            document.getElementById("countDropdownRes").innerText = 1
-            count_value = 0
-        }
+    inputCountRes.addEventListener("keyup", function (e) {
+        checkStock(e, "Res")
     })
 }
 
@@ -486,6 +468,7 @@ document.getElementById("commentBtn").addEventListener("click", function () {
             let commentsArray = localStorage.getItem(`comments-${id}`) ? JSON.parse(localStorage.getItem(`comments-${id}`)) : []
             commentsArray.unshift(newComment)
             localStorage.setItem(`comments-${id}`, JSON.stringify(commentsArray))
+            if (commentsArray.length > 0) document.getElementById("commentsTitle").innerText = "Comentarios sobre el producto"
             showComments(commentsArray)
         }
     }
