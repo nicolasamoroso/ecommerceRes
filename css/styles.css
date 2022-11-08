@@ -463,9 +463,10 @@ footer h6 {
   text-decoration: none;
   color: #6C757D;
   font-size: small;
+  cursor: pointer;
 }
 
-.preFooterList a:hover {
+.preFooterList li:hover, .preFooterList a:hover {
   color: black;
 }
 
