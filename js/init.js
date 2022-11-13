@@ -112,7 +112,11 @@ function showTopSaleProducts(array) {
 
 const cart = async (cant, product) => {
   if (cant > product.stock) {
-    addOutOfStockAlert()
+    const string = `
+    <strong>
+      Superó el límite de stock para este producto!
+    </strong>`
+    addOutOfStockAlert(string)
     return false
   }
   let newProduct = {
@@ -150,7 +154,11 @@ const cart = async (cant, product) => {
       same_product.stock = newProduct.stock
     }
     else {
-      addOutOfStockAlert()
+      const string = `
+      <strong>
+        Usted ya tiene el máximo de stock para este producto en el carrito!
+      </strong>`
+      addOutOfStockAlert(string)
       return false
     }
   }
@@ -182,7 +190,7 @@ function refreshCountCart() {
 let catchProfile = {}
 document.addEventListener("DOMContentLoaded", () => {
   refreshCountCart()
-
+  addFooter()
   const profile = JSON.parse(localStorage.getItem("profile"))
   
   if (!profile) {
@@ -242,12 +250,8 @@ function addToCartAlert(string) {
   }, 2500);
 }
 
-function addOutOfStockAlert() {
-  document.getElementById("add-error").innerHTML = `
-    <strong>
-      Superó el límite de stock para este producto!
-    </strong>
-  `
+function addOutOfStockAlert(string) {
+  document.getElementById("add-error").innerHTML = string
   document.getElementById("add-error").classList.add("show")
   setTimeout(() => {
     document.getElementById("add-error").classList.remove("show")
@@ -305,4 +309,60 @@ function toggleValidate(id, bool) {
     element.classList.remove("is-valid")
     element.classList.add("is-invalid")
   }
+}
+
+const addFooter = () => {
+  document.getElementsByTagName("footer")[0].innerHTML = `
+    <hr>
+    <div class="container-fluid container-lg">
+      <div class="row mb-3">
+        <div class="col-6 col-md-4 text-muted">
+          <h6 class="text-dark">Categorias</h6>
+          <div class="px-2 preFooterList">
+            <ul class="list-unstyled">
+              <li><a onclick="setCatID(101)">Autos</a></li>
+              <li><a onclick="setCatID(102)">Juguetes</a></li>
+              <li><a onclick="setCatID(103)">Muebles</a></li>
+              <li><a onclick="setCatID(104)">Herramientas</a></li>
+              <li><a onclick="setCatID(105)">Computadoras</a></li>
+              <li><a onclick="setCatID(106)">Vestimenta</a></li>
+              <li><a onclick="setCatID(107)">Electrodomésticos</a></li>
+              <li><a onclick="setCatID(108)">Deporte</a></li>
+              <li><a onclick="setCatID(109)">Celulares</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 text-muted px-0 px-md-3">
+          <h6 class="text-dark">Lo más vendido</h6>
+          <div class="px-2 preFooterList">
+            <ul class="list-unstyled">
+              <li><a onclick="product_info(50922)">Fiat Way</a></li>
+              <li><a onclick="product_info(50923)">Suzuki Celerio</a></li>
+              <li><a onclick="product_info(50924)">Peugeot 208</a></li>
+              <li><a onclick="product_info(50743)">Play Station 5</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 text-muted mt-3 mt-md-0">
+          <h6 class="text-dark">Información útil</h6>
+          <div class="px-2 preFooterList">
+            <ul class="list-unstyled">
+              <li><a href="/blog.html">Blog</a></li>
+              <li><a href="/contact.html">Contacto</a></li>
+              <li><a href="/help.html">FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <p class="mb-0 text-muted">Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/"
+          target="_blank">Jovenes a Programar</a> -
+        2022</p>
+      <div class="d-flex justify-content-between">
+        <p class="text-muted">Clickea <a target="_blank" href="Letra.pdf">aquí</a> para descargar la letra del
+          obligatorio.</p>
+        <a href="#">Volver arriba</a>
+      </div>
+    </div>
+  `
 }

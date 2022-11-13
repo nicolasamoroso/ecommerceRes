@@ -22,8 +22,8 @@
       <div class="navToggler d-lg-none" id="btnBurger" type="button" data-bs-toggle="collapse"
         data-bs-target="#navBarContent" aria-controls="navBarContent" aria-expanded="false"
         aria-label="Toggle navigation">
-        <div class="navToggler-top"></div>
-        <div class="navToggler-bottom"></div>
+        <div class="navToggler-top "></div>
+        <div class="navToggler-bottom "></div>
       </div>
       <div class="collapse navbar-collapse" id="navBarContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex gap-lg-4 mt-lg-0 mt-3">
@@ -129,7 +129,7 @@
 
                 <hr>
                 <div class="mt-3">
-                  <h5 class="text-sm-center">Métodos de pago</h5>
+                  <h5 class="text-center">Métodos de pago</h5>
                   <div id="paymentMethodsRes">
                     <div class="row d-flex justify-content-center">
                       <div class="col-6 cards" id="creditMethodRes">
@@ -144,7 +144,7 @@
                       <div class="col-6 cards" id="bankMethodRes">
                         <div class="cardsShowMore">
                           <img src="https://www.svgrepo.com/show/9509/bank.svg" class="creditCard">
-                          <span class="cardSpan">Cuentas bancarias</span>
+                          <span class="cardSpan">Transferencia bancaria</span>
                         </div>
                       </div>
                     </div>
@@ -179,6 +179,7 @@
                   placeholder="Agrega un comentario al producto"></textarea>
                 <button type="button" class="btn btn-primary mt-3" id="commentBtn">Comentar</button>
               </div>
+
               <div class="mt-5">
                 <h3 id="commentsTitle">Comentarios sobre el producto</h3>
                 <div id="comments"></div>
@@ -205,10 +206,10 @@
                       <span class="cardSpan">Tarjetas de débito/crédito</span>
                     </div>
                   </div>
-                  <div class="col-6 cards ps-0" id="bankMethod">
-                    <div class="cardsShowMore ps-0">
+                  <div class="col-6 cards" id="bankMethod">
+                    <div class="cardsShowMore">
                       <img src="https://www.svgrepo.com/show/9509/bank.svg" class="creditCard">
-                      <span class="cardSpan">Cuentas bancarias</span>
+                      <span class="cardSpan">Transferencia bancaria</span>
                     </div>
                   </div>
                 </div>
@@ -229,59 +230,9 @@
     <div class="alert alert-danger alert-dismissible text-center fade" role="alert" id="add-error"></div>
     <div class="alert alert-danger alert-dismissible text-center fade" role="alert" id="comment-alert"></div>
   </main>
-  <footer class="mt-5">
-    <hr>
-    <div class="container-fluid container-lg">
-      <div class="row mb-3">
-        <div class="col-6 col-md-4 text-muted">
-          <h6 class="text-dark">Categorias</h6>
-          <div class="px-2 preFooterList">
-            <ul class="list-unstyled">
-              <li><a onclick="setCatID(101)">Autos</a></li>
-              <li><a onclick="setCatID(102)">Juguetes</a></li>
-              <li><a onclick="setCatID(103)">Muebles</a></li>
-              <li><a onclick="setCatID(104)">Herramientas</a></li>
-              <li><a onclick="setCatID(105)">Computadoras</a></li>
-              <li><a onclick="setCatID(106)">Vestimenta</a></li>
-              <li><a onclick="setCatID(107)">Electrodomésticos</a></li>
-              <li><a onclick="setCatID(108)">Deporte</a></li>
-              <li><a onclick="setCatID(109)">Celulares</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-6 col-md-4 text-muted px-0 px-md-3">
-          <h6 class="text-dark">Lo más vendido</h6>
-          <div class="px-2 preFooterList">
-            <ul class="list-unstyled">
-              <li><a onclick="product_info(50922)">Fiat Way</a></li>
-              <li><a onclick="product_info(50923)">Suzuki Celerio</a></li>
-              <li><a onclick="product_info(50924)">Peugeot 208</a></li>
-              <li><a onclick="product_info(50743)">Play Station 5</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-6 col-md-4 text-muted mt-3 mt-md-0">
-          <h6 class="text-dark">Información útil</h6>
-          <div class="px-2 preFooterList">
-            <ul class="list-unstyled">
-              <li><a href="/blog.html">Blog</a></li>
-              <li><a href="/contact.html">Contacto</a></li>
-              <li><a href="/help.html">FAQ</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <hr>
-      <p class="mb-0 text-muted">Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/"
-          target="_blank">Jovenes a Programar</a> -
-        2022</p>
-      <div class="d-flex justify-content-between">
-        <p class="text-muted">Clickea <a target="_blank" href="Letra.pdf">aquí</a> para descargar la letra del
-          obligatorio.</p>
-        <a href="#">Volver arriba</a>
-      </div>
-    </div>
-  </footer>
+  
+  <footer class="mt-5"></footer>
+
   <div id="spinner-wrapper">
     <div class="lds-ring">
       <div></div>
