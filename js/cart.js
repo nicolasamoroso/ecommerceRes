@@ -83,7 +83,13 @@ function fav(idProductCart) {
 //Función que verifica que tipo de moneda es y convierte sus valores a USD/UYU
 function verifyCurrency(currency, unitCost) {
   if (currency === "UYU" && typeOfCurrency === "USD") return `${Math.trunc(unitCost / 42)}`
+<<<<<<< HEAD
   else if (currency !== "UYU" && typeOfCurrency === "UYU") return `${Math.trunc(unitCost * 42)}`
+=======
+  else if (currency === "UYU" && typeOfCurrency === "UYU") return `${unitCost}`
+  else if (currency === "USD" && typeOfCurrency === "USD") return `${unitCost}`
+  else if (typeOfCurrency === "UYU") return `${Math.trunc(unitCost * 42)}`
+>>>>>>> 49d24f1fd10b6ceea6e696c9a57ddce191e88435
   return `${unitCost}`
 }
 

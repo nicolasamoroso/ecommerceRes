@@ -22,8 +22,8 @@
       <div class="navToggler d-lg-none" id="btnBurger" type="button" data-bs-toggle="collapse"
         data-bs-target="#navBarContent" aria-controls="navBarContent" aria-expanded="false"
         aria-label="Toggle navigation">
-        <div class="navToggler-top "></div>
-        <div class="navToggler-bottom "></div>
+        <div class="navToggler-top"></div>
+        <div class="navToggler-bottom"></div>
       </div>
       <div class="collapse navbar-collapse" id="navBarContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex gap-lg-4 mt-lg-0 mt-3">
@@ -138,7 +138,7 @@
                             <img src="https://www.svgrepo.com/show/328141/mastercard.svg" class="creditCard">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" class="creditCard">
                           </div>
-                          <span class="cardSpan">Tarjetas de débito</span>
+                          <span class="cardSpan">Tarjetas de débito/crédito</span>
                         </div>
                       </div>
                       <div class="col-6 cards" id="bankMethodRes">
@@ -179,7 +179,6 @@
                   placeholder="Agrega un comentario al producto"></textarea>
                 <button type="button" class="btn btn-primary mt-3" id="commentBtn">Comentar</button>
               </div>
-
               <div class="mt-5">
                 <h3 id="commentsTitle">Comentarios sobre el producto</h3>
                 <div id="comments"></div>
@@ -203,7 +202,7 @@
                         <img src="https://www.svgrepo.com/show/328141/mastercard.svg" class="creditCard">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" class="creditCard">
                       </div>
-                      <span class="cardSpan">Tarjetas de débito</span>
+                      <span class="cardSpan">Tarjetas de débito/crédito</span>
                     </div>
                   </div>
                   <div class="col-6 cards ps-0" id="bankMethod">
@@ -238,27 +237,26 @@
           <h6 class="text-dark">Categorias</h6>
           <div class="px-2 preFooterList">
             <ul class="list-unstyled">
-              <li><a href="">Autos</a></li>
-              <li><a href="">Juguetes</a></li>
-              <li><a href="">Muebles</a></li>
-              <li><a href="">Herramientas</a></li>
-              <li><a href="">Computadoras</a></li>
-              <li><a href="">Vestimenta</a></li>
-              <li><a href="">Electrodomésticos</a></li>
-              <li><a href="">Deporte</a></li>
-              <li><a href="">Celulares</a></li>
+              <li><a onclick="setCatID(101)">Autos</a></li>
+              <li><a onclick="setCatID(102)">Juguetes</a></li>
+              <li><a onclick="setCatID(103)">Muebles</a></li>
+              <li><a onclick="setCatID(104)">Herramientas</a></li>
+              <li><a onclick="setCatID(105)">Computadoras</a></li>
+              <li><a onclick="setCatID(106)">Vestimenta</a></li>
+              <li><a onclick="setCatID(107)">Electrodomésticos</a></li>
+              <li><a onclick="setCatID(108)">Deporte</a></li>
+              <li><a onclick="setCatID(109)">Celulares</a></li>
             </ul>
           </div>
         </div>
         <div class="col-6 col-md-4 text-muted px-0 px-md-3">
-          <h6 class="text-dark">Marcas populares</h6>
+          <h6 class="text-dark">Lo más vendido</h6>
           <div class="px-2 preFooterList">
             <ul class="list-unstyled">
-              <li><a href="">Chevrolet</a></li>
-              <li><a href="">Suzuki</a></li>
-              <li><a href="">Buggatti</a></li>
-              <li><a href="">Samsung</a></li>
-              <li><a href="">Apple</a></li>
+              <li><a onclick="product_info(50922)">Fiat Way</a></li>
+              <li><a onclick="product_info(50923)">Suzuki Celerio</a></li>
+              <li><a onclick="product_info(50924)">Peugeot 208</a></li>
+              <li><a onclick="product_info(50743)">Play Station 5</a></li>
             </ul>
           </div>
         </div>
@@ -266,10 +264,9 @@
           <h6 class="text-dark">Información útil</h6>
           <div class="px-2 preFooterList">
             <ul class="list-unstyled">
-              <li><a href="">Nosotros</a></li>
-              <li><a href="">Blog</a></li>
-              <li><a href="">Contacto</a></li>
-              <li><a href="">FAQ</a></li>
+              <li><a href="/blog.html">Blog</a></li>
+              <li><a href="/contact.html">Contacto</a></li>
+              <li><a href="/help.html">FAQ</a></li>
             </ul>
           </div>
         </div>

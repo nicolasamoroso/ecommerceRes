@@ -197,22 +197,22 @@ a.showMore {
     }
 }
 
-* {
+.row.flex-nowrap.overflow-auto.catImgName {
     scrollbar-width: thin;
     scrollbar-color: rgba(143, 143, 143, 0.611) rgba(233, 233, 233, 0.542);
 }
 
-*::-webkit-scrollbar {
+.row.flex-nowrap.overflow-auto.catImgName::-webkit-scrollbar {
     width: 12px;
     height: 5px;
 }
 
-*::-webkit-scrollbar-track {
+.row.flex-nowrap.overflow-auto.catImgName::-webkit-scrollbar-track {
     background: rgba(233, 233, 233, 0.542);
     border-radius: 10px;
 }
 
-*::-webkit-scrollbar-thumb {
+.row.flex-nowrap.overflow-auto.catImgName::-webkit-scrollbar-thumb {
     background-color: rgba(143, 143, 143, 0.611);
     border-radius: 10px;
     border: rgba(233, 233, 233, 0.542);
