@@ -91,3 +91,7 @@
 .modal-open {
     overflow: hidden;
 }
+
+#username {
+    color: white;
+}
