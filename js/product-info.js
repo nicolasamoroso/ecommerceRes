@@ -93,15 +93,14 @@ function addResume(pInfo) {
             <div class="dropdown d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <span class="me-2">Cantidad:</span>
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="countDropdownRes" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="countDropdownRes" 
+                        data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                         1
                     </button>
                     <small class="ms-2">(${stock > 1 ? stock + " disponibles" : stock + " disponible"})</small>
                     <ul class="dropdown-menu" aria-labelledby="countDropdownRes" id="ulCountRes">
-                        <div id="lstCountRes">
-                        </div>
-                        <div id="countInputResDiv">
-                        </div>
+                        <div id="lstCountRes"></div>
+                        <div id="countInputResDiv"></div>
                     </ul>
                 </div>
             </div>
@@ -127,15 +126,14 @@ function addResume(pInfo) {
             <div class="dropdown d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <span class="me-2">Cantidad:</span>
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="countDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="countDropdown" 
+                        data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                         1
                     </button>
                     <small class="ms-2 text-break">(${stock > 1 ? stock + " disponibles" : stock + " disponible"})</small>
                     <ul class="dropdown-menu" aria-labelledby="countDropdown" id="ulCount">
-                        <div id="lstCount">
-                        </div>
-                        <div id="countInputDiv">
-                        </div>
+                        <div id="lstCount"></div>
+                        <div id="countInputDiv"></div>
                     </ul>
                 </div>
             </div>
@@ -210,7 +208,13 @@ function addInput(stock) {
     document.getElementById("countDropdownRes").innerText = inputCountRes.value
     count_value = inputCount ? parseInt(inputCount.value) : parseInt(inputCountRes.value)
 
-    const cartArray = JSON.parse(localStorage.getItem("cart"))
+    const cartArray = []
+    const profileArray = JSON.parse(localStorage.getItem("profile"))
+    if (profileArray) {
+        const profile = profileArray.find(({ logged }) => logged === true)
+        if (profile) 
+            cartArray.push(...profile.cart)
+    }
     let count = 0;
     if (cartArray) {
         cartArray.forEach(element => {
@@ -509,7 +513,15 @@ function addToCart() {
         addOutOfStockAlert(string)
         return
     }
-    const cartArray = localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : {}
+
+    const cartArray = []
+    const profileArray = JSON.parse(localStorage.getItem("profile"))
+    if (profileArray) {
+        const profile = profileArray.find(({ logged }) => logged === true)
+        if (profile) 
+            cartArray.push(...profile.cart)
+    }
+
     let pinfo = {}
     if (Object.values(cartArray).length > 0) pinfo = cartArray.find((product) => product.id === productInfo.id)
     if (pinfo && Object.values(pinfo).length > 0) value += pinfo.count
@@ -527,8 +539,8 @@ function addToCart() {
     }
 }
 
-const buy = async () => {
-    let added = await cart(count_value, productInfo)
+const buy = () => {
+    let added = cart(count_value, productInfo)
     if (added === true) {
         addToCartAlert('')
         setTimeout(() => {

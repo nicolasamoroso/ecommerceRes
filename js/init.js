@@ -81,28 +81,30 @@ function showTopSaleProducts(array) {
     let product = array[i]
     if (product.products.length > 0) {
       document.getElementById("lstTopSale").innerHTML += `
-      <div class="mt-3">
-        <h2 class="accordion-header" id="btnCat-${i}">
-          <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse"
-            data-bs-target="#collapseCat-${i}" aria-expanded="false" aria-controls="collapseCat-${i}">
-            <i class="fa-solid fa-arrow-down-from-line"></i> <span class="text-muted">${product.catName}</span>
-          </button>
-        </h2>
-        <div class="accordion" id="productCat-${i}">
-          <div id="collapseCat-${i}" class="accordion-collapse collapse" aria-labelledby="btnCat-${i}"
-            data-bs-parent="#productCat-${i}">
-            <div class="accordion-body d-lg-flex flex-lg-column text-muted pb-0">
-              <div class="row" id="lstCat-${i}">
+        <div class="mt-3">
+          <h2 class="accordion-header" id="btnCat-${i}">
+            <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseCat-${i}" aria-expanded="false" aria-controls="collapseCat-${i}">
+              <i class="fa-solid fa-arrow-down-from-line"></i> 
+              <span class="text-muted">${product.catName}</span>
+            </button>
+          </h2>
+          <div class="accordion" id="productCat-${i}">
+            <div id="collapseCat-${i}" class="accordion-collapse collapse" aria-labelledby="btnCat-${i}"
+              data-bs-parent="#productCat-${i}">
+              <div class="accordion-body d-lg-flex flex-lg-column text-muted pb-0">
+                <div class="row" id="lstCat-${i}"></div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       `
       product.products.forEach(({ id, name, soldCount }) => {
         if (soldCount > 10) {
           document.getElementById(`lstCat-${i}`).innerHTML += `
-          <a class="col-6 col-sm-4 col-md-12 text-decoration-underline" onclick="product_info(${id})">${name}</a>
+            <a class="col-6 col-sm-4 col-md-12 text-decoration-underline" onclick="product_info(${id})">
+              ${name}
+            </a>
           `
         }
       })
@@ -110,12 +112,13 @@ function showTopSaleProducts(array) {
   }
 }
 
-const cart = async (cant, product) => {
+const cart = (cant, product) => {
   if (cant > product.stock) {
     const string = `
-    <strong>
-      Superó el límite de stock para este producto!
-    </strong>`
+      <strong>
+        Superó el límite de stock para este producto!
+      </strong>
+    `
     addOutOfStockAlert(string)
     return false
   }
@@ -127,75 +130,68 @@ const cart = async (cant, product) => {
     image: product.image ?? product.images[0],
     id: product.id,
     stock: product.stock,
-    description: product.description
+    description: product.description,
+    category: product.category
   }
-
+  
   let cartArray = []
-  if (!localStorage.getItem("cart")) {
-    const cartData = await getJSONData(C_INFO_URL)
-    if (cartData.status === 'ok') {
-      let cart = cartData.data.articles
-      cart.forEach(prod => {
-        const newProductArray = JSON.parse(localStorage.getItem("newProductArray"))
-        if (newProductArray) {
-          const productsArray = newProductArray.find(({catID}) => catID === 101) 
-          if (productsArray) {
-            const product = productsArray.products.find(({id}) => id === prod.id)
-            if (product) {
-              if (product.stock === 0) return
 
-              prod.count = 1
-              prod.stock = product.stock
-              prod.description = product.description
-              cartArray.push(prod)
-            }
-          }
-        }
-      })
+  const profileArray = JSON.parse(localStorage.getItem("profile"))
+  if (profileArray) {
+    const profile = profileArray.find(({ logged }) => logged === true)
+    cartArray.push(...profile.cart)
+
+    let same_product = cartArray.find(product => product.id === newProduct.id)
+
+    if (same_product) {
+      if (same_product.count + newProduct.count <= same_product.stock) {
+        same_product.count += newProduct.count
+        same_product.stock = newProduct.stock
+      }
+      else {
+        const string = `
+        <strong>
+          Usted ya tiene el máximo de stock para este producto en el carrito!
+        </strong>`
+        addOutOfStockAlert(string)
+        return false
+      }
     }
-    localStorage.setItem("cart", JSON.stringify(cartArray))
+    else cartArray.push(newProduct)
+
+    profile.cart = cartArray
+    localStorage.setItem("profile", JSON.stringify(profileArray))
+    refreshCountCart()
+    return true
   }
-  else cartArray = JSON.parse(localStorage.getItem("cart"))
-
-  let same_product = cartArray.find(product => product.id === newProduct.id)
-
-  if (same_product) {
-    if (same_product.count + newProduct.count <= same_product.stock) {
-      same_product.count += newProduct.count
-      same_product.stock = newProduct.stock
-    }
-    else {
-      const string = `
-      <strong>
-        Usted ya tiene el máximo de stock para este producto en el carrito!
-      </strong>`
-      addOutOfStockAlert(string)
-      return false
-    }
-  }
-  else cartArray.push(newProduct)
-
-  localStorage.setItem("cart", JSON.stringify(cartArray))
-  refreshCountCart()
-  return true
 }
 
-const cartBtn = async (id, catName) => {
+const cartBtn = (id, catName) => {
   let array = JSON.parse(localStorage.getItem("newProductArray"))
-  let cat = array.find(cat => cat.catName === catName).products
-  let pinfo = cat.find(prod => prod.id === id)
-
-  let added = await cart(1, pinfo)
-  if (added === true) {
-    addToCartAlert('')
-    setTimeout(() => {
-      window.location = "cart.html"
-    }, 1000)
+  if (array) {
+    let cat = array.find(cat => cat.catName === catName).products
+    if (cat) {
+      let pinfo = cat.find(prod => prod.id === id)
+      if (pinfo) {
+        pinfo.category = catName
+        let added = cart(1, pinfo)
+        if (added === true) {
+          addToCartAlert('')
+          setTimeout(() => {
+            window.location = "cart.html"
+          }, 1000)
+        }
+      }
+    }
   }
 }
 
 function refreshCountCart() {
-  document.getElementById("cartLenght").innerText = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")).length : 1 
+  const profileArray = JSON.parse(localStorage.getItem("profile"))
+  if (profileArray) {
+    const profile = profileArray.find(({ logged }) => logged === true)
+    document.getElementById("cartLenght").textContent = profile.cart.length
+  }
 }
 
 let catchProfile = {}
@@ -280,7 +276,6 @@ function signOut() {
       localStorage.setItem("profile", JSON.stringify(profileArray));
     }
   }
-  localStorage.removeItem("cart")
   window.location = "login.html"
 }
 

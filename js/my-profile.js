@@ -128,3 +128,7 @@ document.getElementById("saveEdit").addEventListener("click", () => {
         localStorage.setItem('profile', JSON.stringify(profileArray))
     }
 })
+
+document.getElementById("cancel-pic").addEventListener("click", () => {
+    document.getElementById("editProfileImg").src = profile.picture
+})

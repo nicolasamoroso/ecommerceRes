@@ -56,6 +56,7 @@ function signIn(n_email, name = undefined, picture = undefined) {
                 s_lastname: catchProfile.s_lastname,
                 phone: catchProfile.phone,
                 picture: catchProfile.picture,
+                cart: catchProfile.cart,
                 logged: true
             }
 
@@ -78,6 +79,7 @@ function signIn(n_email, name = undefined, picture = undefined) {
         s_lastname: "",
         phone: "",
         picture: picture ?? "img/img_perfil.png",
+        cart: [],
         logged: true
     }
 

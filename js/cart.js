@@ -3,31 +3,11 @@ let cartArray = []
 let isMobile = iOS() ? iOSMobile() : navigator.userAgentData.mobile
 
 document.addEventListener('DOMContentLoaded', async () => {
-  if (!localStorage.getItem("cart")) {
-    const cartData = await getJSONData(C_INFO_URL)
-    if (cartData.status === 'ok') {
-      let cart = cartData.data.articles
-      cart.forEach(prod => {
-        const newProductArray = JSON.parse(localStorage.getItem("newProductArray"))
-        if (newProductArray) {
-          const productsArray = newProductArray.find(({catID}) => catID === 101) 
-          if (productsArray) {
-            const product = productsArray.products.find(({id}) => id === prod.id)
-            if (product) {
-              if (product.stock === 0) return
-
-              prod.count = 1
-              prod.stock = product.stock
-              prod.description = product.description
-              cartArray.push(prod)
-            }
-          }
-        }
-      })
-    }
-    localStorage.setItem("cart", JSON.stringify(cartArray))
+  const profileArray = JSON.parse(localStorage.getItem("profile"))
+  if (profileArray) {
+    const profile = profileArray.find(({ logged }) => logged === true)
+    cartArray.push(...profile.cart)
   }
-  else cartArray = JSON.parse(localStorage.getItem("cart"))
 
   addItemsToCart(cartArray)
   updateTotalCosts(cartArray)
@@ -41,45 +21,72 @@ function addItemsToCart(cartArray) {
   let cartItems = document.getElementById("items")
   cartItems.innerHTML = ""
   for (let i = 0; i < cartArray.length; i++) {
-    const { image, name, id, currency, unitCost, count, description } = cartArray[i];
-    cartItems.innerHTML += `
-    <hr>
-    <div class="row">
-      <div class="col-12">
-        <div class="row">
-          <div class="col-4 pe-0 h-100">
-            <img src="${image}" alt="${name}" class="img-fluid rounded imgHoverCartProduct"
-              onclick="product_info(${id})">
-          </div>
-          <div class="col-8 flex-column d-flex justify-content-around">
-            <div class="row">
-              <div class="col-12 col-sm-7 pe-0">
-                <h5 class="mb-0 nameHoverCartProduct" onclick="product_info(${id})">${name}</h5>
-                <small class="text-muted">${typeOfCurrency} ${verifyCurrency(currency, unitCost, i)}</small>
-              </div>
-              <div class="col-sm-5 d-flex justify-content-end">
-                <h6 class="fw-bold d-none d-sm-block" id="totalPerProduct-${i}">${typeOfCurrency}
-                  ${verifyCurrency(currency, unitCost, i) * count}</h6>
+    let { image, name, id, currency, unitCost, count, description, category } = cartArray[i];
+
+    const newProductArray = JSON.parse(localStorage.getItem("newProductArray"))
+    if (newProductArray) {
+      const productsArray = newProductArray.find(({ catName }) => catName === category)
+      if (productsArray) {
+        const product = productsArray.products.find(({ id: idProd }) => idProd === id)
+        if (product.stock !== 0) {
+          cartArray[i].stock = product.stock
+          if (cartArray[i].count > product.stock) cartArray[i].count = product.stock
+          count = cartArray[i].count
+          cartItems.innerHTML += `
+          <hr>
+          <div class="row">
+            <div class="col-12">
+              <div class="row">
+                <div class="col-4 pe-0 h-100">
+                  <img src="${image}" alt="${name}" class="img-fluid rounded imgHoverCartProduct"
+                    onclick="product_info(${id})">
+                </div>
+                <div class="col-8 flex-column d-flex justify-content-around">
+                  <div class="row">
+                    <div class="col-12 col-sm-7 pe-0">
+                      <h5 class="mb-0 nameHoverCartProduct" onclick="product_info(${id})">${name}</h5>
+                      <small class="text-muted">${typeOfCurrency} ${verifyCurrency(currency, unitCost, i)}</small>
+                    </div>
+                    <div class="col-sm-5 d-flex justify-content-end">
+                      <h6 class="fw-bold d-none d-sm-block" id="totalPerProduct-${i}">${typeOfCurrency}
+                        ${verifyCurrency(currency, unitCost, i) * count}</h6>
+                    </div>
+                  </div>
+                  <p class="d-none d-sm-block mb-0 text-break">${description}</p>
+                  <small class="fw-bold mb-0 d-sm-none text-end" id="totalPerProductRes-${i}">${typeOfCurrency}
+                    ${verifyCurrency(currency, unitCost, i) * count}</small>
+                  <div class="col-11 mx-auto">
+                    <div class="row d-none d-sm-flex justify-content-center gap-3">
+                      ${addCountDeleteFavBtns(id, i, count, false)}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <p class="d-none d-sm-block mb-0 text-break">${description}</p>
-            <small class="fw-bold mb-0 d-sm-none text-end" id="totalPerProductRes-${i}">${typeOfCurrency}
-              ${verifyCurrency(currency, unitCost, i) * count}</small>
-            <div class="col-11 mx-auto">
-              <div class="row d-none d-sm-flex justify-content-center gap-3">
-                ${addCountDeleteFavBtns(id, i, count, false)}
+            <div class="col-12 d-block d-sm-none mt-3">
+              <div class="row justify-content-center">
+                ${addCountDeleteFavBtns(id, i, count, true)}
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="col-12 d-block d-sm-none mt-3">
-        <div class="row justify-content-center">
-          ${addCountDeleteFavBtns(id, i, count, true)}
-        </div>
-      </div>
-    </div>
-    `
+          `
+        }
+        else {
+          cartArray = cartArray.filter(product => product.id !== id)
+          const profileArray = JSON.parse(localStorage.getItem("profile"))
+          if (profileArray) {
+            const profile = profileArray.find(({ logged }) => logged === true)
+            if (profile) 
+              profile.cart = cartArray
+          }
+          localStorage.setItem("profile", JSON.stringify(profileArray))
+          addItemsToCart(cartArray)
+          refreshCountCart()
+          updateTotalCosts(cartArray)
+          if (cartArray.length === 0) checkOutBtn()
+        }
+      }
+    }
   }
 }
 
@@ -186,7 +193,13 @@ function removeProduct(id) {
       )
 
       cartArray = cartArray.filter(product => product.id !== id)
-      localStorage.setItem("cart", JSON.stringify(cartArray))
+      const profileArray = JSON.parse(localStorage.getItem("profile"))
+      if (profileArray) {
+        const profile = profileArray.find(({ logged }) => logged === true)
+        if (profile) 
+          profile.cart = cartArray
+      }
+      localStorage.setItem("profile", JSON.stringify(profileArray))
       addItemsToCart(cartArray)
       refreshCountCart()
       updateTotalCosts(cartArray)
@@ -208,10 +221,15 @@ function removeProduct(id) {
 
 //Función que habilita o deshabilita el botón de checkout.
 function checkOutBtn() {
-  if (JSON.parse(localStorage.getItem("cart")).length === 0)
-    document.getElementById("checkout").setAttribute("disabled", "true")
-  else
-    document.getElementById("checkout").removeAttribute("disabled")
+  cartArray = cartArray.filter(product => product.id !== id)
+  const profileArray = JSON.parse(localStorage.getItem("profile"))
+  if (profileArray) {
+    const profile = profileArray.find(({ logged }) => logged === true)
+    if (profile) {
+      if (profile.cart.length === 0) document.getElementById("checkout").setAttribute("disabled", "true")
+      else document.getElementById("checkout").removeAttribute("disabled")
+    }
+  }
 }
 
 let startTime = 0
@@ -240,6 +258,7 @@ function mouseDown(type, id) {
     else if (elapsedTime < 3000) intTime = updateCount(type, i, 3, "150")
     else if (elapsedTime < 6000) intTime = updateCount(type, i, 5, "70")
     else if (elapsedTime > 6000) intTime = updateCount(type, i, 10, "40")
+    else if (elapsedTime > 10000) intTime = updateCount(type, i, 500, "20")
 
     if (cartArray[i].count > cartArray[i].stock) {
       const string = `
@@ -259,7 +278,14 @@ function mouseDown(type, id) {
     document.getElementById(`countProduct-${i}`).textContent = cartArray[i].count
     document.getElementById(`countProductRes-${i}`).textContent = cartArray[i].count
 
-    localStorage.setItem("cart", JSON.stringify(cartArray))
+    const profileArray = JSON.parse(localStorage.getItem("profile"))
+    if (profileArray) {
+      const profile = profileArray.find(({ logged }) => logged === true)
+      if (profile) 
+        profile.cart = cartArray
+    }
+    localStorage.setItem("profile", JSON.stringify(profileArray))
+
     updateTotalCosts(cartArray)
     changeProductTotal(cartArray[i].unitCost, cartArray[i].count, i)
 
@@ -326,7 +352,8 @@ function updateTotalCosts(productA) {
   `
 
   const credit = document.getElementById("credit")
-  if (typeOfCurrency === "USD" && Math.round(subtotal + shipping, -1) >= 10000) {
+  const totalPerProduct = Math.round(subtotal + shipping, -1)
+  if ((typeOfCurrency === "USD" && totalPerProduct >= 10000) || (typeOfCurrency === "UYU" && totalPerProduct >= 420000)) {
     if (credit.checked) {
       credit.checked = false
       addDisabledAttribute("creditNumber")
@@ -622,7 +649,13 @@ document.getElementById("buy").addEventListener("click", function() {
 
 
   cartArray = []
-  localStorage.setItem("cart", JSON.stringify(cartArray))
+  const profileArray = JSON.parse(localStorage.getItem("profile"))
+  if (profileArray) {
+    const profile = profileArray.find(({ logged }) => logged === true)
+    if (profile) 
+      profile.cart = cartArray
+  }
+  localStorage.setItem("profile", JSON.stringify(profileArray))
 
   addItemsToCart(cartArray)
   refreshCountCart()
