@@ -17,6 +17,53 @@ function getProfile() {
     document.getElementById("profileImg").src = profile.picture
 }
 
+const form = document.getElementById("form-edit")
+
+form.addEventListener("submit", async (e) => {
+    if (!form.checkValidity()) {
+        e.stopPropagation()
+        e.preventDefault()
+    }
+    form.classList.add('was-validated')
+})
+
+document.getElementById("editProfile").addEventListener("click", () => {
+    document.getElementById("edit-profile").classList.remove("d-none")
+    document.getElementById("profile").classList.add("d-none")
+    document.getElementById("edit-emailLabel").textContent = profile.email
+    document.getElementById("edit-inputUsername").value = profile.username
+    document.getElementById("edit-inputFName").value = profile.f_name
+    document.getElementById("edit-inputSName").value = profile.s_name
+    document.getElementById("edit-inputFLastname").value = profile.f_lastname
+    document.getElementById("edit-inputSLastname").value = profile.s_lastname
+    document.getElementById("edit-inputPhone").value = profile.phone
+    document.getElementById("editProfileImg").src = profile.picture
+})
+
+document.getElementById("saveEdit").addEventListener("click", () => {
+    const formData = new FormData(form)
+    const data = Object.fromEntries(formData.entries())
+    if (data.username.length > 0 && data.first_name.length > 0 && data.first_lastname.length > 0 && data.phone.length > 0) {
+        profile.s_name = data.second_name
+        profile.s_lastname = data.second_lastname
+        profile.phone = data.phone
+        profile.username = data.username
+        profile.f_name = data.first_name
+        profile.f_lastname = data.first_lastname
+        profile.picture = document.getElementById("editProfileImg").src
+        localStorage.setItem('profile', JSON.stringify(profileArray))
+    }
+})
+
+document.getElementById("cancelEdit").addEventListener("click", () => {
+    document.getElementById("edit-profile").classList.add("d-none")
+    document.getElementById("profile").classList.remove("d-none")
+})
+
+document.getElementById("cancel-pic").addEventListener("click", () => {
+    document.getElementById("editProfileImg").src = profile.picture
+})
+
 function cutImage() {
     const inputImage = document.getElementById('image')
     const editor = document.getElementById('editor')
@@ -85,50 +132,3 @@ function cutImage() {
         document.querySelector("#preview").remove()
     }
 }
-
-const form = document.getElementById("form-edit")
-
-form.addEventListener("submit", async (e) => {
-    if (!form.checkValidity()) {
-        e.stopPropagation()
-        e.preventDefault()
-    }
-    form.classList.add('was-validated')
-})
-
-document.getElementById("editProfile").addEventListener("click", () => {
-    document.getElementById("edit-profile").classList.remove("d-none")
-    document.getElementById("profile").classList.add("d-none")
-    document.getElementById("edit-emailLabel").textContent = profile.email
-    document.getElementById("edit-inputUsername").value = profile.username
-    document.getElementById("edit-inputFName").value = profile.f_name
-    document.getElementById("edit-inputSName").value = profile.s_name
-    document.getElementById("edit-inputFLastname").value = profile.f_lastname
-    document.getElementById("edit-inputSLastname").value = profile.s_lastname
-    document.getElementById("edit-inputPhone").value = profile.phone
-    document.getElementById("editProfileImg").src = profile.picture
-})
-
-document.getElementById("cancelEdit").addEventListener("click", () => {
-    document.getElementById("edit-profile").classList.add("d-none")
-    document.getElementById("profile").classList.remove("d-none")
-})
-
-document.getElementById("saveEdit").addEventListener("click", () => {
-    const formData = new FormData(form)
-    const data = Object.fromEntries(formData.entries())
-    if (data.username.length > 0 && data.first_name.length > 0 && data.first_lastname.length > 0 && data.phone.length > 0) {
-        profile.s_name = data.second_name
-        profile.s_lastname = data.second_lastname
-        profile.phone = data.phone
-        profile.username = data.username
-        profile.f_name = data.first_name
-        profile.f_lastname = data.first_lastname
-        profile.picture = document.getElementById("editProfileImg").src
-        localStorage.setItem('profile', JSON.stringify(profileArray))
-    }
-})
-
-document.getElementById("cancel-pic").addEventListener("click", () => {
-    document.getElementById("editProfileImg").src = profile.picture
-})
