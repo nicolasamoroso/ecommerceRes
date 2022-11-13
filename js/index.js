@@ -43,7 +43,9 @@ function showPopularCategories() {
         document.getElementById("popularCategories").innerHTML += `
         <div class="col-4 col-md-1 col-sm-2 text-center cursor-active imgHoverContainer" onclick="setCatID(${id})">
             <img src="${imgSrc}" class="img-fluid imgCatInIndex">
-            <h6 class="popularCat text-break">${name}</h6>
+            <h6 class="popularCat text-break">
+                ${name}
+            </h6>
         </div>
         `
     });
@@ -52,7 +54,7 @@ function showPopularCategories() {
 function showSaleProducts() {
     let salesProducts = []
     newProductArray.forEach(({products}) => { 
-        salesProducts.push(products.filter(({soldCount, discount}) => soldCount < 15 && discount > 0)) 
+        salesProducts.push(products.filter(({soldCount, discount, stock}) => soldCount < 15 && discount > 0 && stock > 0)) 
     })
     salesProducts = salesProducts.flat()
     salesProducts.sort((a, b) => b.soldCount - a.soldCount)

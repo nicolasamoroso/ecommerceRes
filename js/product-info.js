@@ -218,52 +218,45 @@ function addInput(stock) {
         });
     }
 
-    inputCount.addEventListener("keyup", function (e) {
-        let i = parseInt(e.target.value)
-        if (i) {
-            if (i < 0) document.getElementById("inputCount").value = 1
-            else if (i > stock - count) {
-                document.getElementById("stockInsuficiente").classList.remove("d-none")
+    document.querySelectorAll("#inputCount, #inputCountRes").forEach(element => {
+        element.addEventListener("keyup", function () {
+            const i = parseInt(this.value)
+            if (i) {
+                if (i < 0) {
+                    inputCount.value = 1
+                    inputCountRes.value = 1
+                }
+                else if (i > stock - count) {
+                    document.getElementById("stockInsuficiente").classList.remove("d-none")
+                    toggleValidate("inputCount", false)
+                    document.getElementById("stockInsuficienteRes").classList.remove("d-none")
+                    toggleValidate("inputCountRes", false)
+                }
+                else {
+                    if (!document.getElementById("stockInsuficiente").classList.contains("d-none") ||
+                        !document.getElementById("stockInsuficienteRes").classList.contains("d-none")) {
+                        document.getElementById("stockInsuficiente").classList.add("d-none")
+                        document.getElementById("stockInsuficienteRes").classList.add("d-none")
+                    }
+                    toggleValidate("inputCount", true)
+                    toggleValidate("inputCountRes", true)
+                    document.getElementById("countDropdown").innerText = i
+                    document.getElementById("countDropdownRes").innerText = i
+                    count_value = i
+                    inputCount.value = i
+                    inputCountRes.value = i
+                }
+            }
+            else {
+                document.getElementById("stockInsuficiente").classList.add("d-none")
+                document.getElementById("stockInsuficienteRes").classList.add("d-none")
                 toggleValidate("inputCount", false)
-            }
-            else {
-                if (!document.getElementById("stockInsuficiente").classList.contains("d-none")) 
-                    document.getElementById("stockInsuficiente").classList.add("d-none")
-                toggleValidate("inputCount", true)
-                document.getElementById("countDropdown").innerText = i
-                count_value = i
-            }
-        }
-        else {
-            document.getElementById("stockInsuficiente").classList.add("d-none")
-            toggleValidate("inputCount", false)
-            document.getElementById("countDropdown").innerText = 1
-            count_value = 0
-        }
-    })
-
-    document.getElementById("inputCountRes").addEventListener("keyup", function (e) {
-        let i = parseInt(e.target.value)
-        if (i) {
-            if (i < 0) document.getElementById("inputCountRes").value = 1
-            else if (i > stock - count) {
-                document.getElementById("stockInsuficienteRes").classList.remove("d-none")
                 toggleValidate("inputCountRes", false)
+                document.getElementById("countDropdown").innerText = 1
+                document.getElementById("countDropdownRes").innerText = 1
+                count_value = 1
             }
-            else {
-                if (!document.getElementById("stockInsuficienteRes").classList.contains("d-none")) 
-                    document.getElementById("stockInsuficienteRes").classList.add("d-none")
-                toggleValidate("inputCountRes", true)
-                document.getElementById("countDropdownRes").innerText = i
-                count_value = i
-            }
-        }
-        else {
-            document.getElementById("stockInsuficienteRes").classList.add("d-none")
-            toggleValidate("inputCountRes", false)
-            document.getElementById("countDropdownRes").innerText = 1
-            count_value = 0
-        }
+        })
     })
 }
 
@@ -312,6 +305,12 @@ function showImagesGallery(images) {
                 }
             }
             document.getElementById("imgIndicators").innerHTML = htmlContentToAppend;
+        }
+
+        if (images.length === 1) {
+            document.querySelectorAll("#prevBtn, #nextBtn").forEach(element => {
+                element.classList.add("d-none")
+            })
         }
     }
 }
@@ -382,9 +381,11 @@ function changeDayFormat(date) {
 }
 
 function showComments(comments) {
-    if (comments.length < 1) 
+    if (!comments) {
         document.getElementById("commentsTitle").innerText = ""
-    
+        return
+    }
+    if (comments.length < 1) document.getElementById("commentsTitle").innerText = ""
     let htmlContentToAppend = "";
     for (let i = 0; i < comments.length; i++) {
         let comment = comments[i];
@@ -460,7 +461,7 @@ document.getElementById("commentBtn").addEventListener("click", function () {
     const commentArray = JSON.parse(localStorage.getItem(`comments-${id}`))
     let commentData = {}
     if (commentArray) commentData = commentArray.find(({ email }) => email === profileData.email)
-    if (!commentData) {
+    if (!commentArray || !commentData) {
         let id = productInfo.id
         const comment = document.getElementById("textAreaComment").value
         if (comment.length < 1) {
@@ -488,6 +489,7 @@ document.getElementById("commentBtn").addEventListener("click", function () {
             let commentsArray = localStorage.getItem(`comments-${id}`) ? JSON.parse(localStorage.getItem(`comments-${id}`)) : []
             commentsArray.unshift(newComment)
             localStorage.setItem(`comments-${id}`, JSON.stringify(commentsArray))
+            if (commentsArray.length > 0) document.getElementById("commentsTitle").innerText = "Comentarios sobre el producto"
             showComments(commentsArray)
         }
     }
@@ -502,6 +504,11 @@ document.getElementById("commentBtn").addEventListener("click", function () {
 
 function addToCart() {
     let value = count_value
+    if (value === 0) {
+        string = `<strong>Tiene que agregar al menos un producto al carrito</strong>`
+        addOutOfStockAlert(string)
+        return
+    }
     const cartArray = localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : {}
     let pinfo = {}
     if (Object.values(cartArray).length > 0) pinfo = cartArray.find((product) => product.id === productInfo.id)

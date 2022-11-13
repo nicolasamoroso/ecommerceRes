@@ -184,7 +184,7 @@ function removeProduct(id) {
     }
     else {
       const i = cartArray.findIndex(product => product.id === id)
-      cartArray[i].count = 1
+      if (cartArray[i].count === 0) cartArray[i].count = 1
       document.getElementById(`countProduct-${i}`).textContent = cartArray[i].count
       document.getElementById(`countProductRes-${i}`).textContent = cartArray[i].count
       localStorage.setItem("cart", JSON.stringify(cartArray))
@@ -209,7 +209,9 @@ let intTime = "500"
 let count = 0
 
 //Función que detiene el contador de mouseDown
-function mouseUp() { clearTimeout(count) }
+function mouseUp() { 
+  clearTimeout(count)
+}
 
 /* Función que aumenta o disminuye el contador de productos en el carrito 
   (si se deja apretado va aumentando o disminuyendo dependiendo del tiempo que transcurrió) 
@@ -229,8 +231,18 @@ function mouseDown(type, id) {
     else if (elapsedTime > 6000) intTime = updateCount(type, i, 10, "40")
 
     if (cartArray[i].count > cartArray[i].stock) {
-      addOutOfStockAlert()
+      const string = `
+        <strong>
+          Usted ya tiene el máximo de stock para este producto!
+        </strong>
+      `
+      addOutOfStockAlert(string)
       cartArray[i].count = cartArray[i].stock
+    }
+    else if (cartArray[i].count < 1) {
+      removeProduct(id)
+      clearTimeout(count)
+      return
     }
 
     document.getElementById(`countProduct-${i}`).textContent = cartArray[i].count
@@ -247,8 +259,9 @@ function mouseDown(type, id) {
 
 //Función que calcula y actualiza la cantidad de un producto
 function updateCount(type, i, value, intTime) {
-  cartArray[i].count = type === "positive" ? 
+  cartArray[i].count = type === "positive" ?
   cartArray[i].count + value : cartArray[i].count - value
+  if (cartArray[i].count < 1) cartArray[i].count = 0
   return intTime
 }
 
