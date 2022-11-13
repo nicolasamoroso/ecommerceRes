@@ -4,9 +4,9 @@ function handleCredentialResponse(response) {
 }
 
 function decodeJwtResponse(token) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+    let base64Url = token.split('.')[1];
+    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    let jsonPayload = decodeURIComponent(window.atob(base64).split('').map((c) => {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
     return JSON.parse(jsonPayload);
@@ -15,16 +15,15 @@ function decodeJwtResponse(token) {
 (function () {
     'use strict'
     let forms = document.querySelectorAll('.needs-validation')
-    Array.prototype.slice.call(forms)
-        .forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-                form.classList.add('was-validated')
-            }, false)
-        })
+    Array.prototype.slice.call(forms).forEach((form) => {
+        form.addEventListener('submit', (event) => {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
 })()
 
 function mailVerification(email) {
@@ -97,9 +96,9 @@ function signIn(n_email, name = undefined, picture = undefined) {
 function redirect() {
     const profile = JSON.parse(localStorage.getItem("profile"));
     if (profile) {
-        const catchProfile = JSON.parse(localStorage.getItem("profile")).find(function ({ logged }) {
-            return logged === true
-        })
+        const catchProfile = JSON.parse(localStorage.getItem("profile"))
+            .find(({ logged }) => logged === true
+        )
         if (catchProfile) window.location = "index.html";
     }
 }

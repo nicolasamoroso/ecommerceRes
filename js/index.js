@@ -17,7 +17,9 @@ document.addEventListener("DOMContentLoaded", async () =>{
                 if (product.status === "ok") {
                     const productArray = product.data
                     productArray.products.forEach(element => {
-                        element.stock = element.currency === "USD" ? Math.round(40000/element.cost) + 1 : Math.round(40000/element.cost * 23) + 1
+                        element.stock = element.currency === "USD" ?
+                            Math.round(40000/element.cost) + 1 : Math.round(40000/element.cost * 23) + 1
+
                         let discount = Math.round(element.cost/1000) > 100 ? 25 : Math.round(element.cost/1000)
                         element.discount = element.soldCount < 15 ? discount : 0
                         element.saleCost = Math.round(element.cost*100/(100-element.discount))
@@ -49,7 +51,9 @@ function showPopularCategories() {
 
 function showSaleProducts() {
     let salesProducts = []
-    newProductArray.forEach(({products}) => { salesProducts.push(products.filter(({soldCount, discount}) => soldCount < 15 && discount > 0)) })
+    newProductArray.forEach(({products}) => { 
+        salesProducts.push(products.filter(({soldCount, discount}) => soldCount < 15 && discount > 0)) 
+    })
     salesProducts = salesProducts.flat()
     salesProducts.sort((a, b) => b.soldCount - a.soldCount)
 
@@ -61,11 +65,19 @@ function showSaleProducts() {
                 <div class="card-body">
                     <h6 class="fw-bold nameProductSale text-break">${name}</h6>
                     <div class="discount">
-                        <span class="text-muted text-decoration-line-through">${currency} ${saleCost}</span>
-                        <span class="badge bg-danger saleDiscount">-${discount}%</span>
+                        <span class="text-muted text-decoration-line-through">
+                            ${currency} ${saleCost}
+                        </span>
+                        <span class="badge bg-danger saleDiscount">
+                            -${discount}%
+                        </span>
                     </div>
-                    <p class="mb-0 priceSales">${currency} ${cost}</p>
-                    <small class="stockAvailable text-muted">${stock} en stock</small>
+                    <p class="mb-0 priceSales">
+                        ${currency} ${cost}
+                    </p>
+                    <small class="stockAvailable text-muted">
+                        ${stock} en stock
+                    </small>
                 </div>
             </div>
         </div>
@@ -75,7 +87,9 @@ function showSaleProducts() {
 
 function showTopSales() {
     let topSales = []
-    newProductArray.forEach(({products}) => {topSales.push(products.filter(({soldCount}) => soldCount > 15))})
+    newProductArray.forEach(({products}) => {
+        topSales.push(products.filter(({soldCount}) => soldCount > 15))
+    })
     topSales = topSales.flat()
     topSales.sort((a, b) => b.soldCount - a.soldCount)
 
@@ -86,8 +100,12 @@ function showTopSales() {
                 <img class="card-img-top" src="${image}">
                 <div class="card-body">
                     <h6 class="fw-bold nameProductSale text-break">${name}</h6>
-                    <p class="mb-0 priceSales">${currency} ${cost}</p>
-                    <small class="stockAvailable text-muted">${soldCount} vendidos</small>
+                    <p class="mb-0 priceSales">
+                        ${currency} ${cost}
+                    </p>
+                    <small class="stockAvailable text-muted">
+                        ${soldCount} vendidos
+                    </small>
                 </div>
             </div>
         </div>

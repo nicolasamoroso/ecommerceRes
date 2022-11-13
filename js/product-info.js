@@ -93,7 +93,6 @@ function addResume(pInfo) {
     </h6>
     <div class="row gap-2 mt-3">
         <h5 class="card-text">${category}</h5>
-        <h6 class="card-text">Puntuación</h6>
         <h6 class="card-text fw-bold">${stock ? 'Stock disponible' : 'Stock no disponible'}</h6>
         <h6 class="card-text" id="cantProdRes">
             <div class="dropdown d-flex justify-content-between align-items-center">
@@ -127,7 +126,6 @@ function addResume(pInfo) {
     </h6>
     <div class="row gap-2 mt-3">
         <h5 class="card-text">${category}</h5>
-        <h6 class="card-text">Puntuación</h6>
         <h6 class="card-text">${soldCount} vendidos</h6>
         <h6 class="card-text fw-bold">${stock ? 'Stock disponible' : 'Stock no disponible'}</h6>
         <h6 class="card-text" id="cantProd">
@@ -389,12 +387,18 @@ function changeDayFormat(date) {
 }
 
 function showComments(comments) {
-    if (comments.length < 1) {
+    if (comments.length < 1) 
         document.getElementById("commentsTitle").innerText = ""
-    }
+    
     let htmlContentToAppend = "";
     for (let i = 0; i < comments.length; i++) {
         let comment = comments[i];
+        const profileArray = JSON.parse(localStorage.getItem("profile"))
+        const profileData = profileArray.find(({ email }) => email === comment.email)
+        if (profileData) {
+            comment.user = profileData.username
+            comment.img = profileData.picture
+        }
         htmlContentToAppend += `
         <hr>
         <div class="d-flex justify-content-between">

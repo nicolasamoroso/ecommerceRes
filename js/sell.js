@@ -28,9 +28,9 @@ function updateTotalCosts() {
     totalCostHTML.innerHTML = totalCostToShow;
 }
 
-//Función que se ejecuta una vez que se haya lanzado el evento de
-//que el documento se encuentra cargado, es decir, se encuentran todos los
-//elementos HTML presentes.
+/* Función que se ejecuta una vez que se haya lanzado el evento de
+que el documento se encuentra cargado, es decir, se encuentran todos los
+elementos HTML presentes. */
 document.addEventListener("DOMContentLoaded", (e) => {
     document.getElementById("productCountInput").addEventListener("change", function () {
         productCount = this.value;
@@ -89,8 +89,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
     //Se obtiene el formulario de publicación de producto
     let sellForm = document.getElementById("sell-info");
 
-    //Se agrega una escucha en el evento 'submit' que será
-    //lanzado por el formulario cuando se seleccione 'Vender'.
+    /* Se agrega una escucha en el evento 'submit' que será
+    lanzado por el formulario cuando se seleccione 'Vender'. */
     sellForm.addEventListener("submit", function (e) {
 
         e.preventDefault();
@@ -114,9 +114,9 @@ document.addEventListener("DOMContentLoaded", (e) => {
         productCost.classList.remove('is-invalid');
         productCount.classList.remove('is-invalid');
 
-        //Se realizan los controles necesarios,
-        //En este caso se controla que se haya ingresado el nombre y categoría.
-        //Consulto por el nombre del producto
+        /* Se realizan los controles necesarios,
+        En este caso se controla que se haya ingresado el nombre y categoría.
+        Consulto por el nombre del producto */
         if (productNameInput.value === "" || productNameInput.value === "⠀" || productNameInput.value.trim().length === 0) {
             productNameInput.classList.add('is-invalid');
             infoMissing = true;
@@ -180,20 +180,19 @@ document.addEventListener("DOMContentLoaded", (e) => {
         }
 
         if (!infoMissing) {
-            //Aquí ingresa si pasó los controles, irá a enviar
-            //la solicitud para crear la publicación.
+            /* Aquí ingresa si pasó los controles, irá a enviar
+            la solicitud para crear la publicación. */
 
             getJSONData(PUBLISH_PRODUCT_URL).then(function (resultObj) {
                 let msgToShowHTML = document.getElementById("resultSpan");
                 let msgToShow = "";
 
-                //Si la publicación fue exitosa, devolverá mensaje de éxito,
-                //de lo contrario, devolverá mensaje de error.
-                //FUNCIONALIDAD NO IMPLEMENTADA
+                /* Si la publicación fue exitosa, devolverá mensaje de éxito,
+                de lo contrario, devolverá mensaje de error. */
                 if (resultObj.status === 'ok') {
                     msgToShow = resultObj.data.msg.toUpperCase();
-                    document.getElementById("alertResult").classList.add('alert-primary');
-                    agregarPublicacion()
+                    document.getElementById("alertResult").classList.add('alert-success');
+                    addPost()
                     setTimeout(() => {
                         localStorage.setItem("product-info", prodID);
                         window.location.href = "product-info.html"
@@ -201,7 +200,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 }
                 else if (resultObj.status === 'error') {
                     msgToShow = MSG;
-                    document.getElementById("alertResult").classList.add('alert-primary');
+                    document.getElementById("alertResult").classList.add('alert-error');
                 }
 
                 msgToShowHTML.innerHTML = msgToShow;
@@ -213,8 +212,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
 let prodID = 0
 
-
-function agregarPublicacion() {
+function addPost() {
     const form = document.getElementById("sell-info");
     const formData = new FormData(form)
     const data = Object.fromEntries(formData.entries())
@@ -237,6 +235,7 @@ function agregarPublicacion() {
     const stock = product ? product.stock += parseInt(data.productCountInput) : parseInt(data.productCountInput)
     const image = images[0]
     const product_info = { id, name, currency, cost, description, soldCount, category, images, stock, discount: 0, saleCost: 0, comments: [], relatedProducts: [] }
+
     product = { id, name, currency, cost, description, soldCount, image, stock, discount: 0, saleCost: 0 }
     productArray.products = productArray.products.filter(({ id }) => id !== product.id)
 

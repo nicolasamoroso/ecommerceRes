@@ -24,6 +24,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   checkOutBtn()
 })
 
+
+//Función que agrega los productos al carrito
 function addItemsToCart(cartArray) {
   let cartItems = document.getElementById("items")
   cartItems.innerHTML = ""
@@ -70,6 +72,7 @@ function addItemsToCart(cartArray) {
   }
 }
 
+//Función onclick para cambiar el estado del "botón" de favoritos
 function fav(idProductCart) {
   document.getElementById(`noFav-${idProductCart}`).classList.toggle("d-none")
   document.getElementById(`noFavRes-${idProductCart}`).classList.toggle("d-none")
@@ -77,12 +80,17 @@ function fav(idProductCart) {
   document.getElementById(`FavRes-${idProductCart}`).classList.toggle("d-none")
 }
 
+//Función que verifica que tipo de moneda es y convierte sus valores a USD/UYU
 function verifyCurrency(currency, unitCost) {
   if (currency === "UYU" && typeOfCurrency === "USD") return `${Math.trunc(unitCost / 42)}`
-  else if (typeOfCurrency === "UYU") return `${Math.trunc(unitCost * 42)}`
+  else if (currency !== "UYU" && typeOfCurrency === "UYU") return `${Math.trunc(unitCost * 42)}`
   return `${unitCost}`
 }
 
+/*
+  Función agrega los botones de cantidad, eliminar y favorito.
+  Si es mobile, se agrega el botón de cantidad en la parte inferior.
+*/
 function addCountDeleteFavBtns(id, i, count, res) {
   return `
   <div class="col text-center px-sm-0">
@@ -140,10 +148,11 @@ function addCountDeleteFavBtns(id, i, count, res) {
   `
 }
 
+//Función que verifica si el contador es menor a 0, si es así, lo pone en 0.
 function removeIfIsMinusThanOne(type, id) {
   const i = cartArray.findIndex(product => product.id === id)
   if (cartArray[i].count < 1 && type === "negative" && !removeProduct(id)) {
-      cartArray[i].count = 0
+    cartArray[i].count = 0
   }
 }
 
@@ -186,6 +195,7 @@ function removeProduct(id) {
   })
 }
 
+//Función que habilita o deshabilita el botón de checkout.
 function checkOutBtn() {
   if (JSON.parse(localStorage.getItem("cart")).length === 0)
     document.getElementById("checkout").setAttribute("disabled", "true")
@@ -198,8 +208,12 @@ let stepInterval = 1;
 let intTime = "500"
 let count = 0
 
+//Función que detiene el contador de mouseDown
 function mouseUp() { clearTimeout(count) }
 
+/* Función que aumenta o disminuye el contador de productos en el carrito 
+  (si se deja apretado va aumentando o disminuyendo dependiendo del tiempo que transcurrió) 
+*/
 function mouseDown(type, id) {
   startTime = new Date().getTime()
   const i = cartArray.findIndex(product => product.id === id)
@@ -214,7 +228,6 @@ function mouseDown(type, id) {
     else if (elapsedTime < 6000) intTime = updateCount(type, i, 5, "70")
     else if (elapsedTime > 6000) intTime = updateCount(type, i, 10, "40")
 
-    // if (cartArray[i].count < 1) cartArray[i].count = 1
     if (cartArray[i].count > cartArray[i].stock) {
       addOutOfStockAlert()
       cartArray[i].count = cartArray[i].stock
@@ -232,12 +245,14 @@ function mouseDown(type, id) {
   stepInterval()
 }
 
+//Función que calcula y actualiza la cantidad de un producto
 function updateCount(type, i, value, intTime) {
   cartArray[i].count = type === "positive" ? 
   cartArray[i].count + value : cartArray[i].count - value
   return intTime
 }
 
+//Función que calcula y actualiza el total del resumen de la compra
 function changeTotal(type, id) {
   const i = cartArray.findIndex(product => product.id === id)
   let count = type === "positive" ? cartArray[i].count + 1 : cartArray[i].count - 1
@@ -260,6 +275,7 @@ function changeTotal(type, id) {
   }
 }
 
+//Función que cambia el total de un producto dependiendo del tipo de moneda y la cantidad
 function changeProductTotal(unitCost, count, i) {
   document.getElementById(`totalPerProduct-${i}`).innerText = `
   ${typeOfCurrency} ${verifyCurrency(cartArray[i].currency, unitCost, i) * count}`
@@ -268,6 +284,8 @@ function changeProductTotal(unitCost, count, i) {
 }
 
 let perccentage = 0
+
+//Función que calcula y actualiza el total de la compra
 function updateTotalCosts(productA) {
   let subtotal = 0
   for (let i = 0; i < productA.length; i++) {
@@ -300,6 +318,7 @@ function updateTotalCosts(productA) {
   }
 }
 
+//Función que actualiza la variable "typeOfCurrency" y recarga todos los datos
 function setTypeOfCurrency(type) {
   typeOfCurrency = type
   addItemsToCart(cartArray)
@@ -314,6 +333,10 @@ document.getElementById("uyu").addEventListener("click", function() {
   setTypeOfCurrency("UYU")
 })
 
+/* 
+  Función que actualiza el contenido del envio dependiendo del tipo de envio y 
+  actualiza el total en el resumen de la compra 
+*/
 function addPerccentage(perccentageValue, perccentageString) {
   document.getElementById("shipping-value").textContent = perccentageString
   perccentage = perccentageValue
@@ -336,6 +359,8 @@ document.getElementById("free-shipping").addEventListener("click", function() {
   addPerccentage(0, "Gratis")
 })
 
+
+//Verifica que tipo de resolución tiene el dispositivo, si cambió y si es un dispositivo apple.
 window.addEventListener("resize", function() {
   let mobile = iOS() ? iOSMobile() : navigator.userAgentData.mobile
   if (mobile !== isMobile) {
@@ -344,27 +369,7 @@ window.addEventListener("resize", function() {
   }
 })
 
-document.getElementById("street").addEventListener("input", function() {
-  if (this.value.length > 0) toggleValidate("street", true)
-  else toggleValidate("street", false)
-
-  validateAddress()
-})
-
-document.getElementById("number").addEventListener("input", function() {
-  if (this.value.length > 3) toggleValidate("number", true)
-  else toggleValidate("number", false)
-
-  validateAddress()
-})
-
-document.getElementById("corner").addEventListener("input", function() {
-  if (this.value.length > 0) toggleValidate("corner", true)
-  else toggleValidate("corner", false)
-
-  validateAddress()
-})
-
+//Función que valida la dirección y habilita el botón de envío si es correcta
 function validateAddress() {
   const street = document.getElementById("street").value
   const number = document.getElementById("number").value
@@ -375,6 +380,20 @@ function validateAddress() {
     document.getElementById("BtnSigDireccion").setAttribute("disabled", true)
 }
 
+//Validación de la dirección
+document.querySelectorAll("#street, #number, #corner").forEach(input => {
+  input.addEventListener("input", function() {
+    if ((input.value.length > 0 && input.id !== "number") || 
+        (input.id === "number" && input.value.length > 3)) 
+          toggleValidate(input.id, true)
+    else 
+      toggleValidate(input.id, false)
+
+    validateAddress()
+  })
+})
+
+//Función que valida el número de tarjeta o el número de cuenta bancaria
 function validatePayment() {
   const creditNumber = document.getElementById("creditNumber").value
   const cvv = document.getElementById("cvv").value
@@ -407,6 +426,7 @@ document.getElementById("bank").addEventListener("click", function() {
   validatePayment()
 })
 
+//Función que deshabilita un elemento
 function addDisabledAttribute(id) {
   const element = document.getElementById(id)
   element.value = ""
@@ -415,16 +435,18 @@ function addDisabledAttribute(id) {
   element.classList.remove("is-invalid")
 }
 
-document.getElementById("creditNumber").addEventListener("input", function() {
-  if (this.value.length === 16) toggleValidate("creditNumber", true)
-  else toggleValidate("creditNumber", false)
-  validatePayment()
-})
+//Validación de los campos de pago (excepto la fecha de vencimiento)
+document.querySelectorAll("#creditNumber, #cvv, #bankNumber").forEach(input => {
+  input.addEventListener("input", function() {
+    if ((input.id === "creditNumber" && input.value.length === 16) ||
+        (input.id === "cvv" && input.value.length === 3) ||
+        (input.id === "bankNumber" && input.value.length === 20)) 
+          toggleValidate(input.id, true)
+    else 
+      toggleValidate(input.id, false)
 
-document.getElementById("cvv").addEventListener("input", function() {
-  if (this.value.length === 3) toggleValidate("cvv", true)
-  else toggleValidate("cvv", false)
-  validatePayment()
+    validatePayment()
+  })
 })
 
 function validateExpDate(evt) {
@@ -476,17 +498,10 @@ document.getElementById("expirationDate").addEventListener("input", function (e)
   validatePayment()
 })
 
-document.getElementById("bankNumber").addEventListener("input", function() {
-  if (this.value.length === 20) toggleValidate("bankNumber", true)
-  else toggleValidate("bankNumber", false)
+document.getElementById("BtnNextPayment").addEventListener("click", resumeOfPurchase)
 
-  validatePayment()
-})
 
-document.getElementById("BtnNextPayment").addEventListener("click", function() {
-  resumeOfPurchase()
-})
-
+//Función que muestra el resumen de la compra
 function resumeOfPurchase() {
   const dateTime = new Date().toLocaleString()
   const date = parseInt(dateTime.split("/")[0])
@@ -528,9 +543,10 @@ function resumeOfPurchase() {
   `
 }
 
+//Función que calcula el día de llegada del producto
 function dayOfArrival(dayOfWeek, shipping, day, date, month) {
   if (shipping[perccentage][0] === 0)
-    return `Su compra se puede retirar en el local a las 12:00hs del ${dayOfWeek[day + 1]}`
+    return `Su compra se puede retirar en el local a las 12:00hs del ${dayOfWeek[day + 1 > 6 ? 0 : day + 1]}`
 
   function checkDate(date, month) {
     if (month === 2 && date > 28) {
@@ -555,6 +571,10 @@ function dayOfArrival(dayOfWeek, shipping, day, date, month) {
   ${dayOfWeek[newDay0]} ${newDate0.date} y ${dayOfWeek[newDay1]} ${newDate1.date}`
 }
 
+/*
+  Función que actualiza la cantidad de vendidos y del stock de cada producto y
+  borra todos los datos del localStorage "cart" 
+*/
 document.getElementById("buy").addEventListener("click", function() {
   document.getElementById("buy").setAttribute("disabled", "true")
   document.getElementById("buy").innerHTML = "Procesando..."

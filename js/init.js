@@ -28,11 +28,10 @@ const getJSONData = async (url) => {
   showSpinner();
   return fetch(url)
     .then(response => {
-      if (response.ok) {
+      if (response.ok)
         return response.json();
-      } else {
+      else
         throw Error(response.statusText);
-      }
     })
     .then(function (response) {
       result.status = 'ok';
@@ -49,12 +48,12 @@ const getJSONData = async (url) => {
 }
 
 const burger = document.getElementById("btnBurger");
-burger.addEventListener("click", function () {
-  burger.classList.contains("active") ? burger.classList.remove("active") : burger.classList.add("active");
+burger.addEventListener("click", () => {
+  burger.classList.contains("active") ? burger.classList.remove("active") : burger.classList.add("active")
 })
 
-burger.addEventListener("doubleclick", function () {
-  burger.classList.contains("active") ? burger.classList.remove("active") : burger.classList.add("active");
+burger.addEventListener("doubleclick", () => {
+  burger.classList.contains("active") ? burger.classList.remove("active") : burger.classList.add("active")
 })
 
 function setCatID(id) {
@@ -66,6 +65,15 @@ function product_info(id) {
   if (!id) return
   localStorage.setItem("product-info", id);
   window.location.href = "product-info.html"
+}
+
+//Función que cambia el color de los filtros si están activos
+function changeColor(a, b, c) {
+  document.getElementById(a).classList.add("bg-sort-active");
+  if (document.getElementById(b).classList.contains("bg-sort-active")) 
+    document.getElementById(b).classList.remove("bg-sort-active");
+  if (document.getElementById(c).classList.contains("bg-sort-active"))
+    document.getElementById(c).classList.remove("bg-sort-active");
 }
 
 function showTopSaleProducts(array) {
@@ -146,9 +154,7 @@ const cart = async (cant, product) => {
       return false
     }
   }
-  else {
-    cartArray.push(newProduct)
-  }
+  else cartArray.push(newProduct)
 
   localStorage.setItem("cart", JSON.stringify(cartArray))
   refreshCountCart()
@@ -174,8 +180,7 @@ function refreshCountCart() {
 }
 
 let catchProfile = {}
-
-document.addEventListener("DOMContentLoaded", function (e) {
+document.addEventListener("DOMContentLoaded", () => {
   refreshCountCart()
 
   const profile = JSON.parse(localStorage.getItem("profile"))
@@ -184,9 +189,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
     window.location = "login.html"
     return
   }
-  catchProfile = profile.find(function({logged}) {
-    return logged === true
-  })
+
+  catchProfile = profile.find(({logged}) => logged === true)
+  
   if (!catchProfile) {
     window.location = "login.html"
     return
@@ -202,9 +207,7 @@ function continueBuying() {
 
 function iOS() {
   const ua = navigator.userAgent.toLowerCase(); 
-  if (ua.indexOf('safari') != -1) { 
-    return ua.indexOf('chrome') > -1 ? false : true;
-  }
+  if (ua.indexOf('safari') != -1) return ua.indexOf('chrome') > -1 ? false : true;
   return false
 }
 
@@ -216,17 +219,23 @@ function iOSMobile() {
     'iPad',
     'iPhone',
     'iPod'
-  ];
+  ]
+
   if (!!navigator.platform) {
-    while (iDevices.length) {
-      if (navigator.platform === iDevices.pop()) { return true; }
-    }
+    while (iDevices.length) 
+      if (navigator.platform === iDevices.pop()) 
+        return true;
   }
   return false;
 }
 
 function addToCartAlert(string) {
-  document.getElementById("add-success").innerHTML = `<strong>Producto agregado al carrito!</strong> ${string}`
+  document.getElementById("add-success").innerHTML = `
+    <strong>
+      Producto agregado al carrito!
+    </strong> 
+    ${string}
+  `
   document.getElementById("add-success").classList.add("show")
   setTimeout(() => {
     document.getElementById("add-success").classList.remove("show")
@@ -234,7 +243,11 @@ function addToCartAlert(string) {
 }
 
 function addOutOfStockAlert() {
-  document.getElementById("add-error").innerHTML = `<strong>Superó el límite de stock para este producto!</strong>`
+  document.getElementById("add-error").innerHTML = `
+    <strong>
+      Superó el límite de stock para este producto!
+    </strong>
+  `
   document.getElementById("add-error").classList.add("show")
   setTimeout(() => {
     document.getElementById("add-error").classList.remove("show")
@@ -270,13 +283,15 @@ window.addEventListener("resize", function() {
 })
 
 function resizeProfile() {
+  const pic = catchProfile.picture ?? "img/img_perfil.png"
+  const user = catchProfile.username ?? "username"
   if (window.innerWidth <= 991) {
-    document.getElementById("username").textContent = catchProfile.username ?? "username"
-    document.getElementById("imgUser").src = catchProfile.picture ?? "img/img_perfil.png"
+    document.getElementById("username").textContent = user
+    document.getElementById("imgUser").src = pic
   }
   else {
-    document.getElementById("usernameRes").textContent = catchProfile.username ?? "username"
-    document.getElementById("imgUserRes").src = catchProfile.picture ?? "img/img_perfil.png"
+    document.getElementById("usernameRes").textContent = user
+    document.getElementById("imgUserRes").src = pic
   }
 }
 

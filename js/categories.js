@@ -9,39 +9,25 @@ let maxCount = undefined;
 let minCountRes = undefined
 let maxCountRes = undefined
 let ya_lo_hice = false;
-
 let newProductArray = []
-
-function changeColor(a, b, c) {
-    document.getElementById(a).classList.remove("bg-sort");
-    document.getElementById(a).classList.add("bg-sort-active");
-    if (document.getElementById(b).classList.contains("bg-sort-active")) {
-        document.getElementById(b).classList.remove("bg-sort-active");
-        document.getElementById(b).classList.add("bg-sort");
-    }
-    if (document.getElementById(c).classList.contains("bg-sort-active")) {
-        document.getElementById(c).classList.remove("bg-sort-active");
-        document.getElementById(c).classList.add("bg-sort");
-    }
-}
-
 
 function sortCategories(criteria, array){
     let result = [];
-    if (criteria === ORDER_ASC_BY_NAME)
-    {
+    if (criteria === ORDER_ASC_BY_NAME) {
         result = array.sort(function(a, b) {
             if ( a.name < b.name ){ return -1; }
             if ( a.name > b.name ){ return 1; }
             return 0;
         });
-    }else if (criteria === ORDER_DESC_BY_NAME){
+    }
+    else if (criteria === ORDER_DESC_BY_NAME){
         result = array.sort(function(a, b) {
             if ( a.name > b.name ){ return -1; }
             if ( a.name < b.name ){ return 1; }
             return 0;
         });
-    }else if (criteria === ORDER_BY_PROD_COUNT_MAX) {
+    }
+    else if (criteria === ORDER_BY_PROD_COUNT_MAX) {
         result = array.sort(function(a, b) {
             let aCount = parseInt(a.productCount);
             let bCount = parseInt(b.productCount);
@@ -90,7 +76,9 @@ function showCategoriesList(currentCategoriesArray){
                             <p>${description}</p>
                         </div>
                         <div class="card-footer">
-                            <small class="text-muted">${productCount} artículos</small> 
+                            <small class="text-muted">
+                                ${productCount} artículos
+                            </small> 
                         </div>
                     </div>
                 </div>
@@ -113,9 +101,11 @@ function sortAndShowCategories(sortCriteria, categoriesArray){
     showCategoriesList(currentCategoriesArray);
 }
 
-//Función que se ejecuta una vez que se haya lanzado el evento de
-//que el documento se encuentra cargado, es decir, se encuentran todos los
-//elementos HTML presentes.
+/* 
+    Función que se ejecuta una vez que se haya lanzado el evento de
+    que el documento se encuentra cargado, es decir, se encuentran todos los
+    elementos HTML presentes. 
+*/
 const GOLD = 0.13;
 document.addEventListener("DOMContentLoaded", async (e) =>{
 
@@ -134,7 +124,9 @@ document.addEventListener("DOMContentLoaded", async (e) =>{
                 if (product.status === "ok") {
                     const productArray = product.data
                     productArray.products.forEach(element => {
-                        element.stock = element.currency === "USD" ? Math.round(40000/element.cost) + 1 : Math.round(40000/element.cost * 23) + 1
+                        element.stock = element.currency === "USD" ? 
+                            Math.round(40000/element.cost) + 1 : Math.round(40000/element.cost * 23) + 1
+                            
                         let discount = Math.round(element.cost/1000) > 100 ? 25 : Math.round(element.cost/1000)
                         element.discount = element.soldCount < 15 ? discount : 0
                         element.saleCost = Math.round(element.cost*100/(100-element.discount))
@@ -152,13 +144,15 @@ document.addEventListener("DOMContentLoaded", async (e) =>{
     showTopSaleProducts(newProductArray)
     
     function sortAsc() {
-        sortAndShowCategories(ORDER_ASC_BY_NAME);
-        changeColor("asc", "desc", "count");
+        sortAndShowCategories(ORDER_ASC_BY_NAME)
+        changeColor("asc", "desc", "count")
+        changeColor("ascRes", "descRes", c + "countRes")
     }
 
     function sortDesc() {
-        sortAndShowCategories(ORDER_DESC_BY_NAME);
-        changeColor("desc", "asc", "count");
+        sortAndShowCategories(ORDER_DESC_BY_NAME)
+        changeColor("desc", "asc", "count")
+        changeColor("descRes", "ascRes", "countRes")
     }
 
     function sortCount() {
@@ -167,16 +161,17 @@ document.addEventListener("DOMContentLoaded", async (e) =>{
             document.getElementById("up-downRes").classList.add("fa-sort-amount-up")
             document.getElementById("up-down").classList.remove("fa-sort-amount-down")
             document.getElementById("up-down").classList.add("fa-sort-amount-up")
-            sortAndShowCategories(ORDER_BY_PROD_COUNT_MAX);
+            sortAndShowCategories(ORDER_BY_PROD_COUNT_MAX)
         }
         else {
             document.getElementById("up-downRes").classList.remove("fa-sort-amount-up")
             document.getElementById("up-downRes").classList.add("fa-sort-amount-down")
             document.getElementById("up-down").classList.remove("fa-sort-amount-up")
             document.getElementById("up-down").classList.add("fa-sort-amount-down")
-            sortAndShowCategories(ORDER_BY_PROD_COUNT_MIN);
+            sortAndShowCategories(ORDER_BY_PROD_COUNT_MIN)
         }
-        changeColor("count", "asc", "desc");
+        changeColor("count", "asc", "desc")
+        changeColor("countRes", "ascRes", "descRes")
     }
 
     function clearRangeFilter() {
@@ -227,19 +222,6 @@ document.addEventListener("DOMContentLoaded", async (e) =>{
     
         showCategoriesList(currentCategoriesArray);
     }
-    
-    document.getElementById("sortAsc").addEventListener("click", sortAsc);
-    document.getElementById("sortDesc").addEventListener("click", sortDesc);
-    document.getElementById("sortByCount").addEventListener("click", sortCount);
-    document.getElementById("clearRangeFilter").addEventListener("click", clearRangeFilter);
-    document.getElementById("rangeFilterCount").addEventListener("click", rangeFilterCount);
-
-    /* responsive buttons */
-    document.getElementById("sortAscRes").addEventListener("click", sortAsc);
-    document.getElementById("sortDescRes").addEventListener("click", sortDesc);
-    document.getElementById("sortByCountRes").addEventListener("click", sortCount);
-    document.getElementById("clearRangeFilterRes").addEventListener("click", clearRangeFilter);
-    document.getElementById("rangeFilterCountRes").addEventListener("click", rangeFilterCount);
 
     function sortAsc() {
         sortAndShowCategories(ORDER_ASC_BY_NAME);
@@ -279,21 +261,21 @@ document.addEventListener("DOMContentLoaded", async (e) =>{
         showCategoriesList(currentCategoriesArray);
     }
     
-    document.getElementById("sortAsc").addEventListener("click", sortAsc);
-    document.getElementById("sortDesc").addEventListener("click", sortDesc);
-    document.getElementById("sortByCount").addEventListener("click", sortCount);
-    document.getElementById("clearRangeFilter").addEventListener("click", clearRangeFilter);
-    document.getElementById("rangeFilterCount").addEventListener("click", rangeFilterCount);
-
-    /* responsive buttons */
-    document.getElementById("sortAscRes").addEventListener("click", sortAsc);
-    document.getElementById("sortDescRes").addEventListener("click", sortDesc);
-    document.getElementById("sortByCountRes").addEventListener("click", sortCount);
-    document.getElementById("clearRangeFilterRes").addEventListener("click", clearRangeFilter);
-    document.getElementById("rangeFilterCountRes").addEventListener("click", rangeFilterCount);
-
-    const location = window.location.href;
-    localStorage.setItem("prev_location", JSON.stringify(location));
+    document.querySelectorAll("#sortAsc, #sortAscRes").forEach((element) => {
+        element.addEventListener("click", sortAsc)
+    })
+    document.querySelectorAll("#sortDesc, #sortDescRes").forEach((element) => {
+        element.addEventListener("click", sortDesc)
+    })
+    document.querySelectorAll("#sortByCount, #sortByCountRes").forEach((element) => {
+        element.addEventListener("click", sortCount)
+    })
+    document.querySelectorAll("#clearRangeFilter, #clearRangeFilterRes").forEach((element) => {
+        element.addEventListener("click", clearRangeFilter)
+    })
+    document.querySelectorAll("#rangeFilterCount, #rangeFilterCountRes").forEach((element) => {
+        element.addEventListener("click", rangeFilterCount)
+    })
 });
 
 
@@ -301,14 +283,17 @@ const searchBar = document.getElementById("searchBar")
 
 searchBar.addEventListener("keyup", (e) => {
     const searchString = e.target.value;
-    const filteredCategoriesArray = currentCategoriesArray.filter(category => category.name.toLowerCase().includes(searchString.toLowerCase()) || 
+    const filteredCategoriesArray = currentCategoriesArray.filter(category => 
+        category.name.toLowerCase().includes(searchString.toLowerCase()) || 
         category.description.toLowerCase().includes(searchString.toLowerCase()) ||
         category.productCount.toString().includes(searchString)
     )
     showCategoriesList(filteredCategoriesArray);
     if (filteredCategoriesArray.length === 0) {
         document.getElementById("category-subtitle").innerHTML = `
-        <p class="lead">No hay categorías que coincidan con tu búsqueda.</p>
+            <p class="lead">
+                No hay categorías que coincidan con tu búsqueda.
+            </p>
         `
         document.getElementById("catList").innerHTML = "";
     }

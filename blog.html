@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>eMercado - Todo lo que busques está aquí</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+  <link href="css/index.css" rel="stylesheet">
+
+  <script src="https://kit.fontawesome.com/95b02ed607.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid container-lg mt-1">
+      <a class="navbar-brand" href="index.html"><img src="img/logo.png" class="imgLogo"></a>
+      <div class="navToggler d-lg-none" id="btnBurger" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navBarContent" aria-controls="navBarContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <div class="navToggler-top"></div>
+        <div class="navToggler-bottom"></div>
+      </div>
+      <div class="collapse navbar-collapse" id="navBarContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex gap-lg-4 mt-lg-0 mt-3">
+          <li class="nav-item d-lg-none">
+            <a class="nav-link" href="my-profile.html">
+              <img id="imgUser" src="img/img_perfil.png" alt="user" class="img-fluid rounded-circle" width="25">
+              <span id="username">username</span>
+            </a>
+          </li>
+          <hr class="m-0 text-muted d-lg-none">
+          <li class="nav-item d-lg-none">
+            <a class="nav-link active" href="index.html">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="categories.html">Categorías</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sell.html">Vender</a>
+          </li>
+          <li class="nav-item d-lg-none">
+            <a class="nav-link" href="cart.html">Carrito</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="help.html">Ayuda</a>
+          </li>
+          <hr class="m-0 text-muted d-lg-none">
+          <li class="nav-item d-lg-none">
+            <a class="nav-link text-danger cursor-active" onclick="signOut()">Cerrar sesión</a>
+          </li>
+        </ul>
+        <div class="d-flex gap-lg-3">
+          <ul class="navbar-nav mb-lg-0 d-none d-lg-block">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <img id="imgUserRes" src="img/img_perfil.png" alt="user" class="img-fluid rounded-circle" width="25">
+                <span id="usernameRes">username</span>
+              </a>
+              <ul class="dropdown-menu bg-dark dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="my-profile.html">Perfil</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item text-danger cursor-active" onclick="signOut()">Cerrar Sesión</a></li>
+              </ul>
+            </li>
+          </ul>
+          <div class="position-relative d-none d-lg-block">
+            <a href="cart.html" class="m-auto">
+              <i class="fa-solid fa-cart-shopping"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                id="cartLenght">0
+                <span class="visually-hidden"></span>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <main>
+    <h1 class="text-danger contianer-fluid container-lg text-center pt-5">Página en desarrollo</h1>
+  </main>
+  <footer class="mt-5">
+    <hr>
+    <div class="container-fluid container-lg">
+      <div class="row mb-3">
+        <div class="col-6 col-md-4 text-muted">
+          <h6 class="text-dark">Categorias</h6>
+          <div class="px-2 preFooterList">
+            <ul class="list-unstyled">
+              <li><a onclick="setCatID(101)">Autos</a></li>
+              <li><a onclick="setCatID(102)">Juguetes</a></li>
+              <li><a onclick="setCatID(103)">Muebles</a></li>
+              <li><a onclick="setCatID(104)">Herramientas</a></li>
+              <li><a onclick="setCatID(105)">Computadoras</a></li>
+              <li><a onclick="setCatID(106)">Vestimenta</a></li>
+              <li><a onclick="setCatID(107)">Electrodomésticos</a></li>
+              <li><a onclick="setCatID(108)">Deporte</a></li>
+              <li><a onclick="setCatID(109)">Celulares</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 text-muted px-0 px-md-3">
+          <h6 class="text-dark">Lo más vendido</h6>
+          <div class="px-2 preFooterList">
+            <ul class="list-unstyled">
+              <li><a onclick="product_info(50922)">Fiat Way</a></li>
+              <li><a onclick="product_info(50923)">Suzuki Celerio</a></li>
+              <li><a onclick="product_info(50924)">Peugeot 208</a></li>
+              <li><a onclick="product_info(50743)">Play Station 5</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 text-muted mt-3 mt-md-0">
+          <h6 class="text-dark">Información útil</h6>
+          <div class="px-2 preFooterList">
+            <ul class="list-unstyled">
+              <li><a href="/blog.html">Blog</a></li>
+              <li><a href="/contact.html">Contacto</a></li>
+              <li><a href="/help.html">FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <p class="mb-0 text-muted">Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/"
+          target="_blank">Jovenes a Programar</a> -
+        2022</p>
+      <div class="d-flex justify-content-between">
+        <p class="text-muted">Clickea <a target="_blank" href="Letra.pdf">aquí</a> para descargar la letra del
+          obligatorio.</p>
+        <a href="#">Volver arriba</a>
+      </div>
+    </div>
+  </footer>
+  <div id="spinner-wrapper">
+    <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/init.js"></script>
+  <script src="js/index.js"></script>
+</body>
+
+</html>
