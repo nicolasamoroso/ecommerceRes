@@ -8,10 +8,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (cartData.status === 'ok') {
       let cart = cartData.data.articles
       cart.forEach(prod => {
-        prod.count = 1
-        prod.stock = prod.currency === "USD" ? Math.round(40000 / prod.unitCost) + 1 : Math.round(40000 / prod.unitCost * 23) + 1
-        prod.description = 'El modelo de auto que se sigue renovando y manteniendo su prestigio en comodidad.'
-        cartArray.push(prod)
+        const newProductArray = JSON.parse(localStorage.getItem("newProductArray"))
+        if (newProductArray) {
+          const productsArray = newProductArray.find(({catID}) => catID === 101) 
+          if (productsArray) {
+            const product = productsArray.products.find(({id}) => id === prod.id)
+            if (product) {
+              if (product.stock === 0) return
+
+              prod.count = 1
+              prod.stock = product.stock
+              prod.description = product.description
+              cartArray.push(prod)
+            }
+          }
+        }
       })
     }
     localStorage.setItem("cart", JSON.stringify(cartArray))
