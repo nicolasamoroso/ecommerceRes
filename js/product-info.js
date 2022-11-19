@@ -401,12 +401,12 @@ function showComments(comments) {
         }
         htmlContentToAppend += `
         <hr>
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between gap-2">
             <div class="d-flex gap-2">
                 <img class="rounded-circle" src="${comment.img}" style="width: 20px; height: 20px;">
                 <h6>${comment.user}</h6>
             </div>
-            <small class="text-muted">${changeDayFormat(new Date(comment.dateTime))}</small>
+            <small class="text-muted" style="font-size: 12px;">${changeDayFormat(new Date(comment.dateTime))}</small>
         </div>
         <div class="ps-4 stars">${ScoreToStars(comment.score)}</div>
         <p class="ps-4 pt-2 text-break">${comment.description}</p>       
