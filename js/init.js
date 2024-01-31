@@ -1,76 +1,81 @@
 const CATEGORIES_URL = "https://japceibal.github.io/emercado-api/cats/cat.json";
-const PUBLISH_PRODUCT_URL = "https://japceibal.github.io/emercado-api/sell/publish.json";
+const PUBLISH_PRODUCT_URL =
+  "https://japceibal.github.io/emercado-api/sell/publish.json";
 const PRODUCTS_URL = "https://japceibal.github.io/emercado-api/cats_products/";
 const PRODUCT_INFO_URL = "https://japceibal.github.io/emercado-api/products/";
-const PRODUCT_INFO_COMMENTS_URL = "https://japceibal.github.io/emercado-api/products_comments/";
+const PRODUCT_INFO_COMMENTS_URL =
+  "https://japceibal.github.io/emercado-api/products_comments/";
 const CART_INFO_URL = "https://japceibal.github.io/emercado-api/user_cart/";
 const CART_BUY_URL = "https://japceibal.github.io/emercado-api/cart/buy.json";
 const EXT_TYPE = ".json";
 
-const idUser1 = 25801
+const idUser1 = 25801;
 
 const LIST_URL = PRODUCTS_URL + localStorage.catID + EXT_TYPE;
-const id = localStorage.getItem("product-info")
+const id = localStorage.getItem("product-info");
 const P_INFO_URL = PRODUCT_INFO_URL + id + EXT_TYPE;
-const P_INFO_COMMENTS_URL = PRODUCT_INFO_COMMENTS_URL + localStorage.getItem("product-info") + EXT_TYPE;
+const P_INFO_COMMENTS_URL =
+  PRODUCT_INFO_COMMENTS_URL + localStorage.getItem("product-info") + EXT_TYPE;
 const C_INFO_URL = CART_INFO_URL + idUser1 + EXT_TYPE;
 
 let showSpinner = function () {
   document.getElementById("spinner-wrapper").style.display = "block";
-}
+};
 
 let hideSpinner = function () {
   document.getElementById("spinner-wrapper").style.display = "none";
-}
+};
 
 const getJSONData = async (url) => {
   let result = {};
   showSpinner();
   return fetch(url)
-    .then(response => {
-      if (response.ok)
-        return response.json();
-      else
-        throw Error(response.statusText);
+    .then((response) => {
+      if (response.ok) return response.json();
+      else throw Error(response.statusText);
     })
     .then(function (response) {
-      result.status = 'ok';
+      result.status = "ok";
       result.data = response;
       hideSpinner();
       return result;
     })
     .catch(function (error) {
-      result.status = 'error';
+      result.status = "error";
       result.data = error;
       hideSpinner();
       return result;
     });
-}
+};
 
 const burger = document.getElementById("btnBurger");
 burger.addEventListener("click", () => {
-  burger.classList.contains("active") ? burger.classList.remove("active") : burger.classList.add("active")
-})
+  burger.classList.contains("active")
+    ? burger.classList.remove("active")
+    : burger.classList.add("active");
+});
 
 burger.addEventListener("doubleclick", () => {
-  burger.classList.contains("active") ? burger.classList.remove("active") : burger.classList.add("active")
-})
+  burger.classList.contains("active")
+    ? burger.classList.remove("active")
+    : burger.classList.add("active");
+});
 
 function setCatID(id) {
   localStorage.setItem("catID", id);
-  window.location = "products.html"
+  window.location = "products.html";
 }
 
 function product_info(id) {
-  if (!id) return
+  if (!id) return;
   localStorage.setItem("product-info", id);
-  window.location.href = "product-info.html"
+  window.location.href = "product-info.html";
 }
 
 //Función que cambia el color de los filtros si están activos
 function changeColor(a, b, c) {
   document.getElementById(a).classList.add("bg-sort-active");
-  if (document.getElementById(b).classList.contains("bg-sort-active")) 
+  if (document.getElementById(b).classList.contains("bg-sort-active"))
     document.getElementById(b).classList.remove("bg-sort-active");
   if (document.getElementById(c).classList.contains("bg-sort-active"))
     document.getElementById(c).classList.remove("bg-sort-active");
@@ -78,7 +83,7 @@ function changeColor(a, b, c) {
 
 function showTopSaleProducts(array) {
   for (let i = 0; i < array.length; i++) {
-    let product = array[i]
+    let product = array[i];
     if (product.products.length > 0) {
       document.getElementById("lstTopSale").innerHTML += `
         <div class="mt-3">
@@ -98,16 +103,16 @@ function showTopSaleProducts(array) {
             </div>
           </div>
         </div>
-      `
+      `;
       product.products.forEach(({ id, name, soldCount }) => {
         if (soldCount > 10) {
           document.getElementById(`lstCat-${i}`).innerHTML += `
             <a class="col-6 col-sm-4 col-md-12 text-decoration-underline" onclick="product_info(${id})">
               ${name}
             </a>
-          `
+          `;
         }
-      })
+      });
     }
   }
 }
@@ -118,9 +123,9 @@ const cart = (cant, product) => {
       <strong>
         Superó el límite de stock para este producto!
       </strong>
-    `
-    addOutOfStockAlert(string)
-    return false
+    `;
+    addOutOfStockAlert(string);
+    return false;
   }
   let newProduct = {
     name: product.name,
@@ -131,115 +136,117 @@ const cart = (cant, product) => {
     id: product.id,
     stock: product.stock,
     description: product.description,
-    category: product.category
-  }
-  
-  let cartArray = []
+    category: product.category,
+  };
 
-  const profileArray = JSON.parse(localStorage.getItem("profile"))
+  let cartArray = [];
+
+  const profileArray = JSON.parse(localStorage.getItem("profile"));
   if (profileArray) {
-    const profile = profileArray.find(({ logged }) => logged === true)
-    cartArray.push(...profile.cart)
+    const profile = profileArray.find(({ logged }) => logged === true);
+    cartArray.push(...profile.cart);
 
-    let same_product = cartArray.find(product => product.id === newProduct.id)
+    let same_product = cartArray.find(
+      (product) => product.id === newProduct.id
+    );
 
     if (same_product) {
       if (same_product.count + newProduct.count <= same_product.stock) {
-        same_product.count += newProduct.count
-        same_product.stock = newProduct.stock
-      }
-      else {
+        same_product.count += newProduct.count;
+        same_product.stock = newProduct.stock;
+      } else {
         const string = `
         <strong>
           Usted ya tiene el máximo de stock para este producto en el carrito!
-        </strong>`
-        addOutOfStockAlert(string)
-        return false
+        </strong>`;
+        addOutOfStockAlert(string);
+        return false;
       }
-    }
-    else cartArray.push(newProduct)
+    } else cartArray.push(newProduct);
 
-    profile.cart = cartArray
-    localStorage.setItem("profile", JSON.stringify(profileArray))
-    refreshCountCart()
-    return true
+    profile.cart = cartArray;
+    localStorage.setItem("profile", JSON.stringify(profileArray));
+    refreshCountCart();
+    return true;
   }
-}
+};
 
 const cartBtn = (id, catName) => {
-  let array = JSON.parse(localStorage.getItem("newProductArray"))
+  let array = JSON.parse(localStorage.getItem("newProductArray"));
   if (array) {
-    let cat = array.find(cat => cat.catName === catName).products
+    let cat = array.find((cat) => cat.catName === catName).products;
     if (cat) {
-      let pinfo = cat.find(prod => prod.id === id)
+      let pinfo = cat.find((prod) => prod.id === id);
       if (pinfo) {
-        pinfo.category = catName
-        let added = cart(1, pinfo)
+        pinfo.category = catName;
+        let added = cart(1, pinfo);
         if (added === true) {
-          addToCartAlert('')
+          addToCartAlert("");
           setTimeout(() => {
-            window.location = "cart.html"
-          }, 1000)
+            window.location = "cart.html";
+          }, 1000);
         }
       }
     }
   }
-}
+};
 
 function refreshCountCart() {
-  const profileArray = JSON.parse(localStorage.getItem("profile"))
+  const profileArray = JSON.parse(localStorage.getItem("profile"));
   if (profileArray) {
-    const profile = profileArray.find(({ logged }) => logged === true)
-    document.getElementById("cartLenght").textContent = profile.cart.length
+    const profile = profileArray.find(({ logged }) => logged === true);
+    if (profile)
+      document.getElementById("cartLenght").textContent = profile.cart.length;
+    else document.getElementById("cartLenght").textContent = 0;
   }
 }
 
-let catchProfile = {}
+let catchProfile = {};
 document.addEventListener("DOMContentLoaded", () => {
-  refreshCountCart()
-  addFooter()
-  const profile = JSON.parse(localStorage.getItem("profile"))
-  
+  refreshCountCart();
+  addFooter();
+  const profile = JSON.parse(localStorage.getItem("profile"));
+
   if (!profile) {
-    window.location = "login.html"
-    return
+    window.location = "login.html";
+    return;
   }
 
-  catchProfile = profile.find(({logged}) => logged === true)
-  
+  catchProfile = profile.find(({ logged }) => logged === true);
+
   if (!catchProfile) {
-    window.location = "login.html"
-    return
+    window.location = "login.html";
+    return;
   }
 
-  resizeProfile()
-})
+  resizeProfile();
+});
 
 function continueBuying() {
-  if (localStorage.getItem("catID")) window.location = "products.html"
-  else window.location = "categories.html"
+  if (localStorage.getItem("catID")) window.location = "products.html";
+  else window.location = "categories.html";
 }
 
 function iOS() {
-  const ua = navigator.userAgent.toLowerCase(); 
-  if (ua.indexOf('safari') != -1) return ua.indexOf('chrome') > -1 ? false : true;
-  return false
+  const ua = navigator.userAgent.toLowerCase();
+  if (ua.indexOf("safari") != -1)
+    return ua.indexOf("chrome") > -1 ? false : true;
+  return false;
 }
 
 function iOSMobile() {
   var iDevices = [
-    'iPad Simulator',
-    'iPhone Simulator',
-    'iPod Simulator',
-    'iPad',
-    'iPhone',
-    'iPod'
-  ]
+    "iPad Simulator",
+    "iPhone Simulator",
+    "iPod Simulator",
+    "iPad",
+    "iPhone",
+    "iPod",
+  ];
 
   if (!!navigator.platform) {
-    while (iDevices.length) 
-      if (navigator.platform === iDevices.pop()) 
-        return true;
+    while (iDevices.length)
+      if (navigator.platform === iDevices.pop()) return true;
   }
   return false;
 }
@@ -250,70 +257,67 @@ function addToCartAlert(string) {
       Producto agregado al carrito!
     </strong> 
     ${string}
-  `
-  document.getElementById("add-success").classList.add("show")
+  `;
+  document.getElementById("add-success").classList.add("show");
   setTimeout(() => {
-    document.getElementById("add-success").classList.remove("show")
+    document.getElementById("add-success").classList.remove("show");
   }, 2500);
 }
 
 function addOutOfStockAlert(string) {
-  document.getElementById("add-error").innerHTML = string
-  document.getElementById("add-error").classList.add("show")
+  document.getElementById("add-error").innerHTML = string;
+  document.getElementById("add-error").classList.add("show");
   setTimeout(() => {
-    document.getElementById("add-error").classList.remove("show")
+    document.getElementById("add-error").classList.remove("show");
   }, 2500);
 }
 
 function signOut() {
   if (localStorage.getItem("profile")) {
-    const profileArray = JSON.parse(localStorage.getItem("profile"))
-    const catchProfile = profileArray.find(function({logged}) {
-      return logged === true
-    })
+    const profileArray = JSON.parse(localStorage.getItem("profile"));
+    const catchProfile = profileArray.find(function ({ logged }) {
+      return logged === true;
+    });
     if (catchProfile) {
-      catchProfile.logged = false
+      catchProfile.logged = false;
       localStorage.setItem("profile", JSON.stringify(profileArray));
     }
   }
-  window.location = "login.html"
+  window.location = "login.html";
 }
 
-let resize = false
+let resize = false;
 
-window.addEventListener("resize", function() {
+window.addEventListener("resize", function () {
   if (!resize && window.innerWidth <= 991) {
-    resize = true
-    resizeProfile()
+    resize = true;
+    resizeProfile();
+  } else if (resize && window.innerWidth > 991) {
+    resize = false;
+    resizeProfile();
   }
-  else if (resize && window.innerWidth > 991) {
-    resize = false
-    resizeProfile()
-  }
-})
+});
 
 function resizeProfile() {
-  const pic = catchProfile.picture ?? "img/img_perfil.png"
-  const user = catchProfile.username ?? "username"
+  const pic = catchProfile.picture ?? "img/img_perfil.png";
+  const user = catchProfile.username ?? "username";
   if (window.innerWidth <= 991) {
-    document.getElementById("username").textContent = user
-    document.getElementById("imgUser").src = pic
-  }
-  else {
-    document.getElementById("usernameRes").textContent = user
-    document.getElementById("imgUserRes").src = pic
+    document.getElementById("username").textContent = user;
+    document.getElementById("imgUser").src = pic;
+  } else {
+    document.getElementById("usernameRes").textContent = user;
+    document.getElementById("imgUserRes").src = pic;
   }
 }
 
 function toggleValidate(id, bool) {
-  const element = document.getElementById(id)
+  const element = document.getElementById(id);
   if (bool) {
-    element.classList.remove("is-invalid")
-    element.classList.add("is-valid")
-  }
-  else {
-    element.classList.remove("is-valid")
-    element.classList.add("is-invalid")
+    element.classList.remove("is-invalid");
+    element.classList.add("is-valid");
+  } else {
+    element.classList.remove("is-valid");
+    element.classList.add("is-invalid");
   }
 }
 
@@ -370,5 +374,5 @@ const addFooter = () => {
         <a href="#">Volver arriba</a>
       </div>
     </div>
-  `
-}
+  `;
+};
